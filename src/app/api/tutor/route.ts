@@ -43,7 +43,7 @@ export const POST = handle(async (req: Request) => {
   if (!enabled) throw new HttpError(403, "Thầy cô chưa bật Trợ lý AI cho lớp em.");
   const text = cleanTutorInput((await readJson<{ text?: string }>(req)).text);
   if (typeof text !== "string") throw new HttpError(400, text.error);
-  await assertAiAllowed(user.uid);
+  await assertAiAllowed(user.uid, user.role);
 
   const keys: [string, number][] = [
     [`tutor_${user.uid}`, STUDENT_AI_LIMITS.tutorPerStudent],

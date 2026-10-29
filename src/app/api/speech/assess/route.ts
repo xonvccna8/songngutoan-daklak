@@ -32,7 +32,7 @@ export const POST = handle(async (req: Request) => {
   if (!/^(audio|video)\//.test(audio.type || "audio/webm")) throw new HttpError(415, "Định dạng ghi âm không hỗ trợ.");
   if (target.split(/\s+/).filter(Boolean).length < 1) throw new HttpError(400, "Thiếu câu mẫu.");
 
-  await assertAiAllowed(user.uid);
+  await assertAiAllowed(user.uid, user.role);
   const keys: [string, number][] = [
     [`speech_${user.uid}`, STUDENT_AI_LIMITS.speechPerStudent],
     [`speech_school_${user.schoolId ?? "none"}`, STUDENT_AI_LIMITS.speechPerSchool],

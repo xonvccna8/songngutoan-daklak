@@ -50,8 +50,8 @@ export function AiUnlockDialog() {
           <span className="mx-auto grid size-14 place-items-center rounded-2xl bg-sun-soft text-[#8A5A00]">
             <LockKeyhole className="size-7" />
           </span>
-          <DialogTitle className="text-center font-display text-2xl font-extrabold">Đã hết lượt AI dùng thử</DialogTitle>
-          <DialogDescription className="text-center">{message || "Bạn đã dùng hết lượt AI dùng thử."} Liên hệ người cung cấp phần mềm để nhận mật khẩu.</DialogDescription>
+          <DialogTitle className="text-center font-display text-2xl font-extrabold">Đã hết lượt dùng AI</DialogTitle>
+          <DialogDescription className="text-center">{message || "Bạn đã dùng hết lượt AI."} Mật khẩu chỉ quản trị nhà trường có — hãy liên hệ quản trị để nhận.</DialogDescription>
         </DialogHeader>
         <form onSubmit={submit} className="space-y-3">
           <label className="relative block">

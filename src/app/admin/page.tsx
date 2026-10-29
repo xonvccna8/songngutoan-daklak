@@ -1,6 +1,6 @@
 "use client";
 
-// Quản trị trường: duyệt tài khoản giáo viên, xem tất cả lớp
+// Quản trị trường: mật khẩu mở khoá AI, duyệt tài khoản giáo viên, xem tất cả lớp
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Check, ChevronRight, Clock, Loader2, RefreshCw, ShieldCheck, UserX } from "lucide-react";
@@ -15,6 +15,7 @@ import { useMyClasses } from "@/lib/hooks/use-firestore";
 import type { UserDoc } from "@/lib/types";
 import { KindChip } from "@/components/messages/message-feed";
 import { useSchoolMessages } from "@/lib/messages/hooks";
+import { AiPasswordCard } from "@/components/admin/ai-password-card";
 
 const ROLE_CHIP: Record<string, { label: string; cls: string }> = {
   admin: { label: "Quản trị", cls: "bg-ink text-white" },
@@ -84,6 +85,9 @@ export default function AdminPage() {
           <RefreshCw /> Tải lại
         </Button>
       </div>
+
+      {/* Mật khẩu mở khoá AI — chỉ quản trị thấy */}
+      <AiPasswordCard />
 
       {/* Chờ duyệt */}
       <section className="mt-8">

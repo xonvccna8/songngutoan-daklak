@@ -21,7 +21,7 @@ export const POST = handle(async (req: Request) => {
   const count = Math.max(AI_BANK.min, Math.min(AI_BANK.max, Math.round(Number(b.count) || 6)));
   const note = String(b.note ?? "").trim().slice(0, AI_BANK.maxNote);
 
-  await assertAiAllowed(user.uid);
+  await assertAiAllowed(user.uid, user.role);
   const day = await reserveAiUse(user);
   let result;
   try {

@@ -12,7 +12,7 @@ export const maxDuration = 120;
 
 export const GET = handle(async (req: Request) => {
   const user = await requireAuth(req, ["teacher", "admin"]);
-  return ok({ ...(await aiUsageToday(user)), enabled: !!process.env.OPENAI_API_KEY, free: await aiFreeStatus(user.uid) });
+  return ok({ ...(await aiUsageToday(user)), enabled: !!process.env.OPENAI_API_KEY, free: await aiFreeStatus(user.uid, user.role) });
 });
 
 export const POST = handle(async (req: Request) => {
@@ -24,7 +24,7 @@ export const POST = handle(async (req: Request) => {
   if (plan.length < AI_LIMITS.minPlanChars) throw new HttpError(400, "Giáo án quá ngắn — hãy dán nội dung chi tiết hơn.");
   if (plan.length > AI_LIMITS.maxPlanChars) throw new HttpError(400, `Giáo án dài quá ${AI_LIMITS.maxPlanChars.toLocaleString("vi-VN")} kí tự — hãy dán từng phần.`);
 
-  await assertAiAllowed(user.uid);
+  await assertAiAllowed(user.uid, user.role);
   const day = await reserveAiUse(user);
   let result;
   try {

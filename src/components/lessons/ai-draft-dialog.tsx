@@ -101,7 +101,7 @@ export function AiDraftDialog({ open, onOpenChange }: { open: boolean; onOpenCha
             {usage && !usage.enabled
               ? "Trợ lý AI chưa được cấu hình trên máy chủ."
               : usage?.free && usage.free.remaining != null
-                ? `Còn ${usage.free.remaining}/${usage.free.limit} lượt AI dùng thử.`
+                ? `Còn ${usage.free.remaining}/${usage.free.limit} lượt AI (hết lượt cần mật khẩu của quản trị).`
                 : left != null
                   ? `Hôm nay còn ${left}/${usage!.limit} lượt.`
                   : "Mỗi giáo viên có " + AI_LIMITS.perTeacherPerDay + " lượt/ngày."}
