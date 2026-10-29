@@ -1,0 +1,343 @@
+LỚP SONG NGỮ - KẾ HOẠCH TỔNG QUAN BẢN MỚI
+Web dạy và học Toán THCS song ngữ Việt - Anh
+(Bản kế hoạch, chưa lập trình. Bản chi tiết: docs/KE-HOACH-TRANG-GIAO-VIEN.md)
+Cập nhật: 13/10/2026
+
+======================================================================
+I. MỤC TIÊU
+======================================================================
+1. Hỗ trợ tối đa giáo viên Toán chưa giỏi tiếng Anh: web lo phần ngôn ngữ
+   (câu mẫu có phát âm, kịch bản lời giảng, tivi tự đọc đề), GV chỉ cần bấm.
+2. Học sinh vừa học vừa chơi: tích điểm, lên cấp độ, xếp hạng, trò chơi.
+3. Đồng bộ: mọi mục dùng chung một bộ dữ liệu; GV và HS thấy cùng con số
+   theo thời gian thực.
+4. Bám sát Chương trình GDPT 2018 môn Toán, Công văn 5512, Thông tư 22/2021,
+   Quyết định 2371/QĐ-TTg (tiếng Anh là ngôn ngữ thứ hai, 3 mức độ).
+
+Bối cảnh lớp học: GV có laptop, lớp có tivi, HS dùng điện thoại, Wi-Fi có thể yếu.
+
+======================================================================
+II. VAI TRÒ
+======================================================================
+1. Quản trị
+   - Đăng nhập: Google hoặc email.
+   - Quản lý giáo viên, lớp, năm học, khung chương trình.
+   - Cấu hình điểm và cấp độ toàn trường; xem nhật ký tin nhắn.
+
+2. Tổ trưởng chuyên môn
+   - Đăng nhập: Google hoặc email.
+   - Phân công soạn bài, duyệt nội dung Toán.
+   - Xem tiến độ soạn bài và thống kê các lớp trong tổ.
+
+3. Giáo viên Toán
+   - Đăng nhập: Google hoặc email.
+   - Quản lý lớp, soạn bài, dạy trên lớp, mở trò chơi, giao bài,
+     kiểm tra, khen thưởng và nhắc nhở học sinh.
+
+4. Giáo viên tiếng Anh
+   - Đăng nhập: Google hoặc email.
+   - Duyệt ngôn ngữ của bài soạn; làm đồng giáo viên ở lớp;
+     chấm phần nói và viết tiếng Anh.
+
+5. Giáo viên dự giờ
+   - Đăng nhập: Google hoặc email.
+   - Chỉ xem tiết học hoặc lớp được mời.
+
+6. Học sinh
+   - Đăng nhập: mã lớp + chọn tên + mã PIN 6 số (không dùng email).
+   - Học trên lớp, ôn ở nhà, chơi trò chơi, làm kiểm tra,
+     xem hành trình, cấp độ và thứ hạng của mình.
+   - Mã PIN được mã hóa; sai 5 lần khóa 15 phút; GV đặt lại được.
+
+Vai trò trong từng bài soạn: Chủ bài, Đồng soạn, Người duyệt Toán,
+Người duyệt ngôn ngữ.
+
+Quyền riêng tư học sinh (dưới 18 tuổi): chỉ lưu họ tên, lớp, tổ.
+Không lưu email, số điện thoại, ghi âm. Bảng xếp hạng chỉ hiện tên gọi
+và avatar.
+
+======================================================================
+III. NỀN TẢNG DÙNG CHUNG
+======================================================================
+1. Khung chương trình
+   Lớp 6-9 -> Mạch -> Chương -> Bài -> Yêu cầu cần đạt (YCCĐ).
+   Câu hỏi, thuật ngữ, học liệu, bài soạn, đề kiểm tra, trò chơi đều gắn
+   với khung này.
+
+2. Ba mức tiếng Anh
+   - E1: chủ yếu tiếng Việt, kèm thuật ngữ tiếng Anh.
+   - E2: song song Việt - Anh.
+   - E3: chủ yếu tiếng Anh.
+   HS được xếp mức bằng khảo sát đầu năm, sau đó tự nâng mức để được thưởng.
+
+3. Phương pháp dạy song ngữ (CLIL 4C)
+   - Mỗi bài có 2 mục tiêu: mục tiêu Toán và mục tiêu ngôn ngữ.
+   - Dạy theo chức năng ngôn ngữ (mô tả, so sánh, giải thích, chứng minh)
+     bằng khung câu.
+   - Giàn giáo 3 nấc, rút dần khi HS tiến bộ:
+     Bảng từ -> Khung câu -> Câu mẫu.
+   - Cho phép HS trả lời tiếng Việt trước, rồi nâng lên tiếng Anh.
+   - Chấm riêng lỗi Toán và lỗi ngôn ngữ.
+
+4. Đồng bộ dữ liệu ("sự kiện học tập")
+   Mọi hoạt động (trên lớp, ở nhà, trò chơi, kiểm tra, GV khen) đều tạo ra
+   một sự kiện học tập. Máy chủ chấm điểm, rồi tự cập nhật:
+   - Mức thành thạo theo YCCĐ (tách Toán và Ngôn ngữ).
+   - XP, cấp độ, huy hiệu, chuỗi ngày học.
+   - Điểm thi đua tuần (Trên lớp / Ở nhà / Tổ).
+   - Bảng điều khiển của GV và màn hình "Hành trình" của HS.
+   - Gợi ý ôn tập và cảnh báo cho GV.
+   HS không tự ghi điểm được, nên không gian lận được.
+
+======================================================================
+IV. HỆ THỐNG ĐIỂM - CẤP ĐỘ - XẾP HẠNG
+======================================================================
+1. Ba loại điểm
+   - XP (kinh nghiệm): cộng dồn, không bao giờ mất, dùng để lên cấp độ.
+   - Điểm thi đua tuần: dùng để xếp hạng, thứ Hai làm lại từ 0.
+   - Sao Toán / Sao Ngôn ngữ (0-3 sao cho mỗi YCCĐ): mức thành thạo thật,
+     giảm dần nếu lâu không ôn.
+
+2. Tích điểm chính (GV chỉnh được hệ số)
+   Trên lớp:
+   - Trả lời một câu (dù sai): +2 XP
+   - Trả lời đúng: +10
+   - Trả lời bằng tiếng Anh đạt yêu cầu: +5
+   - Được gọi lên trả lời, hoặc giơ tay rồi trả lời: +3
+   - Phiếu ra về đúng: +5
+   - GV khen: +5 / +10 / +20
+   Ở nhà:
+   - Hoàn thành bài về nhà: +20; nộp đúng hạn thêm +10
+   - Mỗi câu đúng trong bài về nhà: +5; không dùng gợi ý thêm +2
+   - Ôn thẻ từ vựng: +1 mỗi thẻ (tối đa 30/ngày)
+   - Luyện phát âm đạt từ 80%: +5 mỗi câu
+   - Thử thách hằng ngày: +15
+   - Nhiệm vụ "Explain in English" hằng tuần: +30
+   Trò chơi:
+   - Theo kết quả trận: +5 đến +30
+   - Đội thắng: mỗi người thêm +10
+   - Phá kỉ lục cá nhân: +5
+   Kiểm tra:
+   - Hoàn thành bài: +20; đạt từ 8 điểm thêm +20
+   Chuỗi ngày học:
+   - 3 ngày: +10 · 7 ngày: +30 · 30 ngày: +100
+   Quy tắc chung:
+   - Không trừ điểm khi sai.
+   - Ở nhà tối đa 200 XP/ngày (chống cày điểm, chống nghiện).
+
+3. Cấp độ kiểu game: 8 hạng, mỗi hạng 3 bậc (I, II, III), tổng 24 cấp
+   Hạng                         XP cộng dồn   Điều kiện thêm
+   1. Nhập môn / Novice                   0   -
+   2. Tập sự / Apprentice               300   Thuộc 20 thuật ngữ
+   3. Khám phá / Explorer               800   Đạt 1 sao ở 5 YCCĐ; đọc đúng
+                                              10 kí hiệu toán bằng tiếng Anh
+   4. Thành thạo / Skilled            1 600   Đạt 2 sao ở 10 YCCĐ;
+                                              nói đúng 10 câu giải thích
+   5. Tinh anh / Expert               3 000   Hoàn thành 2 bài "Explain in
+                                              English"; chuỗi 7 ngày
+   6. Bậc thầy / Master               5 000   Đạt 3 sao ở 15 YCCĐ
+   7. Đại sư / Grandmaster            8 000   Trình bày bài vận dụng bằng
+                                              tiếng Anh, GV duyệt
+   8. Huyền thoại / Legend           12 000   Được 5 lần "Đồng đội tốt"
+   - Muốn lên hạng phải qua "Thử thách thăng hạng" (5-8 câu, một nửa Toán,
+     một nửa ngôn ngữ).
+   - HS luôn thấy: hạng hiện tại, thanh XP, và "còn bao nhiêu XP, cần làm gì
+     nữa để lên hạng".
+   - Khoảng 20 huy hiệu song ngữ, ví dụ: Vua thuật ngữ / Term King,
+     Phát âm chuẩn / Clear Speaker, Thám tử lỗi sai / Error Detective,
+     Đồng đội tốt / Team Player.
+   - Avatar và khung ảnh mở khóa theo hạng (chỉ để trang trí).
+
+4. Bảng xếp hạng
+   - Trên lớp (từng tiết và cả tuần), Ở nhà (tuần), Tiến bộ nhất, Thi đua tổ,
+     Giải đấu học kỳ (tùy chọn).
+   - Bảo vệ HS yếu: chỉ hiện top 5 + hạng của em + 2 bạn gần em;
+     bảng làm lại từ đầu mỗi tuần; tivi có thể ẩn tên; tắt bảng xếp hạng
+     trong giờ kiểm tra.
+
+======================================================================
+V. TÍNH NĂNG - 7 MỤC CỦA TRANG GIÁO VIÊN
+======================================================================
+1. QUẢN LÝ LỚP HỌC
+   - Bảng điều khiển lớp có 3 tab, cập nhật theo thời gian thực:
+     + Trên lớp: ai đang trực tuyến, đang làm, đúng/sai, đã mở mấy nấc
+       gợi ý, có rời màn hình không.
+     + Ở nhà: thời gian học thật; bài về nhà chưa mở / đang làm / đã nộp /
+       trễ; chuỗi ngày; XP hôm nay.
+     + Tiến bộ: bản đồ thành thạo HS x YCCĐ (Toán / Ngôn ngữ), cấp độ,
+       xếp hạng, nhóm "Cần chú ý".
+   - Thao tác 1 chạm: Nhắc chú ý, Khen +XP, Gọi tên, Nhắc ôn, Giao bài bù,
+     Tạo nhóm phụ đạo.
+   - Cảnh báo tự động: 3 ngày chưa ôn, chuỗi ngày sắp đứt, Sao giảm,
+     trượt thử thách thăng hạng, làm bài nhanh bất thường (đoán bừa).
+   - Quản lý: lớp, tổ (tự gợi ý chia đều trình độ), PIN, in phiếu đăng nhập
+     có mã QR, năm học, đồng giáo viên, khảo sát mức tiếng Anh, kế hoạch
+     dạy học theo tuần, cài đặt điểm.
+   - Hồ sơ HS; bảng điểm xuất Excel; báo cáo học kỳ PDF.
+   - Bên HS: trang "Hành trình của em" (hạng, XP, nhiệm vụ hôm nay,
+     chuỗi ngày, sao, thứ hạng, huy hiệu, tin nhắn).
+
+2. SOẠN BÀI (NHIỀU GV CÙNG SOẠN SONG NGỮ)
+   - Quy trình: Phân công -> Soạn -> Duyệt Toán -> Duyệt ngôn ngữ ->
+     Đã duyệt -> Thư viện chung (có nút "Yêu cầu sửa").
+   - Cộng tác: khóa từng trang khi có người đang sửa, nhận xét gắn vào
+     từng khối, lịch sử phiên bản, nhân bản bài để chỉnh cho lớp mình.
+   - Mẫu giáo án theo CV 5512 + 4C: mục tiêu Toán (chọn YCCĐ), mục tiêu
+     ngôn ngữ, thuật ngữ trọng tâm.
+   - Soạn hai cột Việt | Anh, mỗi nội dung có 3 mức E1 / E2 / E3.
+   - Kiểm tra ngôn ngữ tự động (thiếu thuật ngữ, câu quá dài,
+     thiếu cách đọc kí hiệu).
+   - Kịch bản lời giảng tiếng Anh cho GV, có nút nghe và nghe chậm.
+   - Trợ lý AI đề xuất phần tiếng Anh từ giáo án tiếng Việt (luôn là Nháp).
+   - Đánh dấu câu dùng cho Trên lớp / Ở nhà / Trò chơi / Kiểm tra,
+     nên GV không phải soạn lại.
+   - Có 9 loại trang; xem trước trên tivi và điện thoại; xuất Word.
+
+3. HỌC LIỆU SỐ
+   - Ngân hàng thuật ngữ: tiếng Anh, phiên âm IPA, nghĩa tiếng Việt, hình,
+     ví dụ, cách đọc, từ dễ nhầm.
+   - Ngân hàng khung câu theo chức năng ngôn ngữ, mỗi khung có 3 mức.
+   - Khoảng 150 câu lệnh lớp học có phát âm.
+   - Cách đọc kí hiệu toán, có âm thanh.
+   - Hình động GeoGebra (nhãn đổi Việt / Anh), video (lưu link),
+     phiếu học tập, tiết mẫu đã duyệt.
+   - Tìm kiếm bằng tiếng Việt hoặc tiếng Anh; lọc theo lớp, chương,
+     YCCĐ, mức tiếng Anh.
+   - Thuật ngữ trong bài tự vào bộ thẻ ôn của HS và vào trò chơi.
+
+4. DẠY HỌC TRÊN LỚP (3 màn hình: tivi - laptop - điện thoại)
+   - Một nút "Tiếp" điều khiển cả tiết (phím mũi tên, Space, bút trình chiếu).
+   - 6 kiểu trả lời: chọn đáp án, nhập số, gõ chữ, nói (AI chấm phát âm),
+     kéo nhãn, chụp ảnh nhóm.
+   - Công tắc Anh / Song ngữ / Việt; gọi tên ngẫu nhiên; đồng hồ; giơ tay.
+   - Giới hạn trang HS được làm; Tạm dừng cả lớp.
+   - Chụp bài làm, ẩn danh tên HS để chiếu lên tivi cho cả lớp thảo luận.
+   - Giàn giáo 3 nấc trên điện thoại; nói theo cặp; trả lời hai bước
+     (tiếng Việt trước, tiếng Anh sau); phiếu ra về.
+   - Laptop hiện câu tiếng Anh GV cần nói, kèm nút nghe;
+     tivi tự đọc đề và luật chơi.
+   - Nút "Trò chơi" ngay trong tiết học; chơi xong quay lại đúng trang
+     đang dạy.
+   - Cuối tiết: Top 5, Tổ dẫn đầu, Bạn tiến bộ nhất.
+   - Nhắn tin 4 loại: Chú ý (chuông, rung, khung vàng toàn màn hình),
+     Nhắc nhở, Khen ngợi, Thông báo. Có xác nhận đã xem;
+     giờ yên lặng 21:00-6:30.
+   - Chạy được khi mạng yếu; vào muộn vẫn nhận đúng trạng thái hiện tại.
+
+5. ÔN LUYỆN Ở NHÀ
+   - "Nhiệm vụ hôm nay" khoảng 15 phút, hệ thống tự xếp:
+     bài GV giao, ôn giãn cách (1-3-7-14 ngày), thẻ từ vựng,
+     luyện phát âm, thử thách hằng ngày.
+   - Luyện xen kẽ nhiều dạng bài; ví dụ mẫu rút dần từng bước;
+     bài tập thích ứng theo mức của HS; gợi ý 3 tầng.
+   - Nhiệm vụ "Explain in English" hằng tuần.
+   - Tách lỗi: sai Toán thì gợi ý cách làm, sai ngôn ngữ thì gợi ý từ
+     hoặc khung câu.
+   - Trò chơi ở nhà, tính vào bảng xếp hạng Ở nhà.
+   - GV giao bài cho lớp, tổ hoặc từng em, có hạn nộp, nhắc trước hạn 1 ngày;
+     xem thời gian học thật; giao bài bù chỉ với 1 lần bấm.
+
+6. KIỂM TRA THƯỜNG XUYÊN (theo Thông tư 22/2021)
+   - Ngân hàng câu hỏi gắn YCCĐ, mức độ (Biết / Hiểu / Vận dụng),
+     năng lực, mức tiếng Anh.
+   - Đề song song Việt / Anh; chạm vào thuật ngữ để xem nghĩa; nghe đề.
+   - Đánh giá thường xuyên: tự gom kết quả trên lớp, ở nhà, trò chơi;
+     thang chấm song ngữ (Toán + Giao tiếp).
+   - Kiểm tra định kỳ: nhập ma trận -> tự sinh bản đặc tả -> rút câu ra đề
+     -> xuất Word.
+   - Làm bài trên điện thoại: tính giờ, đảo câu, tự chấm trắc nghiệm;
+     GV chấm tự luận qua ảnh chụp.
+   - Hai chế độ: Chính thức và Song ngữ tham khảo.
+   - Kết quả cập nhật Sao theo YCCĐ; câu sai tự vào lịch ôn ở nhà.
+
+7. TRÒ CHƠI TOÁN HỌC SONG NGỮ
+   GV chỉ cần 3 lần bấm: Trò chơi -> chọn trò -> Bắt đầu.
+   Nội dung tự lấy từ bài đang dạy. Điện thoại HS tự vào trò chơi.
+   Tivi tự đọc luật chơi bằng tiếng Anh, có phụ đề tiếng Việt.
+
+   a) ĐẤU TRƯỜNG SONG NGỮ / BILINGUAL ARENA (trò chính, kiểu Quizizz)
+   - Chế độ: Tự do (mỗi em làm theo tốc độ riêng), GV điều khiển
+     (cả lớp làm cùng câu), Đội/Tổ, Ở nhà.
+   - Điểm mỗi câu: đúng 600 + tốc độ 0-400; thưởng chuỗi đúng
+     (3 câu +100, 5 câu +200, từ 7 câu +300); thưởng song ngữ +100;
+     sai không trừ điểm.
+   - Bảng xếp hạng thay đổi sau mỗi câu: tivi hiện top 10 tự đổi chỗ có
+     hiệu ứng, dòng chữ chạy "Bình vừa vượt lên hạng 2!"; điện thoại hiện
+     hạng kèm mũi tên lên/xuống và "còn bao nhiêu điểm để vượt bạn".
+   - HS ở nửa dưới bảng chỉ thấy mức tăng ("Em vừa tăng 4 bậc!").
+   - 10 power-up: 50-50, Cục tẩy, Nhân đôi, Đóng băng thời gian, Giữ chuỗi,
+     Làm lại, Power Play (cả lớp +50%), và 3 power-up song ngữ: Gợi ý thuật
+     ngữ, Nghe chậm, Lật đề sang tiếng Việt.
+   - Em đang đứng sau dễ nhận power-up mạnh hơn (cơ hội lật ngược).
+   - Sticker động viên song ngữ có âm đọc; nhạc nền; bục vinh quang Top 3.
+   - Vòng câu cứu điểm: câu sai quay lại một lần, tối đa 300 điểm mỗi câu.
+   - GV xem tỉ lệ đúng từng câu ngay lúc chơi; câu dưới 50% đúng thì laptop
+     gợi ý dừng lại giảng.
+   - Điểm trận quy ra XP (tối đa 30 XP mỗi trận).
+
+   b) 12 TRÒ CHƠI KHÁC (làm dần)
+    1. Rung chuông vàng song ngữ  - cả lớp, loại dần, nghe đề tiếng Anh
+    2. Đua thuyền tổ              - các tổ đối kháng
+    3. Ghép bộ ba                 - ghép thuật ngữ Anh, nghĩa Việt, hình
+    4. Nghe và tính               - nghe phép tính tiếng Anh, nhập đáp số
+    5. Đọc chuẩn kí hiệu          - đọc biểu thức bằng tiếng Anh, AI chấm
+    6. Bingo Toán                 - phiếu bingo trên điện thoại
+    7. Tôi có... Ai có...         - cả lớp hợp tác phá kỉ lục
+    8. Săn kho báu                - mở rương, có yếu tố may mắn
+    9. Thám tử lỗi sai            - tìm lỗi và giải thích bằng tiếng Anh
+   10. Phòng thoát hiểm           - tổ giải các câu đố song ngữ
+   11. Cấm từ (Math Taboo)        - mô tả thuật ngữ bằng tiếng Anh
+   12. Thử thách hằng ngày        - chơi ở nhà, 5 câu mỗi ngày
+
+   Nguyên tắc: mỗi trò 5-10 phút; hệ thống gợi ý đổi trò thường xuyên;
+   tính điểm chủ yếu theo đúng, không trừ điểm; đội chia đều trình độ;
+   sau mỗi câu có giải thích song ngữ; câu sai tự vào lịch ôn ở nhà.
+
+   AI: chấm phát âm (Web Speech API, không lưu ghi âm); chấm câu gõ gần đúng;
+   trợ lý soạn bài; có giới hạn số lần gọi AI.
+
+======================================================================
+VI. CÔNG NGHỆ SỬ DỤNG
+======================================================================
+- Giao diện: Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui,
+  lucide-react (biểu tượng), Recharts (biểu đồ).
+- Hiệu ứng trò chơi: Framer Motion (bảng xếp hạng đổi chỗ), canvas-confetti
+  (pháo giấy), Web Audio (âm thanh).
+- Đăng nhập và phân quyền: Firebase Authentication + custom claims.
+- Cơ sở dữ liệu thời gian thực: Cloud Firestore.
+- Máy chủ: API route trên Vercel dùng firebase-admin. Máy chủ chấm điểm,
+  cộng XP và tính giờ trả lời. Chạy được với gói Firebase Spark miễn phí.
+- Lưu file: Firebase Storage nếu dùng được, nếu không thì lưu link
+  (Google Drive).
+- Thông báo đẩy: Firebase Cloud Messaging qua service worker.
+- Giọng nói: Web Speech API (đọc mẫu, chấm phát âm); sau này có thể nâng cấp
+  lên Azure Pronunciation Assessment.
+- AI: mô hình ngôn ngữ lớn qua API (gợi ý soạn bài, chấm câu gõ).
+- Học liệu Toán: nhúng GeoGebra.
+- Xuất file: Word (giáo án, đề kiểm tra), Excel (bảng điểm), PDF (báo cáo).
+- Ứng dụng: PWA, cài lên màn hình điện thoại, tải trước nội dung để dùng
+  khi mạng yếu.
+- Triển khai: Vercel.
+
+Với khoảng 50 HS, mỗi trận đấu khoảng 1 200 lượt ghi, vẫn nằm trong hạn mức
+miễn phí (20 000 lượt ghi/ngày).
+
+======================================================================
+VII. LỘ TRÌNH
+======================================================================
+GĐ 1-2  (đã xong) Đăng nhập 3 vai trò, quản lý lớp, dạy trực tiếp
+        3 màn hình.
+GĐ 3    Khung chương trình + sự kiện học tập + XP, cấp độ, xếp hạng
+        + Quản lý lớp 3 tab + trang "Hành trình" của HS.
+GĐ 4    Học liệu số.
+GĐ 5    Trò chơi đợt 1: Đấu trường Song ngữ, Rung chuông vàng,
+        Đua thuyền tổ, Ghép bộ ba.
+GĐ 6    Soạn bài cộng tác + trợ lý AI.
+GĐ 7    Dạy trên lớp nâng cao + nhắn tin.
+GĐ 8    Ôn luyện ở nhà + trò chơi ở nhà.
+GĐ 9    Kiểm tra thường xuyên + thử thách thăng hạng.
+GĐ 10   Trò chơi đợt 2, huy hiệu, avatar, PWA, triển khai,
+        tài liệu hướng dẫn.
+
+Cho cuộc thi KHKT (khoảng 50 HS): làm sâu cho một chương (Tam giác, lớp 7).
+Đo trước và sau: điểm Toán, điểm ngôn ngữ, thời gian tự học, mức hứng thú.

@@ -1,0 +1,282 @@
+rules_version = '2';
+
+// Lớp Song Ngữ — project Firebase DÙNG CHUNG với app khác.
+// KHÔNG deploy nguyên file này bằng "firebase deploy" (sẽ xoá rules của app khác)!
+// Dùng "npm run deploy:rules": script chỉ thay phần giữa hai dấu ">>> LOP SONG NGU" / "<<< LOP SONG NGU"
+// trong rules đang chạy. Phần ngoài hai dấu chỉ để chạy test bằng Emulator.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // >>> LOP SONG NGU
+    // Mặc định từ chối. Quyền theo claims riêng: lsnRole, lsnSchool, lsnClasses.
+    // Mọi thao tác ghi lớp/học sinh đi qua API route (firebase-admin) nên client chỉ đọc.
+    function lsnSignedIn() { return request.auth != null; }
+    function lsnRole() { return request.auth.token.get('lsnRole', ''); }
+    function lsnIsAdmin() { return lsnSignedIn() && lsnRole() == 'admin'; }
+    function lsnIsTeacher() { return lsnSignedIn() && lsnRole() == 'teacher'; }
+    function lsnIsStudent() { return lsnSignedIn() && lsnRole() == 'student'; }
+    function lsnSchool() { return request.auth.token.get('lsnSchool', ''); }
+    function lsnInMyClasses(classId) { return classId in request.auth.token.get('lsnClasses', []); }
+    function lsnClassData(classId) { return get(/databases/$(database)/documents/lsn_classes/$(classId)).data; }
+    // GV có tên trong teacherIds, hoặc quản trị cùng trường
+    function lsnIsStaffOf(classId) {
+      return (lsnIsTeacher() && request.auth.uid in lsnClassData(classId).teacherIds)
+          || (lsnIsAdmin() && lsnClassData(classId).schoolId == lsnSchool());
+    }
+
+    match /lsn_schools/{schoolId} {
+      allow read: if lsnSignedIn() && lsnSchool() == schoolId;
+      allow write: if false;
+    }
+
+    match /lsn_users/{uid} {
+      allow read: if lsnSignedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    match /lsn_classes/{classId} {
+      allow read: if (lsnIsTeacher() && request.auth.uid in resource.data.teacherIds)
+                  || (lsnIsAdmin() && resource.data.schoolId == lsnSchool())
+                  || (lsnIsStudent() && lsnInMyClasses(classId));
+      allow write: if false;
+
+      match /students/{uid} {
+        // HS chỉ đọc hồ sơ của chính mình (không thấy tên bạn khác qua client)
+        allow read: if lsnIsStaffOf(classId)
+                    || (lsnIsStudent() && lsnInMyClasses(classId) && request.auth.uid == uid);
+        allow write: if false;
+      }
+    }
+
+    // Hash PIN — chỉ máy chủ (Admin SDK bỏ qua rules)
+    match /lsn_private/{document=**} {
+      allow read, write: if false;
+    }
+
+    // Thống kê: chỉ máy chủ ghi; GV lớp và chính HS được đọc
+    match /lsn_studentStats/{id} {
+      allow read: if lsnSignedIn() && (
+                    lsnIsStaffOf(resource.data.classId)
+                    || (lsnIsStudent() && resource.data.uid == request.auth.uid));
+      allow write: if false;
+    }
+
+    // ===== GĐ 2: tiết học & dạy trực tiếp =====
+    function lsnAnyRole() { return lsnIsAdmin() || lsnIsTeacher() || lsnIsStudent(); }
+    function lsnSess(sid) { return get(/databases/$(database)/documents/lsn_sessions/$(sid)).data; }
+
+    // Nội dung tiết: GV/quản trị đọc mọi tiết (kể cả nháp); HS chỉ đọc tiết đã duyệt.
+    // Đáp án + ghi chú (teacher/*) chỉ GV/quản trị. Ghi tiết chỉ qua API (GĐ 6).
+    function lsnIsStaff() { return lsnIsTeacher() || lsnIsAdmin(); }
+    match /lsn_lessons/{lessonId} {
+      allow read: if lsnIsStaff() || (lsnIsStudent() && resource.data.status == 'approved');
+      allow write: if false;
+      match /slides/{slideId} {
+        allow read: if lsnIsStaff()
+                    || (lsnIsStudent() && get(/databases/$(database)/documents/lsn_lessons/$(lessonId)).data.status == 'approved');
+        allow write: if false;
+      }
+      match /teacher/{slideId} {
+        allow read: if lsnIsTeacher() || lsnIsAdmin();
+        allow write: if false;
+      }
+    }
+
+    match /lsn_sessions/{sid} {
+      allow read: if lsnIsStaffOf(resource.data.classId)
+                  || (lsnIsStudent() && lsnInMyClasses(resource.data.classId));
+      // GV điều khiển: chỉ được sửa "state" khi tiết đang dạy. Tạo/kết thúc qua API.
+      allow update: if lsnIsStaffOf(resource.data.classId)
+                    && resource.data.status == 'live'
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['state', 'updatedAt']);
+      allow create, delete: if false;
+
+      match /participants/{uid} {
+        allow read: if lsnIsStaffOf(lsnSess(sid).classId)
+                    || (lsnIsStudent() && request.auth.uid == uid);
+        allow create: if lsnIsStudent() && request.auth.uid == uid
+                      && lsnInMyClasses(lsnSess(sid).classId) && lsnSess(sid).status == 'live'
+                      && request.resource.data.keys().hasOnly(['joinedAt', 'lastSeenAt', 'visible', 'leftCount', 'raisedHandAt'])
+                      && request.resource.data.get('leftCount', 0) == 0;
+        // HS sửa nhịp/rời trang/giơ tay của mình (không được sửa điểm); GV chỉ được hạ tay.
+        // Số lần rời trang chỉ được TĂNG (HS không tự xoá được).
+        allow update: if (lsnIsStudent() && request.auth.uid == uid
+                          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastSeenAt', 'visible', 'leftCount', 'raisedHandAt'])
+                          && request.resource.data.get('leftCount', 0) >= resource.data.get('leftCount', 0))
+                      || (lsnIsStaffOf(lsnSess(sid).classId)
+                          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['raisedHandAt']));
+        allow delete: if false;
+      }
+
+      // Câu trả lời: chỉ máy chủ ghi (chấm điểm); GV đọc cả lớp; HS đọc của mình.
+      // Tiết có cờ hideUntilReveal (trang KHTN): HS chỉ đọc được khi tiết đã kết thúc — lúc đang dạy
+      // HS xem phiếu "mine" (đúng/sai chỉ có sau khi GV công bố). Tiết không có cờ (trang Toán cũ): như cũ.
+      match /responses/{rid} {
+        allow read: if lsnIsStaffOf(lsnSess(sid).classId)
+                    || (lsnIsStudent() && resource.data.uid == request.auth.uid
+                        && (lsnSess(sid).get('hideUntilReveal', false) != true || lsnSess(sid).status == 'ended'));
+        allow write: if false;
+      }
+
+      // Phiếu của em: máy chủ ghi (câu đã gửi + kết quả câu đã công bố); HS đọc của mình, GV đọc cả lớp
+      match /mine/{uid} {
+        allow read: if lsnIsStaffOf(lsnSess(sid).classId)
+                    || (lsnIsStudent() && request.auth.uid == uid);
+        allow write: if false;
+      }
+      // qstats (bộ đếm xếp hạng): không có quy tắc → chỉ máy chủ đọc/ghi
+    }
+
+    // ===== GĐ 4: tin nhắn & thông báo đẩy =====
+    function lsnMsg(mid) { return get(/databases/$(database)/documents/lsn_messages/$(mid)).data; }
+
+    // Tin: chỉ máy chủ tạo (kiểm giới hạn + giờ yên lặng). Đọc: HS được nhận, quản trị cùng trường, GV của lớp
+    match /lsn_messages/{mid} {
+      allow read: if (lsnIsStudent() && request.auth.uid in resource.data.toUids)
+                  || (lsnIsAdmin() && resource.data.schoolId == lsnSchool())
+                  || lsnIsStaffOf(resource.data.classId);
+      allow write: if false;
+
+      // Biên nhận của từng em: HS chỉ sửa của mình, chỉ các trường trạng thái / trả lời nhanh
+      match /receipts/{uid} {
+        allow read: if (lsnIsStudent() && request.auth.uid == uid)
+                    || (lsnIsAdmin() && lsnMsg(mid).schoolId == lsnSchool())
+                    || lsnIsStaffOf(lsnMsg(mid).classId);
+        allow update: if lsnIsStudent() && request.auth.uid == uid
+                      && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'deliveredAt', 'readAt', 'ackAt', 'reply'])
+                      && request.resource.data.status in ['sent', 'delivered', 'read', 'acked']
+                      && (request.resource.data.reply == null || request.resource.data.reply in ['understood', 'need_help']);
+        allow create, delete: if false;
+      }
+    }
+
+    // Mã thiết bị nhận thông báo đẩy: mỗi người tự quản lý của mình
+    match /lsn_fcmTokens/{uid}/tokens/{tid} {
+      allow read, delete: if lsnSignedIn() && request.auth.uid == uid;
+      allow create, update: if lsnSignedIn() && request.auth.uid == uid
+                            && request.resource.data.keys().hasOnly(['token', 'ua', 'updatedAt'])
+                            && request.resource.data.token is string && request.resource.data.token.size() <= 4096;
+    }
+
+    // ===== GĐ 5: tự học — mọi thao tác ghi đi qua API (máy chủ chấm điểm, chặn gian lận thời gian) =====
+    function lsnHw(aid) { return get(/databases/$(database)/documents/lsn_assignments/$(aid)).data; }
+
+    // Ngân hàng thuật ngữ: GV/quản trị đọc tất cả; HS chỉ đọc thuật ngữ đã duyệt
+    match /lsn_terms/{tid} {
+      allow read: if lsnIsStaff() || (lsnIsStudent() && resource.data.status == 'approved');
+      allow write: if false;
+    }
+
+    // Bài tập về nhà: GV/quản trị của lớp, HS được giao. Không chứa đáp án.
+    match /lsn_assignments/{aid} {
+      allow read: if lsnIsStaffOf(resource.data.classId)
+                  || (lsnIsStudent() && request.auth.uid in resource.data.toUids);
+      allow write: if false;
+
+      match /submissions/{uid} {
+        allow read: if (lsnIsStudent() && request.auth.uid == uid)
+                    || lsnIsStaffOf(lsnHw(aid).classId);
+        allow write: if false;
+      }
+    }
+
+    // Thời gian học theo ngày
+    match /lsn_studyDaily/{id} {
+      allow read: if (lsnIsStudent() && resource.data.uid == request.auth.uid)
+                  || lsnIsStaffOf(resource.data.classId);
+      allow write: if false;
+    }
+
+    // Thẻ từ vựng (lịch ôn) — id = uid, nên HS đọc được cả khi chưa có tài liệu
+    match /lsn_cards/{uid} {
+      allow read: if (lsnIsStudent() && request.auth.uid == uid)
+                  || (resource != null && lsnIsStaffOf(resource.data.classId));
+      allow write: if false;
+    }
+
+    // ===== GĐ 6b: lượt dùng trợ lý AI — chỉ máy chủ =====
+    match /lsn_aiUsage/{id} {
+      allow read, write: if false;
+    }
+
+    // GĐ 3 mới — sự kiện học tập (XP, lên cấp): chỉ máy chủ ghi; HS đọc của mình, GV lớp đọc cả lớp
+    match /lsn_events/{eid} {
+      allow read: if (lsnIsStudent() && resource.data.uid == request.auth.uid)
+                  || lsnIsStaffOf(resource.data.classId);
+      allow write: if false;
+    }
+
+    // GĐ 4 — học liệu (link): GV/quản trị đọc tất cả; HS chỉ đọc học liệu đã duyệt. Ghi qua API.
+    match /lsn_resources/{rid} {
+      allow read: if lsnIsStaff() || (lsnIsStudent() && resource.data.status == 'approved');
+      allow write: if false;
+    }
+
+    // GĐ 5 — trò chơi: mọi thao tác ghi qua API (máy chủ chấm, tính giờ).
+    //   Trạng thái trận (không có đáp án): GV lớp + HS của lớp đọc
+    //   Bảng điểm: chỉ GV lớp (tivi + laptop) — HS nhận hạng của mình qua API
+    //   Người chơi: chính em + GV lớp · Đáp án (private): không client nào đọc
+    match /lsn_games/{gid} {
+      allow read: if lsnIsStaffOf(resource.data.classId) || (lsnIsStudent() && lsnInMyClasses(resource.data.classId));
+      allow write: if false;
+      match /live/{doc} {
+        allow read: if lsnIsStaffOf(get(/databases/$(database)/documents/lsn_games/$(gid)).data.classId);
+        allow write: if false;
+      }
+      match /players/{uid} {
+        allow read: if (lsnIsStudent() && request.auth.uid == uid)
+                    || lsnIsStaffOf(get(/databases/$(database)/documents/lsn_games/$(gid)).data.classId);
+        allow write: if false;
+      }
+      match /private/{doc} {
+        allow read, write: if false;
+      }
+    }
+
+    // Điểm thi đua tuần của lớp: chỉ GV lớp đọc (HS xem bảng qua API, không thấy điểm từng bạn)
+    match /lsn_weekly/{wid} {
+      allow read: if resource != null && lsnIsStaffOf(resource.data.classId);
+      allow write: if false;
+    }
+
+    // Ngân hàng câu hỏi: có đáp án → chỉ GV/quản trị đọc (HS nhận câu qua bài tập về nhà). Ghi qua API.
+    match /lsn_questions/{qid} {
+      allow read: if lsnIsStaff();
+      allow write: if false;
+    }
+
+    // Dự án STEM: GV lớp + HS của lớp đọc dự án; nhật kí tổ: GV lớp đọc mọi tổ, HS chỉ đọc tổ của mình. Ghi qua API.
+    function lsnProject(pid) { return get(/databases/$(database)/documents/lsn_projects/$(pid)).data; }
+    match /lsn_projects/{pid} {
+      allow read: if lsnIsStaffOf(resource.data.classId) || (lsnIsStudent() && lsnInMyClasses(resource.data.classId));
+      allow write: if false;
+      match /teams/{teamNo} {
+        allow read: if lsnIsStaffOf(lsnProject(pid).classId)
+                    || (lsnIsStudent() && lsnInMyClasses(lsnProject(pid).classId)
+                        && string(get(/databases/$(database)/documents/lsn_classes/$(lsnProject(pid).classId)/students/$(request.auth.uid)).data.team) == teamNo);
+        allow write: if false;
+      }
+    }
+
+    // Cộng đồng học tập: GV lớp đọc tất cả; HS của lớp đọc bài/trả lời ĐÃ DUYỆT + của chính mình. Ghi qua API (kiểm duyệt).
+    function lsnPost(pid) { return get(/databases/$(database)/documents/lsn_posts/$(pid)).data; }
+    match /lsn_posts/{pid} {
+      allow read: if lsnIsStaffOf(resource.data.classId)
+                  || (lsnIsStudent() && lsnInMyClasses(resource.data.classId)
+                      && (resource.data.status == 'approved' || resource.data.authorUid == request.auth.uid));
+      allow write: if false;
+      match /replies/{rid} {
+        allow read: if lsnIsStaffOf(lsnPost(pid).classId)
+                    || (lsnIsStudent() && lsnInMyClasses(lsnPost(pid).classId)
+                        && (resource.data.status == 'approved' || resource.data.authorUid == request.auth.uid));
+        allow write: if false;
+      }
+    }
+    // <<< LOP SONG NGU
+
+    // (Chỉ dùng khi test) — rules thật đã có quy tắc chặn mặc định của chúng.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

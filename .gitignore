@@ -1,0 +1,27 @@
+# Bí mật — không bao giờ đưa lên GitHub
+.vercel
+.env*
+!.env.example
+
+# Thư viện, bản build, bộ nhớ đệm
+node_modules/
+.next/
+out/
+build/
+coverage/
+*.tsbuildinfo
+
+# Nhật kí
+npm-debug.log*
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+
+# Rules của CẢ project Firebase dùng chung (có rules của app khác) — chỉ giữ trên máy
+rules-hien-tai.txt
+rules-moi-day-du.txt
+
+# Công cụ cá nhân
+.claude/
+.DS_Store
+Thumbs.db

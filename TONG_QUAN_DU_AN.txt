@@ -1,0 +1,287 @@
+LỚP SONG NGỮ — WEB DẠY VÀ HỌC TOÁN SONG NGỮ VIỆT – ANH CHO THCS (LỚP 6–9)
+Tổng quan: vai trò, tính năng, công nghệ
+Địa chỉ chạy thật: (dự án Vercel riêng của bản Toán — https://lop-song-ngu.vercel.app là bản KHTN)
+Cập nhật: 30/10/2026
+
+======================================================================
+I. GIỚI THIỆU NGẮN
+======================================================================
+Lớp Song Ngữ giúp giáo viên dạy môn Toán THCS lớp 6–9 (tiếng Anh:
+Mathematics) bằng tiếng Việt và tiếng Anh trên lớp (tivi + laptop +
+điện thoại học sinh), theo dõi từng học sinh theo thời gian thực, nhắn
+tin cảnh báo, giao bài tự học ở nhà, tổ chức trò chơi, dự án STEM và soạn
+bài theo Công văn 5512 với khung CLIL 4C, có AI hỗ trợ giáo viên và
+học sinh.
+
+Nội dung bài học luôn song ngữ: tiếng Anh chữ thẳng màu nhấn, tiếng Việt
+chữ nghiêng màu xám. Giao diện hệ thống bằng tiếng Việt.
+
+Ghi chú: Firebase DÙNG CHUNG với trang KHTN. Trang Toán chỉ hiện dữ liệu
+Toán (kể cả dữ liệu Toán cũ) và ẩn dữ liệu KHTN khi hiển thị, không xoá
+hay sửa dữ liệu của KHTN.
+
+======================================================================
+II. VAI TRÒ NGƯỜI DÙNG
+======================================================================
+1. Quản trị trường
+   - Đăng nhập: Google hoặc email.
+   - Duyệt tài khoản giáo viên; cấp quyền quản trị; thu hồi quyền.
+   - Duyệt bài giảng giáo viên gửi lên (Duyệt / Trả lại kèm góp ý),
+     chuyển bài đã duyệt về nháp khi cần sửa.
+   - Duyệt thuật ngữ, câu hỏi trong ngân hàng câu hỏi, học liệu số.
+   - Xem toàn bộ lớp và tin nhắn của trường.
+   - Có đầy đủ quyền của giáo viên.
+
+2. Giáo viên
+   - Đăng nhập: Google hoặc email; tài khoản mới chờ quản trị duyệt.
+   - Tạo lớp, thêm học sinh, chia tổ, in phiếu PIN, đặt lại PIN.
+   - Dạy trực tiếp, tổ chức trò chơi, theo dõi học sinh, nhắn tin,
+     giao bài tập, tạo dự án STEM, duyệt bài trong Cộng đồng lớp.
+   - Soạn bài (thủ công hoặc bằng AI), gửi duyệt, xuất Word.
+   - Bật / tắt Trợ lý AI cho từng lớp và xem nhật kí hỏi – đáp.
+   - Chỉ thấy và quản lý các lớp mình dạy.
+
+3. Học sinh
+   - Đăng nhập: mã lớp + chọn tên + PIN 6 số (không email, không số
+     điện thoại). Sai PIN 5 lần bị khoá 15 phút.
+   - Học trên lớp bằng điện thoại, tự học ở nhà, chơi trò chơi, làm dự
+     án STEM theo tổ, hỏi – đáp trong Cộng đồng lớp, nhận tin của thầy cô.
+   - Chỉ xem được dữ liệu của chính mình và bài học đã được duyệt.
+
+4. Màn hình tivi (không phải tài khoản)
+   - Cửa sổ trình chiếu mở từ laptop giáo viên, đồng bộ theo thời gian thực.
+
+======================================================================
+III. TÍNH NĂNG
+======================================================================
+1. Quản lý lớp
+   - Thêm học sinh bằng cách gõ hoặc dán danh sách từ Excel.
+   - Chia tổ: kéo thả hoặc chia ngẫu nhiên.
+   - In phiếu đăng nhập (họ tên, mã lớp, PIN, mã QR), 12 phiếu/trang A4.
+   - PIN chỉ lưu dạng mã băm (bcrypt); quên PIN thì giáo viên đặt lại.
+   - Cài đặt lớp: ngưỡng trạng thái, số tin "Chú ý" tối đa, giờ yên lặng,
+     bật / tắt Trợ lý AI.
+   - Bảng "Mức tiếng Anh" E1 / E2 / E3: app gợi ý mức kèm lý do, giáo
+     viên xác nhận từng em hoặc cả lớp; điện thoại học sinh hiển thị
+     theo mức đã xác nhận (app không tự đổi mức).
+
+2. Dạy trực tiếp ba màn hình (tivi – laptop – điện thoại)
+   - Một nút "Tiếp" (phím →, Space, PageDown, bút trình chiếu): hiện bước
+     → mở câu hỏi → khoá → công bố đáp án → sang trang. Phím ← để lùi.
+   - Phím L: đổi Anh / Song ngữ / Việt trên tivi. Phím N: gọi tên ngẫu
+     nhiên (ưu tiên em chưa được gọi).
+   - Loại câu hỏi: trắc nghiệm, đúng/sai, nhập số, gõ chữ, kéo nhãn,
+     luyện nói (chấm phát âm).
+   - Câu gõ chữ: máy so khớp gần đúng trước; nếu máy chấm sai thì AI xét
+     xem em có diễn đạt đúng ý theo cách khác không.
+   - Đồng hồ đếm ngược, hết giờ tự khoá; "Phones up / Phones down".
+   - Bảng từ (Word wall) trên tivi có phiên âm IPA và nút nghe.
+   - Câu gõ chữ chỉ hiện trên laptop; giáo viên bấm "Chiếu" mới lên tivi.
+   - Học sinh giơ tay qua điện thoại; giáo viên thấy hàng chờ.
+   - Đèn hiểu bài (xanh / vàng / đỏ) và Phiếu ra về 3-2-1 gửi từ điện
+     thoại học sinh.
+   - Bảng điều khiển laptop: lưới học sinh, câu trả lời, ghép cặp, hỗ trợ
+     học sinh yếu, thanh tiến trình tiết.
+   - Tính điểm: đúng = 100 + thưởng tốc độ tối đa 50; chỉ nhận lần trả
+     lời đầu tiên; luyện nói giữ điểm cao nhất.
+   - Vào muộn hoặc rớt mạng: mở lại là về đúng trang đang dạy.
+   - Kết thúc tiết: lưu kết quả, cập nhật thống kê, báo cáo tiết.
+   - Bài bù tự động: từ câu sai của tiết, tạo bài về nhà cho cả lớp (câu
+     sai từ 40%) hoặc cho từng em (câu mình sai / bỏ trống).
+
+3. Trò chơi song ngữ (tivi – laptop – điện thoại)
+   - Đấu trường Song ngữ: điểm theo đúng + nhanh, chuỗi đúng, power-up,
+     bảng xếp hạng liên tục.
+   - Rung chuông vàng: cả lớp cùng làm từng câu, sai bị loại, giáo viên
+     có quyền cứu trợ.
+   - Đua thuyền tổ: mỗi câu đúng đẩy thuyền của tổ tiến lên.
+   - Ghép bộ ba: ghép thuật ngữ tiếng Anh – nghĩa tiếng Việt – phiên âm
+     hoặc kí hiệu.
+   - Học sinh tự làm theo tốc độ riêng hoặc giáo viên điều khiển từng câu;
+     đáp án chỉ máy chủ đọc.
+
+4. Theo dõi học sinh theo thời gian thực
+   - Trạng thái từng em bằng màu + biểu tượng + chữ: Chưa vào, Đang theo
+     dõi, Đã trả lời, Chưa trả lời (câu mở quá 30 giây), Rời trang,
+     Mất kết nối (không có nhịp quá 60 giây).
+   - Trang lớp: Tổng quan · Bài tập · Bảng điểm (xuất Excel) · Hoạt động ·
+     Phân tích (tiến bộ tuần, câu sai nhiều, thuật ngữ yếu) · Thành thạo
+     (bản đồ Sao thành thạo học sinh × yêu cầu cần đạt) · Xếp hạng ·
+     Tin nhắn · Quản lý lớp.
+   - Hồ sơ học sinh: biểu đồ điểm, từng tiết, từng câu, số lần rời trang,
+     từ phát âm sai, bài tập và thời gian tự học thật, hành trình học,
+     lịch sử tin nhắn.
+   - Trang Minh chứng: số tiết song ngữ Toán, tỉ lệ tiếng Anh, số học sinh
+     tham gia, mức E1/E2/E3; in hoặc tải về.
+
+5. Nhắn tin và cảnh báo
+   - Gửi cho 1 em / nhiều em / 1 tổ / cả lớp; mẫu tin song ngữ.
+   - 4 loại: Chú ý (chuông 2 lần + rung + khung vàng toàn màn hình đến khi
+     em bấm "Em đã chú ý"), Nhắc nhở, Khen ngợi (có thể cộng điểm),
+     Thông báo (im lặng).
+   - Trạng thái: Đã gửi → Đã nhận → Đã xem → Đã xác nhận.
+   - Học sinh trả lời nhanh: "Em hiểu rồi" / "Em cần giúp".
+   - Tối đa 3 tin Chú ý/em/tiết; giờ yên lặng 21:00–6:30.
+   - Web đang mở: nhận ngay; web đã đóng hoặc tắt màn hình: thông báo đẩy.
+
+6. Học sinh tự học
+   - Trang chủ: nút Vào lớp, bài đến hạn, chuỗi ngày, điểm XP, tin nhắn.
+   - Bài tập về nhà: gợi ý 3 tầng (Từ vựng → Cách làm → Lời giải), tự chấm,
+     nhắc trước hạn 1 ngày. Xem lời giải trước khi trả lời thì câu đó
+     đúng chỉ còn 30 điểm.
+   - Thẻ từ vựng ôn lặp ngắt quãng (SM-2 rút gọn), tối đa 5 thẻ mới/ngày.
+   - Luyện phát âm: Nghe mẫu / Nghe chậm, AI chấm từng từ và đưa lời
+     khuyên song ngữ.
+   - Vở ghi bài học Toán (12 bài trọng tâm lớp 6–9): lý thuyết, từ vựng có nút nghe,
+     câu tiếng Anh, bài tập tự kiểm tra; tải về Word.
+   - Hình học động: 26 mô phỏng PhET + GeoGebra (Số và Đại số, Hình học
+     và Đo lường, Thống kê và Xác suất) theo khối, mỗi mô phỏng có 2–3
+     nhiệm vụ song ngữ; mô hình 3D Sketchfab.
+   - Trợ lý học tập AI: hỏi đáp về bài học bằng tiếng Việt / tiếng Anh.
+   - Xem lại tiết đã học; chuẩn bị bài trước tiết; kết quả và huy hiệu;
+     thi đua (top 5 + hạng của mình, thi đua theo tổ).
+   - Đếm thời gian học thật (chỉ khi trang hiển thị và có thao tác),
+     chống gian lận phía máy chủ, tối đa 4 giờ/ngày.
+
+7. Dự án STEM
+   - Giáo viên tạo dự án cho lớp (6 mẫu có sẵn hoặc tự soạn), hạn nộp,
+     từ vựng.
+   - Mỗi tổ đi qua 6 bước: Xác định vấn đề → Ý tưởng → Kế hoạch → Chế tạo
+     → Thử nghiệm – cải tiến → Trình bày; ghi chú từng bước, tối đa 6 link
+     sản phẩm, suy ngẫm Anh / Việt, Nộp / Rút lại.
+   - Chấm theo rubric 4 tiêu chí (Kiến thức Toán, Sản phẩm, Hợp tác,
+     Trình bày tiếng Anh) mức 1–4 → thang 10; mỗi em trong tổ được cộng XP.
+
+8. Cộng đồng học tập
+   - Hỏi – đáp, chia sẻ trong lớp; có khung câu tiếng Anh để hỏi / trả lời.
+   - Bài của học sinh ở "Chờ duyệt" đến khi giáo viên duyệt; giáo viên ẩn
+     hoặc xoá được; giáo viên chọn "Trả lời hay nhất" → học sinh +10 XP.
+   - An toàn: không nhắn riêng giữa học sinh, học sinh không đăng link hay
+     số điện thoại, tối đa 10 lượt đăng/em/ngày.
+
+9. Soạn bài, ngân hàng câu hỏi và học liệu
+   - Trình soạn song ngữ hai cột Anh | Việt (không dịch máy tự động).
+   - Trang chiếu xếp theo 4 hoạt động CV 5512: Mở đầu, Hình thành kiến
+     thức mới, Luyện tập, Vận dụng; mục tiêu theo khung 4C (Content,
+     Communication, Cognition, Culture).
+   - Loại trang: Nội dung, Trắc nghiệm, Đúng/Sai, Nhập số, Gõ chữ, Kéo
+     nhãn, Luyện nói, Tổng kết. Mỗi khối nội dung có số "bước hiện".
+   - Chèn câu lệnh lớp học, chèn thuật ngữ, lấy câu từ kho; ghi chú giáo
+     viên có nút nghe.
+   - Xem trước như trên tivi và trên điện thoại.
+   - Trạng thái: Nháp → Chờ duyệt → Đã duyệt; nhân bản bài; tự kiểm tra
+     chỗ còn thiếu (đề, đáp án, nhãn) trước khi gửi duyệt.
+   - Xuất kế hoạch bài dạy ra Word theo khung CV 5512.
+   - Ngân hàng câu hỏi: gắn khối, bài SGK, yêu cầu cần đạt, mức độ theo
+     TT 22, phần chấm Toán / Ngôn ngữ; có sẵn kho câu Toán 6–9; lọc,
+     thống kê theo mức; giao bài về nhà; xuất Word (đề + bảng đặc tả +
+     đáp án).
+   - Ngân hàng thuật ngữ: tiếng Anh, IPA, tiếng Việt, câu ví dụ, cách đọc
+     kí hiệu, hình minh hoạ; giáo viên đề xuất, quản trị duyệt.
+   - Học liệu số: khung chương trình KNTT với yêu cầu cần đạt song ngữ,
+     khung câu, câu lệnh lớp học, kí hiệu, học liệu dạng link (mô phỏng
+     PhET, GeoGebra, mô hình 3D). Mọi câu tiếng Anh có nút nghe / nghe chậm.
+   - Vở ghi bài học cho giáo viên: bật đáp án, xuất Word bản học sinh /
+     bản giáo viên cho một bài hoặc cả quyển.
+
+10. AI hỗ trợ
+   - Soạn bài: dán giáo án tiếng Việt (80–8.000 kí tự) → AI đề xuất 10–16
+     trang song ngữ, câu hỏi đa dạng, thuật ngữ có IPA, mục tiêu 4C.
+   - Tạo câu hỏi: từ bài SGK + yêu cầu cần đạt → 3–10 câu song ngữ vào
+     ngân hàng ở trạng thái "Nháp AI".
+   - Bài và câu do AI tạo luôn là Nháp, phải được giáo viên kiểm tra
+     (bài giảng cần quản trị duyệt) mới dùng được.
+   - Giới hạn cho giáo viên: 20 lượt/người/ngày, 100 lượt/trường/ngày
+     (soạn bài và tạo câu hỏi dùng chung); chỉ gửi nội dung bài, không gửi
+     dữ liệu học sinh.
+   - Cho học sinh: Trợ lý học tập (30 lượt/em/ngày, câu hỏi tối đa 500 kí
+     tự), chấm phát âm (80 lượt/em/ngày, ghi âm tối đa 12 giây), chấm câu
+     gõ chữ; có giới hạn chung cho cả trường.
+   - An toàn: lọc nội dung câu hỏi và câu trả lời; không gửi tên học sinh;
+     không lưu ghi âm; AI lỗi hoặc hết lượt thì giữ kết quả chấm của máy.
+
+11. Ứng dụng web cài được (PWA)
+   - Cài lên màn hình điện thoại như ứng dụng (Android: nút Cài ứng dụng;
+     iPhone: Safari → Thêm vào MH chính, iOS 16.4+).
+   - Thông báo đẩy khi tắt màn hình; trang báo mất kết nối mạng.
+
+======================================================================
+IV. CÔNG NGHỆ SỬ DỤNG
+======================================================================
+1. Giao diện (frontend)
+   - Next.js 16.4 (App Router) + React 19.3 + TypeScript 5
+   - Tailwind CSS 4, shadcn/ui + Base UI, biểu tượng lucide-react
+   - Recharts 3 (biểu đồ), Motion (hiệu ứng chuyển động), Sonner (thông
+     báo nhỏ trên màn hình), canvas-confetti (pháo giấy khi thắng)
+   - Phông chữ: Bricolage Grotesque, Be Vietnam Pro, Lexend (Google Fonts)
+
+2. Máy chủ (backend)
+   - API route của Next.js chạy trên Vercel (khu vực Singapore)
+   - firebase-admin 13: chấm điểm, kiểm PIN, cấp quyền, gửi tin, lưu bài
+   - Vercel Cron: việc chạy hằng ngày lúc 18:00 giờ VN (nhắc bài trước
+     hạn, ghi nhận em chưa nộp bài quá hạn)
+   - Không dùng Cloud Functions → chạy được trên gói Firebase miễn phí
+
+3. Dữ liệu và xác thực (Firebase, SDK 13)
+   - Firebase Authentication: Google/email cho giáo viên; custom token
+     cho học sinh (mã lớp + PIN); vai trò lưu trong custom claims
+   - Cloud Firestore: lưu dữ liệu và đồng bộ thời gian thực (onSnapshot)
+   - Firestore Security Rules: chặn ghi trực tiếp từ trình duyệt, học sinh
+     chỉ đọc dữ liệu của mình và bài đã duyệt; đáp án nằm riêng
+   - Firebase Cloud Messaging (FCM) + service worker: thông báo đẩy
+   - Dữ liệu có tiền tố "lsn_" vì project Firebase dùng chung với app khác
+
+4. Trí tuệ nhân tạo và giọng nói
+   - OpenAI Responses API, model gpt-5.4-mini, đầu ra JSON theo khuôn
+     (structured output): soạn bài, tạo câu hỏi, Trợ lý học tập, chấm
+     câu gõ chữ, lời khuyên phát âm
+   - OpenAI nhận dạng giọng nói (gpt-4o-mini-transcribe, dự phòng
+     whisper-1) để chấm phát âm
+   - OpenAI Moderation (omni-moderation-latest) để lọc nội dung
+   - Web Speech API của trình duyệt: đọc mẫu (speechSynthesis) và chấm
+     phát âm dự phòng trên máy khi không dùng AI
+   - Hình học động: nhúng mô phỏng PhET (phet.colorado.edu), GeoGebra và mô hình 3D
+     Sketchfab (sketchfab.com)
+
+5. Thư viện khác
+   - bcryptjs (băm PIN), qrcode (mã QR trên phiếu)
+   - docx 9 (xuất Word giáo án, đề, vở ghi), write-excel-file (xuất Excel
+     bảng điểm)
+
+6. Kiểm thử và công cụ
+   - Vitest 5: khoảng 440 bài test trong 30 file (chấm điểm, điều khiển
+     tiết, trò chơi, nhắn tin, tự học, soạn bài, ngân hàng câu hỏi, AI,
+     vở ghi, dự án STEM, xuất Word)
+   - Firebase Emulator + @firebase/rules-unit-testing: test security
+     rules và luồng dữ liệu thật (cần Java)
+   - ESLint 9, tsx (chạy script), Vercel CLI, Node.js 24
+
+7. Triển khai
+   - Vercel (bản chính thức: lop-song-ngu.vercel.app)
+   - Biến bí mật chỉ nằm trong .env.local và biến môi trường Vercel
+
+======================================================================
+V. RIÊNG TƯ VÀ AN TOÀN
+======================================================================
+- Học sinh dưới 18 tuổi: chỉ lưu họ tên, lớp, tổ. Không email, không số
+  điện thoại, không lưu ghi âm.
+- PIN lưu dạng mã băm; sai 5 lần khoá 15 phút.
+- Mọi thao tác quan trọng (chấm điểm, lưu bài, duyệt, nhắn tin) chạy trên
+  máy chủ; đáp án nằm riêng, học sinh không đọc được.
+- Header bảo mật: chặn nhúng trang, micro chỉ dùng cho luyện nói, chặn
+  camera và định vị.
+- AI: không gửi tên hay thông tin cá nhân học sinh; lọc nội dung hai
+  chiều; giáo viên tắt được Trợ lý AI theo lớp và xem nhật kí; có giới
+  hạn lượt dùng mỗi ngày.
+- Cộng đồng lớp: bài của học sinh phải được duyệt; không nhắn riêng giữa
+  học sinh.
+
+======================================================================
+VI. TÀI LIỆU KÈM THEO
+======================================================================
+- README.md: cài đặt, biến môi trường, lệnh, triển khai
+- HUONG_DAN_GIAO_VIEN.md, HUONG_DAN_HOC_SINH.md: hướng dẫn sử dụng
+- docs/TINH-NANG.md, docs/DU-LIEU.md, docs/GIAO-DIEN.md: đặc tả chi tiết
+- docs/QUY-TRINH-TIET-SONG-NGU.md: quy trình một tiết song ngữ
+- docs/KE-HOACH-TRANG-GIAO-VIEN.md: kế hoạch trang giáo viên, trò chơi
+- Lưu đồ thuật toán: https://claude.ai/artifact/YZqqtaNgiGnZdfUSt4ga1d

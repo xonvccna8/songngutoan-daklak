@@ -1,0 +1,972 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lớp Song Ngữ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Bố cục: tivi 16:9 là trung tâm; điện thoại học sinh bên phải; bảng điều khiển giáo viên bên dưới.
+   Màn tivi và điện thoại dùng chung một "bảng xanh" cố định để học sinh thấy hai màn giống nhau. */
+:root{
+  --bg:#eef2f1; --panel:#ffffff; --ink:#16211f; --muted:#5a6a66; --line:#d3dcd9;
+  --accent:#0e7a6b; --accent-ink:#ffffff; --soft:#e1efec;
+  --good:#1d8a4b; --bad:#c23b2e; --frame:#1b2321;
+  --board:#14302d; --board-2:#1c3f3b; --chalk:#f3f0e4; --chalk-dim:#a7c2bc; --hi:#f0c04a; --hi-ink:#2a2100;
+  --grid:rgba(255,255,255,.055); --rule:rgba(255,255,255,.13);
+  --ui:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --show:"Lexend","Be Vietnam Pro",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1514; --panel:#162120; --ink:#e4edeb; --muted:#91a49f; --line:#283735;
+  --accent:#3cb6a3; --accent-ink:#04201b; --soft:#1d3330; --frame:#000000; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1514; --panel:#162120; --ink:#e4edeb; --muted:#91a49f; --line:#283735;
+  --accent:#3cb6a3; --accent-ink:#04201b; --soft:#1d3330; --frame:#000000; color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.5}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- Khung ứng dụng (chế độ demo) ---------- */
+.app-head{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;
+  padding:12px 20px;background:var(--panel);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:-.01em}
+.brand small{display:block;font-weight:400;font-size:12.5px;color:var(--muted);letter-spacing:0}
+.head-tools{display:flex;flex-wrap:wrap;gap:8px}
+.wrap{max-width:1520px;margin:0 auto;padding:18px 20px 40px;display:grid;
+  grid-template-columns:minmax(0,1fr) 316px;gap:22px;align-items:start}
+.col-main{min-width:0;display:flex;flex-direction:column;gap:18px}
+.col-side{display:flex;flex-direction:column;gap:10px;align-items:center;position:sticky;top:16px}
+.cap{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+@media (max-width:1020px){.wrap{grid-template-columns:minmax(0,1fr)}.col-side{position:static}}
+
+.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:8px 13px;
+  display:inline-flex;align-items:center;gap:7px;font-weight:500;font-size:14px}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.big{padding:12px 22px;font-size:16px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn svg{width:17px;height:17px;flex:none}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:var(--panel);color:var(--ink);padding:8px 12px;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+
+/* ---------- TIVI ---------- */
+.tv{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;
+  background-color:var(--board);color:var(--chalk);font-family:var(--show);container-type:inline-size;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:2.5% 4.444%;box-shadow:0 14px 40px -18px rgba(0,0,0,.45)}
+.tv-in{position:absolute;inset:0;display:grid;grid-template-rows:auto minmax(0,1fr);padding:2cqw 2.6cqw 2.2cqw;gap:1.3cqw}
+.tv-top{display:flex;align-items:center;justify-content:space-between;gap:2cqw;font-size:1.25cqw;color:var(--chalk-dim);font-family:var(--ui)}
+.tv-top .l,.tv-top .r{display:flex;align-items:center;gap:1.4cqw}
+.pill{border:1px solid var(--rule);border-radius:99em;padding:.35cqw 1.1cqw;display:inline-flex;align-items:center;gap:.6cqw;white-space:nowrap}
+.pill b{color:var(--chalk);font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.pill.timer b{font-size:1.5cqw}
+.pill.timer.low{border-color:var(--hi);color:var(--hi)}
+.pill.timer.low b{color:var(--hi)}
+.pill.phones{background:var(--hi);color:var(--hi-ink);border-color:var(--hi);font-weight:600}
+.pill.phones.down{background:transparent;color:var(--chalk);border-color:var(--chalk-dim)}
+.pill svg{width:1.4cqw;height:1.4cqw}
+.tv-main{display:grid;grid-template-columns:minmax(0,1fr) 20cqw;gap:2.2cqw;min-height:0}
+.tv-stage{min-height:0;display:flex;flex-direction:column;gap:1.1cqw;overflow:hidden}
+.ww{border-left:1px solid var(--rule);padding-left:1.6cqw;display:flex;flex-direction:column;gap:.75cqw;min-height:0;overflow:hidden}
+.ww h4{margin:0 0 .3cqw;font-family:var(--ui);font-size:1.05cqw;letter-spacing:.12em;text-transform:uppercase;color:var(--chalk-dim);font-weight:600}
+.term{background:none;border:0;padding:.45cqw .6cqw;margin:0 -.6cqw;border-radius:.6cqw;text-align:left;color:inherit;font-family:var(--show)}
+.term:hover{background:rgba(255,255,255,.07)}
+.term .t-en{display:block;font-size:1.45cqw;font-weight:500;color:var(--chalk)}
+.term .t-ipa{display:block;font-family:var(--ui);font-size:1.02cqw;color:var(--hi)}
+.term .t-vi{display:block;font-family:var(--ui);font-size:1.05cqw;color:var(--chalk-dim);font-style:italic}
+.term.new .t-en::after{content:" mới";font-family:var(--ui);font-size:.75cqw;color:var(--hi-ink);background:var(--hi);border-radius:.4cqw;padding:.05cqw .4cqw;margin-left:.5cqw;vertical-align:middle}
+
+.sl-title .en{display:block;font-size:2.9cqw;font-weight:600;line-height:1.15;text-wrap:balance}
+.sl-title .vi{font-size:1.6cqw!important}
+.tv .sl-body{font-size:2.05cqw;line-height:1.35;display:flex;flex-direction:column;gap:1cqw;min-height:0}
+.tv span.vi,.ph span.vi{display:block;font-family:var(--ui);font-style:italic;color:var(--chalk-dim);font-weight:400;font-size:.74em;line-height:1.35}
+.tv span.en,.ph span.en{display:block}
+.tv.L-en .vi,.ph.L-en .vi{display:none!important}
+.tv.L-vi .en:not(.keep){display:none!important}
+.tv.L-vi span.vi{font-style:normal;color:var(--chalk);font-size:1em}
+.tv.L-vi .sl-title .vi{font-size:2.9cqw!important;font-weight:600}
+svg .vi{fill:var(--chalk-dim);font-style:italic;font-family:var(--ui)}
+svg text{font-family:var(--show)}
+
+.it{opacity:0;transform:translateY(.5em);transition:opacity .45s ease,transform .45s ease}
+.it.on{opacity:1;transform:none}
+svg .it{transform:none}
+.draw{stroke-dasharray:1400;stroke-dashoffset:1400;transition:stroke-dashoffset 1.3s ease,opacity .3s}
+.draw.on{stroke-dashoffset:0}
+@media (prefers-reduced-motion:reduce){.it,.draw{transition:none}}
+
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2cqw;align-items:center;min-height:0}
+.fig{width:100%;max-height:100%;display:block}
+.tv .fig{max-height:21cqw}
+.box{border:1px solid var(--rule);border-radius:1cqw;padding:1cqw 1.4cqw;background:rgba(255,255,255,.04)}
+.box.hl{border-color:var(--hi);background:rgba(240,192,74,.08)}
+.box .tag{font-family:var(--ui);font-size:.55em;letter-spacing:.12em;text-transform:uppercase;color:var(--hi);font-weight:600;display:block;margin-bottom:.2em}
+.hero .en{font-size:5.4cqw;font-weight:700;line-height:1.05;letter-spacing:-.02em}
+.hero .vi{font-size:2.4cqw!important}
+.goals{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.9cqw}
+.goals li{display:grid;grid-template-columns:2.2cqw minmax(0,1fr);gap:1cqw;align-items:start}
+.goals li::before{content:"";width:1.3cqw;height:1.3cqw;border:.22cqw solid var(--hi);border-radius:.3cqw;margin-top:.45cqw}
+.steps{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:1cqw;counter-reset:s}
+.steps li{display:grid;grid-template-columns:2.6cqw minmax(0,1fr);gap:1cqw;counter-increment:s}
+.steps li::before{content:counter(s);width:2.3cqw;height:2.3cqw;border-radius:50%;background:var(--hi);color:var(--hi-ink);
+  display:grid;place-items:center;font-weight:600;font-size:1.3cqw;margin-top:.2cqw}
+.say .en{font-size:2.9cqw;font-weight:600;line-height:1.25;color:var(--chalk)}
+.ipa{font-family:var(--ui);color:var(--hi);font-size:.7em}
+.join{display:flex;align-items:center;gap:2cqw}
+.join .code{font-size:4.4cqw;font-weight:700;letter-spacing:.08em;color:var(--hi);font-variant-numeric:tabular-nums}
+.join small{display:block;font-family:var(--ui);font-size:1.25cqw;color:var(--chalk-dim)}
+.proof{font-size:.82em;line-height:1.45}
+
+.tv-dyn:empty{display:none}
+.tv-dyn{font-size:1.75cqw}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9cqw}
+.opt{position:relative;border:1px solid var(--rule);border-radius:.9cqw;padding:.8cqw 1.1cqw .8cqw 4.2cqw;overflow:hidden;min-height:4.6cqw;display:flex;flex-direction:column;justify-content:center}
+.opt .let{position:absolute;left:1cqw;top:50%;transform:translateY(-50%);width:2.4cqw;height:2.4cqw;border-radius:.5cqw;background:rgba(255,255,255,.1);display:grid;place-items:center;font-weight:600;font-size:1.4cqw}
+.opt .bar{position:absolute;inset:0 auto 0 0;background:rgba(255,255,255,.07);transition:width .6s ease;z-index:0}
+.opt>*:not(.bar):not(.let):not(.cnt){position:relative;z-index:1}
+.opt .let,.opt .cnt{z-index:1}
+.opt .cnt{position:absolute;right:1.1cqw;top:50%;transform:translateY(-50%);font-family:var(--ui);font-size:1.4cqw;font-weight:600;font-variant-numeric:tabular-nums}
+.opt.ok{border-color:var(--hi)}
+.opt.ok .let{background:var(--hi);color:var(--hi-ink)}
+.opt.ok .bar{background:rgba(240,192,74,.22)}
+.opt.dim{opacity:.55}
+.status{font-family:var(--ui);font-size:1.3cqw;color:var(--chalk-dim);display:flex;align-items:center;gap:1cqw;margin-top:.6cqw}
+.meter{flex:1;height:.6cqw;border-radius:99em;background:rgba(255,255,255,.1);overflow:hidden;max-width:24cqw}
+.meter i{display:block;height:100%;background:var(--hi);transition:width .4s}
+.wall{display:flex;flex-wrap:wrap;gap:.8cqw}
+.card{border:1px solid var(--rule);border-radius:.8cqw;padding:.6cqw 1cqw;background:rgba(255,255,255,.05);font-size:1.45cqw}
+.card small{display:block;font-family:var(--ui);color:var(--chalk-dim);font-size:1cqw}
+.card.ok{border-color:var(--hi)}
+.rank{display:flex;flex-direction:column;gap:.55cqw}
+.rk{display:grid;grid-template-columns:2.6cqw minmax(0,13cqw) minmax(0,1fr) 5cqw;gap:1cqw;align-items:center;font-size:1.45cqw}
+.rk .n{font-family:var(--ui);color:var(--chalk-dim);font-variant-numeric:tabular-nums}
+.rk .b{height:1.1cqw;border-radius:99em;background:rgba(255,255,255,.08);overflow:hidden}
+.rk .b i{display:block;height:100%;background:var(--hi)}
+.rk .v{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.big-ans{font-size:2.6cqw;font-weight:700;color:var(--hi)}
+
+.callout{position:absolute;inset:0;display:grid;place-items:center;background:rgba(9,24,22,.86);z-index:5;text-align:center}
+.callout .who{font-size:7cqw;font-weight:700;color:var(--hi);line-height:1}
+.callout small{display:block;font-family:var(--ui);font-size:1.6cqw;color:var(--chalk-dim);margin-bottom:1.2cqw;letter-spacing:.1em;text-transform:uppercase}
+
+/* ---------- ĐIỆN THOẠI ---------- */
+.phone{width:300px;max-width:100%;aspect-ratio:9/19.2;border-radius:40px;border:11px solid var(--frame);
+  background:var(--board);overflow:hidden;position:relative;box-shadow:0 18px 40px -20px rgba(0,0,0,.5)}
+.phone::before{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:80px;height:18px;border-radius:12px;background:var(--frame);z-index:3}
+.ph{position:absolute;inset:0;display:flex;flex-direction:column;color:var(--chalk);font-family:var(--show);font-size:15px;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:18px 18px}
+.ph-head{padding:32px 14px 10px;display:flex;align-items:center;justify-content:space-between;gap:8px;font-family:var(--ui);font-size:12px;color:var(--chalk-dim);border-bottom:1px solid var(--rule)}
+.ph-head b{color:var(--chalk);font-weight:600}
+.ph-lang{display:inline-flex;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.ph-lang button{border:0;background:transparent;color:var(--chalk-dim);padding:4px 8px;font-size:11.5px}
+.ph-lang button[aria-pressed="true"]{background:var(--hi);color:var(--hi-ink);font-weight:600}
+.ph-main{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.ph-foot{padding:9px 14px 14px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;font-family:var(--ui);font-size:12.5px;color:var(--chalk-dim)}
+.ph-foot b{color:var(--hi);font-size:15px;font-variant-numeric:tabular-nums}
+.ph .sl-title .en{font-size:19px}
+.ph .sl-title .vi{font-size:13px!important}
+.ph .sl-body{font-size:15px;line-height:1.4;display:flex;flex-direction:column;gap:10px}
+.ph .hero .en{font-size:28px}
+.ph .hero .vi{font-size:15px!important}
+.ph .say .en{font-size:18px}
+.ph .join .code{font-size:24px}
+.ph .join small{font-size:11px}
+.ph .cols{grid-template-columns:minmax(0,1fr);gap:10px}
+.ph .goals li{grid-template-columns:16px minmax(0,1fr);gap:8px}
+.ph .goals li::before{width:12px;height:12px;border-width:2px;border-radius:3px;margin-top:4px}
+.ph .steps li{grid-template-columns:24px minmax(0,1fr);gap:8px}
+.ph .steps li::before{width:22px;height:22px;font-size:12px}
+.ph .box{border-radius:10px;padding:10px 12px}
+.ph .it{transition:none}
+.ph .draw{transition:none}
+.notice{font-family:var(--ui);font-size:12.5px;color:var(--chalk-dim);border:1px dashed var(--rule);border-radius:10px;padding:9px 11px;display:flex;gap:9px;align-items:flex-start}
+.notice svg{width:18px;height:18px;flex:none;margin-top:1px}
+.notice.hot{border:1px solid var(--hi);color:var(--chalk)}
+.p-opt{display:flex;gap:10px;align-items:center;text-align:left;width:100%;border:1px solid var(--rule);background:rgba(255,255,255,.05);color:var(--chalk);border-radius:12px;padding:10px 12px;font-family:var(--show);font-size:14.5px}
+.p-opt .let{width:28px;height:28px;border-radius:7px;background:rgba(255,255,255,.12);display:grid;place-items:center;font-weight:600;flex:none}
+.p-opt:active{transform:scale(.98)}
+.p-opt.sel{border-color:var(--hi);background:rgba(240,192,74,.12)}
+.p-opt.ok{border-color:var(--good)}
+.p-opt.no{border-color:var(--bad)}
+.p-in{width:100%;border:1px solid var(--rule);background:rgba(255,255,255,.06);color:var(--chalk);border-radius:12px;padding:12px;font-size:17px;font-family:var(--show)}
+.p-btn{border:0;border-radius:12px;padding:12px 14px;background:var(--hi);color:var(--hi-ink);font-weight:600;font-family:var(--ui);font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.p-btn.ghost{background:transparent;color:var(--chalk);border:1px solid var(--rule)}
+.p-btn svg{width:18px;height:18px}
+.p-row{display:flex;gap:8px;flex-wrap:wrap}
+.p-row>*{flex:1}
+.mic{width:86px;height:86px;border-radius:50%;border:0;background:var(--hi);color:var(--hi-ink);display:grid;place-items:center;margin:6px auto 0;position:relative}
+.mic svg{width:36px;height:36px}
+.mic.live::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:3px solid var(--hi);animation:pulse 1.1s ease-out infinite}
+@keyframes pulse{from{transform:scale(.9);opacity:1}to{transform:scale(1.25);opacity:0}}
+.target{font-size:17px;line-height:1.5}
+.target .w{padding:0 1px;border-radius:4px}
+.target .w.ok{color:#7fe0a3}
+.target .w.no{color:#ff9b8f;text-decoration:underline wavy}
+.score{display:flex;align-items:center;gap:12px}
+.score .ring{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:20px;flex:none;
+  background:conic-gradient(var(--hi) calc(var(--p)*1%),rgba(255,255,255,.12) 0)}
+.score .ring span{width:50px;height:50px;border-radius:50%;background:var(--board);display:grid;place-items:center}
+.score p{margin:0;font-family:var(--ui);font-size:13px;color:var(--chalk-dim)}
+.score p b{color:var(--chalk)}
+.verdict{border-radius:12px;padding:12px;font-family:var(--ui);font-size:14px}
+.verdict.ok{background:rgba(29,138,75,.25);border:1px solid var(--good)}
+.verdict.no{background:rgba(194,59,46,.22);border:1px solid var(--bad)}
+.verdict b{font-size:16px;display:block}
+.sheet{display:flex;flex-direction:column;gap:6px}
+.sheet .term{margin:0;padding:8px 10px;border:1px solid var(--rule);border-radius:10px}
+.sheet .term .t-en{font-size:15px}.sheet .term .t-ipa{font-size:12px}.sheet .term .t-vi{font-size:12.5px}
+
+/* ---------- BẢNG ĐIỀU KHIỂN GIÁO VIÊN ---------- */
+.console{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:16px}
+.c-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.c-row.sp{justify-content:space-between}
+.hint{font-size:13.5px;color:var(--muted)}
+.hint b{color:var(--ink)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.chip{flex:none;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:9px;padding:6px 10px;font-size:12.5px;display:flex;gap:6px;align-items:center;max-width:190px}
+.chip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip i{font-style:normal;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.chip[aria-current="true"]{border-color:var(--accent);background:var(--soft)}
+.chip .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+.c-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:16px}
+@media (max-width:760px){.c-grid{grid-template-columns:minmax(0,1fr)}}
+.panel{border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
+.panel h3{margin:0 0 8px;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.note{display:flex;gap:8px;align-items:flex-start;padding:5px 0;font-size:14px}
+.note.en{font-weight:500}
+.note .sp{border:1px solid var(--line);background:var(--soft);color:var(--accent);border-radius:8px;width:30px;height:30px;display:grid;place-items:center;flex:none}
+.note .sp svg{width:15px;height:15px}
+.note .vi-g{color:var(--muted)}
+.stats{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:8px}
+.stat b{display:block;font-size:22px;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat span{font-size:12px;color:var(--muted)}
+.tbl-wrap{max-height:260px;overflow:auto;border-top:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:6px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12px;color:var(--muted);font-weight:600;position:sticky;top:0;background:var(--panel)}
+td.num{font-variant-numeric:tabular-nums;text-align:right}
+.tagok{color:var(--good);font-weight:600}.tagno{color:var(--bad);font-weight:600}
+.mini{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:7px;padding:3px 8px;font-size:12px}
+.mini[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.kbd{font-size:12.5px;color:var(--muted)}
+.kbd kbd{font-family:var(--ui);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 5px;font-size:11.5px;background:var(--panel)}
+.switch{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--muted)}
+
+/* ---------- Chế độ tivi riêng / điện thoại riêng ---------- */
+body.v-tv{background:#000;display:grid;place-items:center;overflow:hidden}
+body.v-tv .tv{width:min(100vw,177.78vh);border-radius:0;box-shadow:none}
+body.v-phone{background:var(--board)}
+body.v-phone .ph{position:fixed;inset:0}
+body.v-phone .ph-head{padding-top:calc(14px + env(safe-area-inset-top,0px))}
+body.v-phone .ph-foot{padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+.wait{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--ui);color:var(--chalk-dim);font-size:1.6cqw;text-align:center;padding:4cqw}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+"use strict";
+/* =========================================================
+   LỚP SONG NGỮ — bản chạy thử
+   ?view=demo  (mặc định) : tivi + điện thoại + bảng điều khiển trên một trang
+   ?view=tv               : cửa sổ tivi riêng (kéo sang tivi, bấm F11)
+   ?view=phone            : cửa sổ điện thoại riêng
+   Các cửa sổ cùng máy đồng bộ qua BroadcastChannel.
+   Bản chạy thật: thay kênh đồng bộ bằng Firebase để điện thoại học sinh vào qua mạng.
+   ========================================================= */
+
+const VIEW = new URLSearchParams(location.search).get('view') || 'demo';
+const IS_MASTER = VIEW === 'demo';
+const ME = 'Minh Anh';
+const ROOM = '482 913';
+const SIMS = ['An','Bảo','Châu','Dũng','Giang','Hà','Hải','Hân','Hiếu','Hoa','Huy','Khánh','Lâm','Linh','Long','Mai','Nam','Ngọc','Phúc','Quân','Thảo','Trang','Vy'];
+const ABILITY = {}; SIMS.forEach((n,i)=>{ ABILITY[n] = 0.48 + ((i*37)%47)/100; });
+
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const B = (en, vi, cls='') => `<span class="en ${cls}">${en}</span><span class="vi">${vi}</span>`;
+const IT = (step, inner, cls='') => `<div class="it ${cls}" data-step="${step}">${inner}</div>`;
+
+/* ---------- Biểu tượng ---------- */
+const IC = {
+  play:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>',
+  slow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg>',
+  mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg>',
+  up:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>',
+  down:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="2" transform="rotate(0)"/><path d="M5 20h14"/></svg>',
+  next:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>',
+  prev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>',
+  dice:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  full:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>',
+  win:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg>',
+  book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h14v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/></svg>',
+  info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>',
+};
+
+/* ---------- Hình vẽ ---------- */
+// Tam giác cân ABC: A(350,40) B(170,320) C(530,320)
+const TRI_DEF = `
+<svg class="fig" viewBox="0 0 700 390" role="img" aria-label="Isosceles triangle ABC with AB = AC">
+  <path class="it draw" data-step="0" d="M350 40 L170 320 L530 320 Z" fill="none" stroke="var(--chalk)" stroke-width="4" stroke-linejoin="round"/>
+  <g class="it" data-step="0" fill="var(--chalk)" font-size="30" font-weight="600"><text x="342" y="28">A</text><text x="140" y="348">B</text><text x="540" y="348">C</text></g>
+  <g class="it" data-step="1" stroke="var(--hi)" stroke-width="4"><line x1="250" y1="173.5" x2="270" y2="186.5"/><line x1="430" y1="186.5" x2="450" y2="173.5"/></g>
+  <g class="it" data-step="1"><text x="350" y="215" text-anchor="middle" font-size="26" fill="var(--hi)">AB = AC</text></g>
+  <g class="it" data-step="2" font-size="26"><text class="en" x="236" y="160" text-anchor="end" fill="var(--chalk)">leg</text><text class="vi" x="236" y="184" text-anchor="end" font-size="19">cạnh bên</text>
+     <text class="en" x="464" y="160" fill="var(--chalk)">leg</text><text class="vi" x="464" y="184" font-size="19">cạnh bên</text></g>
+  <g class="it" data-step="3" font-size="26"><line x1="170" y1="320" x2="530" y2="320" stroke="var(--hi)" stroke-width="6"/><text class="en" x="350" y="352" text-anchor="middle" fill="var(--chalk)">base</text><text class="vi" x="350" y="376" text-anchor="middle" font-size="19">cạnh đáy</text></g>
+  <g class="it" data-step="4" font-size="26"><path d="M328.4 73.6 A40 40 0 0 0 371.6 73.6" fill="none" stroke="var(--hi)" stroke-width="4"/><text class="en" x="392" y="72" fill="var(--chalk)">vertex angle</text><text class="vi" x="392" y="96" font-size="19">góc ở đỉnh</text></g>
+  <g class="it" data-step="5" font-size="26"><path d="M189.5 289.7 A36 36 0 0 1 206 320" fill="none" stroke="var(--hi)" stroke-width="4"/><path d="M510.5 289.7 A36 36 0 0 0 494 320" fill="none" stroke="var(--hi)" stroke-width="4"/>
+     <text class="en" x="152" y="262" text-anchor="end" fill="var(--chalk)">base angle</text><text class="vi" x="152" y="286" text-anchor="end" font-size="19">góc ở đáy</text>
+     <text class="en" x="548" y="262" fill="var(--chalk)">base angle</text><text class="vi" x="548" y="286" font-size="19">góc ở đáy</text></g>
+</svg>`;
+
+const TRI_MINI = (extra='') => `
+<svg class="fig" viewBox="0 0 700 360" role="img" aria-label="Triangle ABC">
+  <path d="M350 40 L170 320 L530 320 Z" fill="none" stroke="var(--chalk)" stroke-width="4" stroke-linejoin="round"/>
+  <g stroke="var(--hi)" stroke-width="4"><line x1="250" y1="173.5" x2="270" y2="186.5"/><line x1="430" y1="186.5" x2="450" y2="173.5"/></g>
+  <g fill="var(--chalk)" font-size="30" font-weight="600"><text x="342" y="28">A</text><text x="140" y="348">B</text><text x="540" y="348">C</text></g>
+  ${extra}
+</svg>`;
+
+const TRI_FOLD = `
+<svg class="fig" viewBox="0 0 700 390" role="img" aria-label="Folding the triangle along AD">
+  <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--hi)"/></marker></defs>
+  <path class="it draw" data-step="0" d="M350 40 L170 320 L530 320 Z" fill="none" stroke="var(--chalk)" stroke-width="4" stroke-linejoin="round"/>
+  <g class="it" data-step="0" fill="var(--chalk)" font-size="30" font-weight="600"><text x="342" y="28">A</text><text x="140" y="348">B</text><text x="540" y="348">C</text></g>
+  <g class="it" data-step="1"><line x1="350" y1="40" x2="350" y2="320" stroke="var(--chalk)" stroke-width="3" stroke-dasharray="10 9"/><text x="342" y="352" font-size="28" font-weight="600" fill="var(--chalk)">D</text>
+     <path d="M250 245 Q350 160 450 245" fill="none" stroke="var(--hi)" stroke-width="4" marker-end="url(#ah)"/></g>
+  <g class="it" data-step="3"><path d="M189.5 289.7 A36 36 0 0 1 206 320" fill="var(--hi)" fill-opacity=".25" stroke="var(--hi)" stroke-width="4"/><path d="M510.5 289.7 A36 36 0 0 0 494 320" fill="var(--hi)" fill-opacity=".25" stroke="var(--hi)" stroke-width="4"/>
+     <text x="350" y="385" text-anchor="middle" font-size="30" font-weight="600" fill="var(--hi)">∠B = ∠C</text></g>
+</svg>`;
+
+function ROOF(){ // nhà rông cách điệu
+  let hatch = '';
+  for (let y = 72; y <= 240; y += 21) { const hw = (y-30)/220*170 - 6; hatch += `<line x1="${350-hw}" y1="${y}" x2="${350+hw}" y2="${y}"/>`; }
+  return `<svg class="fig" viewBox="0 0 700 380" role="img" aria-label="Rông house with a tall triangular roof">
+    <path d="M350 30 L180 250 L520 250 Z" fill="var(--board-2)" stroke="var(--hi)" stroke-width="5" stroke-linejoin="round"/>
+    <g stroke="var(--hi)" stroke-opacity=".35" stroke-width="2">${hatch}</g>
+    <rect x="235" y="250" width="230" height="58" fill="none" stroke="var(--chalk)" stroke-width="4"/>
+    <g stroke="var(--chalk)" stroke-width="4"><line x1="255" y1="308" x2="255" y2="352"/><line x1="315" y1="308" x2="315" y2="352"/><line x1="385" y1="308" x2="385" y2="352"/><line x1="445" y1="308" x2="445" y2="352"/></g>
+    <line x1="150" y1="352" x2="550" y2="352" stroke="var(--chalk-dim)" stroke-width="3"/>
+  </svg>`;
+}
+
+/* ---------- Thuật ngữ (bảng từ) ---------- */
+const TERMS = [
+  {en:'isosceles triangle', ipa:'/aɪˈsɒsəliːz ˈtraɪæŋɡl/', vi:'tam giác cân', at:0},
+  {en:'leg', ipa:'/leɡ/', vi:'cạnh bên', at:2},
+  {en:'base', ipa:'/beɪs/', vi:'cạnh đáy', at:2},
+  {en:'vertex angle', ipa:'/ˈvɜːteks ˈæŋɡl/', vi:'góc ở đỉnh', at:2},
+  {en:'base angle', ipa:'/beɪs ˈæŋɡl/', vi:'góc ở đáy', at:2},
+  {en:'equal', ipa:'/ˈiːkwəl/', vi:'bằng nhau', at:2},
+  {en:'fold', ipa:'/fəʊld/', vi:'gấp', at:5},
+  {en:'measure', ipa:'/ˈmeʒə/', vi:'đo', at:5},
+  {en:'angle bisector', ipa:'/ˈæŋɡl baɪˈsektə/', vi:'tia phân giác', at:6},
+];
+
+/* ---------- Nội dung tiết học ---------- */
+const SLIDES = [
+  { id:'s0', type:'content', title:['Today’s lesson','Bài học hôm nay'],
+    body: IT(0, `<div class="hero">${B('Isosceles triangles','Tam giác cân')}</div>`)
+        + IT(0, `<div class="join"><div><small>Mã phòng · Room code</small><div class="code">${ROOM}</div></div><small>Mở web trên điện thoại, nhập mã phòng để vào lớp.<br>Open the class page on your phone and enter the code.</small></div>`)
+        + IT(1, `<ul class="goals"><li>${B('Name the parts of an isosceles triangle.','Gọi tên các yếu tố của tam giác cân.')}</li><li>${B('Explain why the two base angles are equal.','Giải thích vì sao hai góc ở đáy bằng nhau.')}</li><li>${B('Say the key sentences in English.','Nói được các câu then chốt bằng tiếng Anh.')}</li></ul>`),
+    notes:[{vi:'Chào lớp, chờ học sinh vào phòng bằng mã trên tivi.'},{en:'Good morning, class. Please enter the room code on your phone.'},{en:'Today we will learn about isosceles triangles.'}] },
+
+  { id:'s1', type:'mcq', title:['Warm-up','Khởi động'],
+    body: `<div class="cols">${IT(0, ROOF())}${IT(1, `<div>${B('Look at the rông house. What shape is the roof?','Quan sát nhà rông. Mái nhà có dạng hình gì?')}</div>`)}</div>`,
+    q:{ type:'mcq', time:30, skill:'Ngôn ngữ', prompt:['What shape is the roof?','Mái nhà có dạng hình gì?'],
+        options:[['A square','Hình vuông'],['A triangle with two equal sides','Tam giác có hai cạnh bằng nhau'],['A circle','Hình tròn'],['A rectangle','Hình chữ nhật']], answer:1,
+        explain:['The roof is a triangle with two equal sides. We call it an isosceles triangle.','Mái nhà là tam giác có hai cạnh bằng nhau, gọi là tam giác cân.'] },
+    notes:[{vi:'Cho học sinh quan sát ảnh nhà rông Tây Nguyên, rồi bấm Tiếp để mở câu hỏi trên điện thoại.'},{en:'Look at the picture. What shape is the roof?'},{en:'A triangle with two equal sides is called an isosceles triangle.'}] },
+
+  { id:'s2', type:'content', title:['Definition','Định nghĩa'],
+    body: `<div class="cols">${TRI_DEF}<div style="display:flex;flex-direction:column;gap:1cqw">`
+        + IT(1, B('Triangle ABC is isosceles at A because AB = AC.','Tam giác ABC cân tại A vì AB = AC.'))
+        + IT(6, `<div class="box hl"><span class="tag">Definition · Định nghĩa</span>${B('An isosceles triangle is a triangle with two equal sides.','Tam giác cân là tam giác có hai cạnh bằng nhau.')}</div>`)
+        + `</div></div>`,
+    notes:[{vi:'Bấm Tiếp từng bước: hình vẽ hiện dần từng yếu tố. Bấm vào từ ở bảng từ bên phải để tivi đọc mẫu.'},{en:'Triangle ABC has two equal sides, AB and AC.'},{en:'These are the legs. This is the base.'},{en:'This is the vertex angle. These are the base angles.'},{en:'Repeat after me: isosceles triangle.'}] },
+
+  { id:'s3', type:'speak', title:['Say it!','Luyện nói'],
+    body: IT(0, `<div class="say">${B('An isosceles triangle is a triangle with two equal sides.','Tam giác cân là tam giác có hai cạnh bằng nhau.','keep')}</div>`)
+        + IT(0, `<div>isosceles <span class="ipa">/aɪˈsɒsəliːz/</span> · equal <span class="ipa">/ˈiːkwəl/</span></div>`)
+        + IT(1, `<div class="box">${B('On your phone: listen first, then tap the microphone and read the sentence aloud.','Trên điện thoại: nghe mẫu trước, rồi bấm micro và đọc to câu trên.')}</div>`),
+    speak:{ target:'An isosceles triangle is a triangle with two equal sides.', time:75 },
+    notes:[{vi:'Bấm vào câu mẫu để tivi đọc cho cả lớp nghe 2 lần. Bấm Tiếp để mở lượt luyện nói. AI trên điện thoại chấm từng em; giáo viên không cần tự sửa phát âm.'},{en:'Listen and repeat.'},{en:'Now use your phone. Read the sentence aloud.'}] },
+
+  { id:'s4', type:'mcq', title:['Check','Kiểm tra'],
+    body: `<div class="cols">${IT(0, TRI_MINI())}${IT(0, `<div>${B('Triangle ABC is isosceles at A. Which side is the base?','Tam giác ABC cân tại A. Cạnh nào là cạnh đáy?')}</div>`)}</div>`,
+    q:{ type:'mcq', time:25, skill:'Ngôn ngữ', prompt:['Which side is the base?','Cạnh nào là cạnh đáy?'],
+        options:[['AB','AB'],['AC','AC'],['BC','BC'],['There is no base','Không có cạnh đáy']], answer:2,
+        explain:['The base is the side opposite vertex A: BC.','Cạnh đáy là cạnh đối diện đỉnh A: BC.'] },
+    notes:[{en:'Which side is the base?'},{vi:'Nếu nhiều em chọn sai, chỉ lại trên hình: cạnh đáy đối diện đỉnh A.'}] },
+
+  { id:'s5', type:'content', title:['Fold and measure','Gấp và đo'], phonesDown:true,
+    body: `<div class="cols"><ol class="steps">`
+        + `<li class="it" data-step="0">${B('Cut out an isosceles triangle ABC with AB = AC.','Cắt một tam giác cân ABC có AB = AC.')}</li>`
+        + `<li class="it" data-step="1">${B('Fold it so that side AB lies on side AC.','Gấp sao cho cạnh AB nằm trên cạnh AC.')}</li>`
+        + `<li class="it" data-step="2">${B('Measure ∠B and ∠C. What do you notice?','Đo ∠B và ∠C. Em nhận thấy gì?')}</li>`
+        + `</ol>${TRI_FOLD}</div>`
+        + IT(3, `<div class="box hl">${B('We notice that ∠B = ∠C.','Chúng em nhận thấy ∠B = ∠C.')}</div>`),
+    notes:[{vi:'Úp điện thoại xuống. Học sinh làm theo nhóm 4 bạn, 4 phút.'},{en:'Work in groups of four. Fold the paper so that AB lies on AC.'},{en:'Measure angle B and angle C. What do you notice?'}] },
+
+  { id:'s6', type:'content', title:['Property','Tính chất'],
+    body: IT(0, `<div class="box hl"><span class="tag">Theorem · Định lí</span>${B('In an isosceles triangle, the two base angles are equal.','Trong một tam giác cân, hai góc ở đáy bằng nhau.')}</div>`)
+        + IT(1, `<div class="proof">${B('Draw the angle bisector AD (D on BC). △ABD and △ACD have AB = AC, ∠BAD = ∠CAD and a common side AD, so △ABD = △ACD (SAS). Therefore ∠B = ∠C.','Kẻ tia phân giác AD (D thuộc BC). △ABD và △ACD có AB = AC, ∠BAD = ∠CAD, AD chung nên △ABD = △ACD (c.g.c). Suy ra ∠B = ∠C.')}</div>`)
+        + IT(2, `<div class="box"><span class="tag">Converse · Dấu hiệu nhận biết</span>${B('If a triangle has two equal angles, then it is an isosceles triangle.','Nếu một tam giác có hai góc bằng nhau thì tam giác đó là tam giác cân.')}</div>`),
+    notes:[{vi:'Nếp gấp chính là tia phân giác góc A. Phần chứng minh có thể giảng bằng tiếng Việt, cho học sinh đọc to câu định lí tiếng Anh.'},{en:'In an isosceles triangle, the two base angles are equal.'},{en:'If a triangle has two equal angles, then it is an isosceles triangle.'}] },
+
+  { id:'s7', type:'speak', title:['Say it!','Luyện nói'],
+    body: IT(0, `<div class="say">${B('In an isosceles triangle, the two base angles are equal.','Trong một tam giác cân, hai góc ở đáy bằng nhau.','keep')}</div>`)
+        + IT(0, `<div>angles <span class="ipa">/ˈæŋɡlz/</span> · equal <span class="ipa">/ˈiːkwəl/</span></div>`),
+    speak:{ target:'In an isosceles triangle, the two base angles are equal.', time:75 },
+    notes:[{en:'Listen and repeat.'},{vi:'Sau khi khóa, bảng xếp hạng phát âm hiện trên tivi. Chỉ hiện 5 bạn cao nhất để khích lệ, không hiện ai thấp điểm.'}] },
+
+  { id:'s8', type:'number', title:['Practice','Luyện tập'],
+    body: `<div class="cols">${IT(0, TRI_MINI('<text x="350" y="112" text-anchor="middle" font-size="28" fill="var(--hi)">40°</text><text x="215" y="300" font-size="28" fill="var(--hi)">?</text>'))}${IT(0, `<div>${B('Triangle ABC is isosceles at A and ∠A = 40°. Find ∠B.','Tam giác ABC cân tại A và ∠A = 40°. Tính ∠B.')}</div>`)}</div>`,
+    q:{ type:'number', time:60, skill:'Toán', unit:'°', prompt:['Find ∠B.','Tính ∠B.'], answer:70,
+        explain:['∠B = ∠C = (180° − 40°) : 2 = 70°','∠B = ∠C = (180° − 40°) : 2 = 70°'] },
+    notes:[{en:'Find angle B. You have one minute.'},{vi:'Nếu học sinh nhập 140 hoặc 40: các em chưa chia đôi hoặc nhầm góc ở đỉnh với góc ở đáy.'}] },
+
+  { id:'s9', type:'text', title:['Complete the sentence','Hoàn thành câu'],
+    body: IT(0, `<div class="say">${B('If a triangle has two equal angles, then it is ______.','Nếu một tam giác có hai góc bằng nhau thì tam giác đó là ______.','keep')}</div>`),
+    q:{ type:'text', time:60, skill:'Ngôn ngữ', prompt:['Type the missing words.','Gõ phần còn thiếu bằng tiếng Anh.'],
+        accept:['an isosceles triangle','isosceles triangle','isosceles','an isosceles'], show:'an isosceles triangle',
+        explain:['If a triangle has two equal angles, then it is an isosceles triangle.','Nếu một tam giác có hai góc bằng nhau thì tam giác đó là tam giác cân.'] },
+    notes:[{vi:'Câu trả lời của học sinh hiện trên laptop. Bấm “Chiếu” để đưa câu hay lên tivi, câu không phù hợp sẽ không bao giờ lên tivi.'},{en:'Type the missing words.'}] },
+
+  { id:'s10', type:'mcq', title:['True or false?','Đúng hay sai?'],
+    body: IT(0, `<div class="say">${B('In an isosceles triangle, the vertex angle is always equal to the base angles.','Trong tam giác cân, góc ở đỉnh luôn bằng các góc ở đáy.','keep')}</div>`),
+    q:{ type:'mcq', time:25, skill:'Toán', prompt:['True or false?','Đúng hay sai?'], options:[['True','Đúng'],['False','Sai']], answer:1,
+        explain:['False. All three angles are equal only in an equilateral triangle.','Sai. Ba góc chỉ bằng nhau khi tam giác là tam giác đều.'] },
+    notes:[{en:'True or false?'}] },
+
+  { id:'s11', type:'final', title:['Great work!','Tổng kết'],
+    body: IT(0, `<div class="box hl"><span class="tag">Key sentences · Câu then chốt</span>${B('An isosceles triangle is a triangle with two equal sides. Its two base angles are equal.','Tam giác cân là tam giác có hai cạnh bằng nhau. Hai góc ở đáy của nó bằng nhau.')}</div>`)
+        + IT(1, `<div>${B('Homework: find 3 isosceles triangles around you and label their parts in English.','Về nhà: tìm 3 hình tam giác cân xung quanh em và ghi tên các yếu tố bằng tiếng Anh.')}</div>`),
+    notes:[{vi:'Khen top 5, nhắc bài về nhà. Báo cáo chi tiết của tiết nằm ở bảng bên dưới.'},{en:'Great work today, everyone!'}] },
+];
+SLIDES.forEach(s => { let m = 0; (s.body.match(/data-step="(\d+)"/g)||[]).forEach(x => { m = Math.max(m, +x.match(/\d+/)[0]); }); s.maxStep = m; });
+const interactive = s => !!(s.q || s.speak);
+
+/* ---------- Trạng thái chung ---------- */
+let S = { slide:0, step:0, lang:'bi', phase:'idle', responses:{}, pinned:{}, timerEnd:null, called:null, calledAt:0, calledList:[], sims:true, rev:0 };
+const roster = () => (S.sims ? SIMS.concat([ME]) : [ME]);
+
+/* ---------- Tiện ích chấm điểm ---------- */
+const norm = s => String(s||'').toLowerCase().replace(/[’']/g,"'").replace(/[^a-z0-9' ]+/g,' ').replace(/\s+/g,' ').trim();
+function lev(a,b){ const m=a.length,n=b.length; if(!m) return n; if(!n) return m; let p=Array.from({length:n+1},(_,j)=>j);
+  for(let i=1;i<=m;i++){ const c=[i]; for(let j=1;j<=n;j++) c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1)); p=c; } return p[n]; }
+const simil = (a,b) => 1 - lev(a,b)/Math.max(a.length,b.length,1);
+
+function evaluate(sl, val){
+  const q = sl.q;
+  if (q.type==='mcq') return Number(val)===q.answer;
+  if (q.type==='number'){ const v = parseFloat(String(val).replace(',','.')); return Math.abs(v-q.answer) < 1e-6; }
+  if (q.type==='text'){ const v = norm(val); return q.accept.some(a => { const b = norm(a); return v===b || simil(v,b) >= 0.85; }); }
+  return false;
+}
+// So khớp từng từ (cho phép sai nhẹ chính tả) giữa câu mẫu và câu AI nghe được
+function matchWords(tw, sw){
+  const n=tw.length, m=sw.length, eq=(a,b)=>a===b||(a.length>3&&simil(a,b)>=0.75);
+  const d=Array.from({length:n+1},()=>new Array(m+1).fill(0));
+  for(let i=1;i<=n;i++) for(let j=1;j<=m;j++) d[i][j] = eq(tw[i-1],sw[j-1]) ? d[i-1][j-1]+1 : Math.max(d[i-1][j],d[i][j-1]);
+  const ok=new Array(n).fill(false); let i=n,j=m;
+  while(i>0&&j>0){ if(eq(tw[i-1],sw[j-1])&&d[i][j]===d[i-1][j-1]+1){ok[i-1]=true;i--;j--;} else if(d[i-1][j]>=d[i][j-1]) i--; else j--; }
+  return ok;
+}
+function scoreSpeech(target, alts){
+  const tw = norm(target).split(' ');
+  let best = null;
+  for (const a of alts){
+    const sw = norm(a.t).split(' ').filter(Boolean);
+    const ok = matchWords(tw, sw);
+    const ratio = ok.filter(Boolean).length / tw.length;
+    const c = (a.c>0 && a.c<=1) ? a.c : null;
+    const score = Math.round(100 * (c==null ? ratio : 0.85*ratio + 0.15*c));
+    if (!best || score > best.score) best = { score, ok, transcript:a.t };
+  }
+  return best;
+}
+
+/* ---------- Giọng đọc mẫu & nhận giọng nói ---------- */
+function say(text, rate=0.9){
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=rate;
+  const v = speechSynthesis.getVoices().find(v => /en(-|_)US/i.test(v.lang)) || speechSynthesis.getVoices().find(v => /^en/i.test(v.lang));
+  if (v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+function listen(onDone, onErr){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR){ onErr('unsupported'); return null; }
+  const r = new SR(); r.lang='en-US'; r.interimResults=false; r.maxAlternatives=3;
+  let done = false;
+  r.onresult = e => { if(done) return; done=true; const res=e.results[0], alts=[]; for(let i=0;i<res.length;i++) alts.push({t:res[i].transcript, c:res[i].confidence}); onDone(alts); };
+  r.onerror = e => { if(done) return; done=true; onErr(e.error||'error'); };
+  r.onend = () => { if(done) return; done=true; onErr('no-speech'); };
+  try { r.start(); } catch(e){ done=true; onErr('busy'); }
+  return r;
+}
+
+/* ---------- Đồng bộ giữa các cửa sổ ---------- */
+const bc = ('BroadcastChannel' in window) ? new BroadcastChannel('lop-song-ngu-demo') : null;
+let pending = false;
+function commit(){ S.rev++; if (pending) return; pending = true; requestAnimationFrame(() => { pending=false; renderAll(); if (bc && IS_MASTER) bc.postMessage({kind:'state', S}); }); }
+function act(a){ if (IS_MASTER) dispatch(a); else if (bc) bc.postMessage({kind:'action', a}); }
+if (bc){
+  bc.onmessage = ({data}) => {
+    if (IS_MASTER){ if (data.kind==='action') dispatch(data.a); if (data.kind==='hello') bc.postMessage({kind:'state', S}); }
+    else if (data.kind==='state'){ S = data.S; connected = true; renderAll(); }
+  };
+}
+let connected = IS_MASTER;
+
+/* ---------- Điều khiển (chỉ cửa sổ giáo viên) ---------- */
+let simTimers = [];
+function clearSims(){ simTimers.forEach(clearTimeout); simTimers = []; }
+function goSlide(i){ if(i<0||i>=SLIDES.length) return; clearSims(); S.slide=i; S.step=0; S.phase='idle'; S.timerEnd=null; S.called=null; commit(); }
+function next(){
+  const sl = SLIDES[S.slide];
+  if (S.step < sl.maxStep){ S.step++; return commit(); }
+  if (interactive(sl)){
+    if (S.phase==='idle') return openQ();
+    if (S.phase==='open') return lockQ();
+    if (S.phase==='locked') return revealQ();
+  }
+  if (S.slide < SLIDES.length-1) goSlide(S.slide+1);
+}
+function prev(){
+  const sl = SLIDES[S.slide];
+  if (interactive(sl) && S.phase!=='idle' && S.step===sl.maxStep){ clearSims(); S.phase = S.phase==='reveal' ? 'locked' : 'idle'; if(S.phase==='idle') S.timerEnd=null; return commit(); }
+  if (S.step > 0){ S.step--; return commit(); }
+  if (S.slide > 0){ goSlide(S.slide-1); S.step = SLIDES[S.slide].maxStep; commit(); }
+}
+function openQ(){
+  const sl = SLIDES[S.slide]; if(!interactive(sl)) return;
+  S.step = sl.maxStep; S.phase='open'; S.responses[sl.id] = S.responses[sl.id] || {};
+  const t = (sl.q||sl.speak).time; S.timerEnd = Date.now() + t*1000; commit(); startSims(sl, t);
+}
+function lockQ(){ clearSims(); S.phase='locked'; S.timerEnd=null; commit(); }
+function revealQ(){ clearSims(); S.phase='reveal'; S.timerEnd=null; commit(); }
+function startSims(sl, t){
+  if (!S.sims) return;
+  SIMS.forEach(name => {
+    const delay = 1500 + Math.random() * Math.min(t*0.5, 14) * 1000;
+    simTimers.push(setTimeout(() => {
+      const ab = ABILITY[name], hit = Math.random() < ab;
+      if (sl.speak){ const sc = Math.max(35, Math.min(100, Math.round(ab*100 + (Math.random()*24-12)))); applyAnswer(name, sl.id, {score:sc}); return; }
+      const q = sl.q; let val;
+      if (q.type==='mcq') val = hit ? q.answer : [0,1,2,3].slice(0,q.options.length).filter(i=>i!==q.answer)[Math.floor(Math.random()*(q.options.length-1))];
+      if (q.type==='number') val = hit ? q.answer : [40,140,50,110,60][Math.floor(Math.random()*5)];
+      if (q.type==='text') val = hit ? ['an isosceles triangle','isosceles triangle','An isosceles triangle.'][Math.floor(Math.random()*3)] : ['a right triangle','an equal triangle','equilateral','a triangle'][Math.floor(Math.random()*4)];
+      applyAnswer(name, sl.id, {val});
+    }, delay));
+  });
+}
+function applyAnswer(name, sid, p){
+  const idx = SLIDES.findIndex(s=>s.id===sid), sl = SLIDES[idx];
+  if (!sl || idx!==S.slide || S.phase!=='open') return;
+  const R = S.responses[sid] || (S.responses[sid] = {});
+  if (sl.speak){
+    const prevR = R[name]; const tries = (prevR?prevR.tries:0)+1;
+    if (prevR && prevR.score >= p.score){ prevR.tries = tries; return commit(); }
+    R[name] = { score:p.score, points:p.score, transcript:p.transcript||'', tries, t:Date.now() };
+  } else {
+    if (R[name]) return;
+    const correct = evaluate(sl, p.val);
+    const rank = Object.values(R).filter(r=>r.correct).length;
+    R[name] = { val:p.val, correct, points: correct ? 100 + Math.max(0, 50 - rank*4) : 0, t:Date.now() };
+  }
+  commit();
+}
+function callName(){
+  const pool = roster().filter(n => !S.calledList.includes(n));
+  const list = pool.length ? pool : roster();
+  if (!pool.length) S.calledList = [];
+  const n = list[Math.floor(Math.random()*list.length)];
+  S.calledList.push(n); S.called = n; S.calledAt = Date.now(); commit();
+  setTimeout(() => { if (S.called===n && Date.now()-S.calledAt>=3900){ S.called=null; commit(); } }, 4000);
+}
+function dispatch(a){
+  switch(a.type){
+    case 'next': next(); break;
+    case 'prev': prev(); break;
+    case 'go': goSlide(a.i); break;
+    case 'lang': S.lang = a.v; commit(); break;
+    case 'open': openQ(); break;
+    case 'lock': lockQ(); break;
+    case 'reveal': revealQ(); break;
+    case 'timer': S.timerEnd = a.sec ? Date.now()+a.sec*1000 : null; commit(); break;
+    case 'call': callName(); break;
+    case 'pin': { const L = S.pinned[a.sid] || (S.pinned[a.sid]=[]); const k=L.indexOf(a.name); k>=0 ? L.splice(k,1) : L.push(a.name); commit(); break; }
+    case 'sims': S.sims = !S.sims; commit(); break;
+    case 'answer': applyAnswer(ME, a.sid, a.p); break;
+  }
+}
+const totalPoints = name => Object.values(S.responses).reduce((s,R)=>s+((R[name]&&R[name].points)||0),0);
+function leaderboard(){ return roster().map(n=>({n,p:totalPoints(n)})).sort((a,b)=>b.p-a.p); }
+
+/* ---------- TIVI ---------- */
+function tvSkeleton(sl){
+  return `<div class="tv-in">
+    <div class="tv-top"><div class="l"><span>Toán 7 · Bài 16 · Tam giác cân</span><span class="js-count"></span></div>
+      <div class="r"><span class="js-phones"></span><span class="pill timer js-timer" hidden>${IC.clock}<b>0:00</b></span><span class="pill">Mã phòng <b>${ROOM}</b></span></div></div>
+    <div class="tv-main">
+      <div class="tv-stage">
+        <div class="sl-title">${B(sl.title[0], sl.title[1])}</div>
+        <div class="sl-body">${sl.body}</div>
+        <div class="tv-dyn"></div>
+      </div>
+      <aside class="ww"><h4>Word wall · Bảng từ</h4><div class="js-ww" style="display:flex;flex-direction:column;gap:.55cqw"></div></aside>
+    </div></div>
+    <div class="callout js-call" hidden><div><small>Mời bạn trả lời</small><div class="who"></div></div></div>`;
+}
+function setHTML(el, html){ if (el && el._h !== html){ el.innerHTML = html; el._h = html; } }
+function renderTV(tv){
+  if (!tv) return;
+  if (!connected){ tv.innerHTML = `<div class="wait">Đang chờ cửa sổ giáo viên…<br>Hãy mở trang chính (bảng điều khiển) trên cùng máy.</div>`; tv._built=null; return; }
+  const sl = SLIDES[S.slide];
+  if (tv._built !== sl.id){ tv.innerHTML = tvSkeleton(sl); tv._built = sl.id; requestAnimationFrame(()=>applySteps(tv)); }
+  tv.className = 'tv L-' + S.lang;
+  applySteps(tv);
+  tv.querySelector('.js-count').textContent = `Trang ${S.slide+1}/${SLIDES.length}`;
+  const ph = tv.querySelector('.js-phones');
+  setHTML(ph, sl.phonesDown ? `<span class="pill phones down">${IC.down}Phones down · Úp điện thoại</span>`
+                           : (S.phase==='open' ? `<span class="pill phones">${IC.up}Phones up · Trả lời trên điện thoại</span>` : ''));
+  setHTML(tv.querySelector('.js-ww'), TERMS.filter(t=>t.at<=S.slide).map(t =>
+    `<button class="term ${t.at===S.slide?'new':''}" data-say="${esc(t.en)}" title="Nghe phát âm"><span class="t-en">${t.en}</span>${t.at===S.slide?`<span class="t-ipa">${t.ipa}</span>`:''}<span class="t-vi">${t.vi}</span></button>`).join(''));
+  setHTML(tv.querySelector('.tv-dyn'), dynHTML(sl));
+  const c = tv.querySelector('.js-call'); c.hidden = !S.called; if (S.called) c.querySelector('.who').textContent = S.called;
+  tickTimer();
+}
+function applySteps(root){ root.querySelectorAll('.sl-body .it').forEach(el => el.classList.toggle('on', +el.dataset.step <= S.step)); }
+function answeredLine(R){
+  const n = Object.keys(R||{}).length, N = roster().length, pc = N ? Math.round(n/N*100) : 0;
+  return `<div class="status"><span>${n}/${N} đã trả lời</span><span class="meter"><i style="width:${pc}%"></i></span></div>`;
+}
+function dynHTML(sl){
+  const R = S.responses[sl.id] || {};
+  if (sl.type==='final'){
+    const lb = leaderboard().slice(0,5), max = Math.max(1, ...lb.map(x=>x.p));
+    return `<div class="rank">${lb.map((x,i)=>`<div class="rk"><span class="n">${i+1}</span><span>${esc(x.n)}</span><span class="b"><i style="width:${x.p/max*100}%"></i></span><span class="v">${x.p}</span></div>`).join('')}</div>`;
+  }
+  if (!interactive(sl) || S.phase==='idle') return '';
+  if (sl.speak){
+    const arr = Object.entries(R).map(([n,r])=>({n,s:r.score})).sort((a,b)=>b.s-a.s);
+    const avg = arr.length ? Math.round(arr.reduce((s,x)=>s+x.s,0)/arr.length) : 0;
+    const top = arr.slice(0, S.phase==='reveal' ? 5 : 4);
+    return `${answeredLine(R)}<div class="status" style="margin-top:.2cqw">Điểm phát âm trung bình của lớp: <b style="color:var(--hi);font-size:1.6cqw">${avg}</b></div>
+      <div class="rank" style="margin-top:.6cqw">${top.map((x,i)=>`<div class="rk"><span class="n">${i+1}</span><span>${esc(x.n)}</span><span class="b"><i style="width:${x.s}%"></i></span><span class="v">${x.s}</span></div>`).join('')}</div>`;
+  }
+  const q = sl.q;
+  if (q.type==='mcq'){
+    const cnt = q.options.map((_,i)=>Object.values(R).filter(r=>Number(r.val)===i).length), tot = Math.max(1, Object.keys(R).length);
+    const rev = S.phase==='reveal';
+    return `<div class="opts">${q.options.map((o,i)=>`<div class="opt ${rev?(i===q.answer?'ok':'dim'):''}">${rev?`<span class="bar" style="width:${cnt[i]/tot*100}%"></span>`:''}
+      <span class="let">${'ABCD'[i]}</span>${B(o[0],o[1])}${rev?`<span class="cnt">${cnt[i]}</span>`:''}</div>`).join('')}</div>
+      ${rev ? `<div class="status" style="color:var(--chalk);display:block">${B(q.explain[0], q.explain[1])}</div>` : answeredLine(R)}`;
+  }
+  if (q.type==='number'){
+    if (S.phase!=='reveal') return answeredLine(R);
+    const freq = {}; Object.values(R).forEach(r => { const k=String(r.val); freq[k]=(freq[k]||0)+1; });
+    const top = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,4);
+    return `<div class="big-ans">∠B = ${q.answer}°</div><div class="status" style="color:var(--chalk)">${q.explain[0]}</div>
+      <div class="wall" style="margin-top:.6cqw">${top.map(([v,c])=>`<div class="card ${Number(v)===q.answer?'ok':''}">${esc(v)}° <small>${c} bạn</small></div>`).join('')}</div>`;
+  }
+  if (q.type==='text'){
+    const pins = (S.pinned[sl.id]||[]).filter(n=>R[n]);
+    const wall = pins.length ? `<div class="wall" style="margin-top:.6cqw">${pins.map(n=>`<div class="card ${R[n].correct?'ok':''}">${esc(R[n].val)}<small>${esc(n)}</small></div>`).join('')}</div>` : '';
+    if (S.phase!=='reveal') return answeredLine(R) + wall;
+    return `<div class="big-ans">${esc(q.show)}</div>${wall}`;
+  }
+  return '';
+}
+function tickTimer(){
+  document.querySelectorAll('.js-timer').forEach(el => {
+    if (!S.timerEnd){ el.hidden = true; return; }
+    const left = Math.max(0, Math.ceil((S.timerEnd - Date.now())/1000));
+    el.hidden = false; el.classList.toggle('low', left <= 10);
+    el.querySelector('b').textContent = `${Math.floor(left/60)}:${String(left%60).padStart(2,'0')}`;
+  });
+  if (IS_MASTER && S.timerEnd && Date.now() >= S.timerEnd){
+    if (S.phase==='open') lockQ(); else { S.timerEnd=null; commit(); }
+  }
+}
+
+/* ---------- ĐIỆN THOẠI HỌC SINH ---------- */
+const PH = { lang:'bi', vocab:false, sel:{}, speak:{}, listening:false, msg:'' };
+let phRec = null;
+function myResp(sl){ return (S.responses[sl.id]||{})[ME]; }
+function phKey(){ const sl=SLIDES[S.slide]; const r=myResp(sl);
+  return [S.slide, S.step, S.phase, PH.lang, PH.vocab, r?JSON.stringify(r):'', JSON.stringify(PH.speak[sl.id]||''), PH.listening, PH.msg, sl.type==='final'?S.rev:'' , connected].join('|'); }
+function renderPhone(ph, force){
+  if (!ph) return;
+  const key = phKey();
+  if (!force && ph._k === key){ const p = ph.querySelector('.js-pts'); if (p) p.textContent = totalPoints(ME); return; }
+  ph._k = key;
+  ph.className = 'ph L-' + PH.lang;
+  if (!connected){ ph.innerHTML = `<div class="ph-main"><div class="notice">${IC.info}<span>Đang chờ giáo viên mở tiết học…</span></div></div>`; return; }
+  const sl = SLIDES[S.slide];
+  ph.innerHTML = `
+    <div class="ph-head"><span><b>${ME}</b> · Phòng ${ROOM}</span>
+      <span class="ph-lang" role="group" aria-label="Ngôn ngữ trên điện thoại"><button data-pl="en" aria-pressed="${PH.lang==='en'}">EN</button><button data-pl="bi" aria-pressed="${PH.lang==='bi'}">EN+VI</button></span></div>
+    <div class="ph-main">${PH.vocab ? phVocab() : phBody(sl)}</div>
+    <div class="ph-foot"><button class="p-btn ghost" data-ph="vocab" style="padding:7px 10px;font-size:12.5px">${IC.book}${PH.vocab?'Quay lại':'Từ vựng'}</button><span>Điểm của em <b class="js-pts">${totalPoints(ME)}</b></span></div>`;
+}
+function phVocab(){
+  return `<div class="sl-title">${B('Vocabulary','Từ vựng của tiết')}</div><div class="sheet">${TERMS.filter(t=>t.at<=S.slide).map(t=>
+    `<button class="term" data-say="${esc(t.en)}"><span class="t-en">${t.en}</span><span class="t-ipa">${t.ipa}</span><span class="t-vi">${t.vi}</span></button>`).join('')}</div>
+    <div class="notice">${IC.info}<span>Bấm vào từ để nghe phát âm (dùng tai nghe trên lớp).</span></div>`;
+}
+function phMirror(sl){
+  const tmp = document.createElement('div'); tmp.innerHTML = sl.body;
+  tmp.querySelectorAll('.it').forEach(el => el.classList.toggle('on', +el.dataset.step <= S.step));
+  tmp.querySelectorAll('.it:not(.on)').forEach(el => { if (el.tagName.toLowerCase()!=='path' && el.tagName.toLowerCase()!=='g') el.remove(); });
+  return `<div class="sl-title">${B(sl.title[0], sl.title[1])}</div><div class="sl-body">${tmp.innerHTML}</div>`;
+}
+function phBody(sl){
+  const r = myResp(sl);
+  if (sl.type==='final'){
+    const lb = leaderboard(), pos = lb.findIndex(x=>x.n===ME)+1;
+    return phMirror(sl) + `<div class="box"><b style="font-size:22px;color:var(--hi)">${totalPoints(ME)} điểm</b><span class="vi" style="display:block;font-style:normal">Hạng ${pos}/${lb.length} của lớp</span></div>`;
+  }
+  if (sl.phonesDown) return phMirror(sl) + `<div class="notice hot">${IC.down}<span>Úp điện thoại xuống và làm việc nhóm nhé. Phones down.</span></div>`;
+  if (!interactive(sl) || S.phase==='idle') return phMirror(sl) + (interactive(sl) ? `<div class="notice">${IC.info}<span>Chờ thầy/cô mở câu hỏi…</span></div>` : '');
+  if (sl.speak) return phSpeak(sl, r);
+  const q = sl.q, rev = S.phase==='reveal';
+  let h = `<div class="sl-title">${B(q.prompt[0], q.prompt[1])}</div>`;
+  if (q.type==='mcq'){
+    h += `<div style="display:flex;flex-direction:column;gap:8px">${q.options.map((o,i)=>{
+      const mine = r && Number(r.val)===i;
+      const cls = rev ? (i===q.answer?'ok':(mine?'no':'')) : (mine?'sel':'');
+      return `<button class="p-opt ${cls}" data-ans="${i}" ${r||S.phase!=='open'?'disabled':''}><span class="let">${'ABCD'[i]}</span><span>${B(o[0],o[1])}</span></button>`;}).join('')}</div>`;
+  } else if (q.type==='number'){
+    h += r ? `<div class="box">Em đã gửi: <b>${esc(r.val)}${q.unit||''}</b></div>`
+           : (S.phase==='open' ? `<form class="p-row" data-form="num"><input class="p-in" id="ph-num" inputmode="decimal" autocomplete="off" placeholder="Nhập số đo, ví dụ 65" aria-label="Đáp án"><button class="p-btn" type="submit">Gửi</button></form>` : '');
+  } else if (q.type==='text'){
+    h += r ? `<div class="box">Em đã gửi: <b>${esc(r.val)}</b></div>`
+           : (S.phase==='open' ? `<form style="display:flex;flex-direction:column;gap:8px" data-form="txt"><input class="p-in" id="ph-txt" autocomplete="off" autocapitalize="off" placeholder="Type in English…" aria-label="Câu trả lời"><button class="p-btn" type="submit">Gửi câu trả lời</button></form>` : '');
+  }
+  if (S.phase==='open' && r) h += `<div class="notice">${IC.info}<span>Đã gửi. Chờ thầy/cô công bố đáp án.</span></div>`;
+  if (S.phase==='locked') h += `<div class="notice">${IC.clock}<span>Hết giờ. ${r?'Chờ công bố đáp án.':'Em chưa kịp trả lời câu này.'}</span></div>`;
+  if (rev){
+    h += r ? `<div class="verdict ${r.correct?'ok':'no'}"><b>${r.correct?`Chính xác! +${r.points} điểm`:'Chưa đúng'}</b>${B(q.explain[0],q.explain[1])}</div>`
+           : `<div class="verdict no"><b>Em chưa trả lời</b>${B(q.explain[0],q.explain[1])}</div>`;
+  }
+  return h;
+}
+function phSpeak(sl, r){
+  const res = PH.speak[sl.id];
+  const words = sl.speak.target.split(' ');
+  const tw = norm(sl.speak.target).split(' ');
+  const wordsHTML = words.map((w,i)=>`<span class="w ${res? (res.ok[i]?'ok':'no') : ''}">${esc(w)}</span>`).join(' ');
+  let h = `<div class="sl-title">${B('Read aloud','Đọc to câu sau')}</div>
+    <div class="target">${wordsHTML}</div>
+    <div class="p-row"><button class="p-btn ghost" data-ph="listen">${IC.play}Nghe mẫu</button><button class="p-btn ghost" data-ph="slow">${IC.slow}Nghe chậm</button></div>`;
+  if (S.phase==='open'){
+    h += `<button class="mic ${PH.listening?'live':''}" data-ph="mic" aria-label="${PH.listening?'Đang nghe':'Bấm để nói'}">${IC.mic}</button>
+      <div style="text-align:center;font-family:var(--ui);font-size:12.5px;color:var(--chalk-dim)">${PH.listening?'Đang nghe… hãy đọc to và rõ':'Bấm micro rồi đọc câu trên'}</div>`;
+  }
+  if (PH.msg) h += `<div class="notice hot">${IC.info}<span>${PH.msg}</span></div>`;
+  if (res){
+    const miss = words.filter((_,i)=>!res.ok[i]).map(w=>w.replace(/[^\w']/g,''));
+    const tip = res.score>=85 ? 'Rất tốt! Phát âm rõ ràng.' : res.score>=60 ? `Khá tốt. Luyện thêm: <b>${esc(miss.slice(0,3).join(', '))}</b>` : 'Nghe mẫu chậm rồi thử lại nhé.';
+    h += `<div class="score"><div class="ring" style="--p:${res.score}"><span>${res.score}</span></div><p><b>${tip}</b><br>AI nghe được: “${esc(res.transcript)}”</p></div>`;
+  }
+  if (r) h += `<div class="notice">${IC.info}<span>Điểm cao nhất đã gửi lên lớp: <b style="color:var(--hi)">${r.score}</b> · ${r.tries} lần thử</span></div>`;
+  if (S.phase==='locked' || S.phase==='reveal') h += `<div class="notice">${IC.clock}<span>Lượt luyện nói đã kết thúc.</span></div>`;
+  return h;
+}
+function phoneClick(e){
+  const t = e.target.closest('button'); if (!t) return;
+  const sl = SLIDES[S.slide];
+  if (t.dataset.pl){ PH.lang = t.dataset.pl; renderAll(); return; }
+  if (t.dataset.say){ say(t.dataset.say); return; }
+  if (t.dataset.ans!==undefined){ act({type:'answer', sid:sl.id, p:{val:Number(t.dataset.ans)}}); return; }
+  const k = t.dataset.ph;
+  if (k==='vocab'){ PH.vocab = !PH.vocab; renderAll(); }
+  if (k==='listen') say(sl.speak.target, 0.9);
+  if (k==='slow') say(sl.speak.target, 0.6);
+  if (k==='mic'){
+    if (PH.listening){ try{ phRec && phRec.stop(); }catch(_){} return; }
+    PH.msg=''; PH.listening = true; renderAll();
+    phRec = listen(alts => {
+      PH.listening = false;
+      const res = scoreSpeech(sl.speak.target, alts); PH.speak[sl.id] = res;
+      act({type:'answer', sid:sl.id, p:{score:res.score, transcript:res.transcript}});
+      renderAll();
+    }, err => {
+      PH.listening = false;
+      PH.msg = err==='unsupported' ? 'Trình duyệt này chưa hỗ trợ nhận giọng nói. Hãy mở bằng Chrome (Android, máy tính) hoặc Safari mới.'
+             : err==='not-allowed' || err==='service-not-allowed' ? 'Em cần cho phép trang web dùng micro rồi bấm lại.'
+             : err==='network' ? 'Nhận giọng nói cần mạng Internet. Kiểm tra kết nối rồi thử lại.'
+             : 'AI chưa nghe rõ. Đưa điện thoại gần miệng và đọc to hơn nhé.';
+      renderAll();
+    });
+  }
+}
+function phoneSubmit(e){
+  const f = e.target.closest('form'); if (!f) return; e.preventDefault();
+  const sl = SLIDES[S.slide];
+  const inp = f.querySelector('input'); const v = inp.value.trim(); if (!v) { inp.focus(); return; }
+  act({type:'answer', sid:sl.id, p:{val:v}});
+}
+
+/* ---------- BẢNG ĐIỀU KHIỂN GIÁO VIÊN ---------- */
+function nextLabel(){
+  const sl = SLIDES[S.slide];
+  if (S.step < sl.maxStep) return `hiện bước ${S.step+2}/${sl.maxStep+1}`;
+  if (interactive(sl)){
+    if (S.phase==='idle') return sl.speak ? 'mở lượt luyện nói trên điện thoại' : 'mở câu hỏi trên điện thoại';
+    if (S.phase==='open') return 'khóa, ngừng nhận câu trả lời';
+    if (S.phase==='locked') return 'công bố đáp án lên tivi';
+  }
+  return S.slide < SLIDES.length-1 ? `sang trang ${S.slide+2}: ${SLIDES[S.slide+1].title[1]}` : 'đã hết bài';
+}
+function consStaticHTML(){
+  const sl = SLIDES[S.slide];
+  return `
+  <div class="c-row sp">
+    <div class="c-row">
+      <button class="btn big" data-c="prev" aria-label="Lùi">${IC.prev}Lùi</button>
+      <button class="btn big pri" data-c="next">Tiếp${IC.next}</button>
+      <span class="hint">Bấm Tiếp để <b>${nextLabel()}</b></span>
+    </div>
+    <div class="seg" role="group" aria-label="Ngôn ngữ trên tivi">
+      <button data-c="lang" data-v="en" aria-pressed="${S.lang==='en'}">Chỉ tiếng Anh</button>
+      <button data-c="lang" data-v="bi" aria-pressed="${S.lang==='bi'}">Song ngữ</button>
+      <button data-c="lang" data-v="vi" aria-pressed="${S.lang==='vi'}">Tiếng Việt</button>
+    </div>
+  </div>
+  <div class="c-row">
+    <button class="btn" data-c="call">${IC.dice}Gọi tên ngẫu nhiên</button>
+    <button class="btn" data-c="timer" data-v="60">${IC.clock}Hẹn giờ 1 phút</button>
+    <button class="btn" data-c="timer" data-v="240">${IC.clock}4 phút</button>
+    <button class="btn" data-c="timer" data-v="0">Tắt giờ</button>
+    <button class="btn" data-c="full">${IC.full}Tivi toàn màn hình</button>
+    <button class="btn" data-c="wtv">${IC.win}Mở cửa sổ tivi riêng</button>
+    <button class="btn" data-c="wph">${IC.win}Mở điện thoại riêng</button>
+  </div>
+  <div class="chips" role="tablist" aria-label="Các trang">${SLIDES.map((s,i)=>`<button class="chip" data-c="go" data-i="${i}" aria-current="${i===S.slide}"><i>${i+1}</i>${interactive(s)?'<span class="dot" title="Có tương tác"></span>':''}<span>${s.title[1]}</span></button>`).join('')}</div>
+  <div class="c-grid">
+    <div class="panel"><h3>Ghi chú & câu nói mẫu</h3>${sl.notes.map(n => n.en
+      ? `<div class="note en"><button class="sp" data-say="${esc(n.en)}" aria-label="Nghe câu này">${IC.play}</button><span>${n.en}</span></div>`
+      : `<div class="note"><span class="vi-g">${n.vi}</span></div>`).join('')}
+      <p class="kbd" style="margin:10px 0 0">Bấm nút loa để nghe câu tiếng Anh trước khi nói với lớp.</p></div>
+    <div class="panel js-resp"></div>
+  </div>
+  <div class="c-row sp">
+    <span class="kbd"><kbd>→</kbd> <kbd>Space</kbd> Tiếp · <kbd>←</kbd> Lùi · <kbd>L</kbd> đổi ngôn ngữ · <kbd>N</kbd> gọi tên · <kbd>F</kbd> toàn màn hình · bút trình chiếu dùng được</span>
+    <label class="switch"><input type="checkbox" id="sims" ${S.sims?'checked':''}> Có 23 học sinh mô phỏng (để xem thử)</label>
+  </div>`;
+}
+function consRespHTML(){
+  const sl = SLIDES[S.slide];
+  if (sl.type==='final'){
+    const lb = leaderboard();
+    return `<h3>Bảng điểm cả tiết</h3><div class="tbl-wrap"><table><thead><tr><th>#</th><th>Học sinh</th><th style="text-align:right">Điểm</th></tr></thead><tbody>${lb.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.n)}</td><td class="num">${x.p}</td></tr>`).join('')}</tbody></table></div>`;
+  }
+  if (!interactive(sl)) return `<h3>Kết quả</h3><p class="hint" style="margin:0">Trang này không có câu hỏi. Học sinh đang xem nội dung giống tivi trên điện thoại.</p>`;
+  const R = S.responses[sl.id] || {}, arr = Object.entries(R).sort((a,b)=>a[1].t-b[1].t), N = roster().length;
+  const phaseTxt = {idle:'Chưa mở', open:'Đang nhận câu trả lời', locked:'Đã khóa', reveal:'Đã công bố'}[S.phase];
+  const ctrl = `<div class="c-row" style="margin-bottom:8px"><button class="mini" data-c="open" ${S.phase==='open'?'disabled':''}>Mở</button><button class="mini" data-c="lock" ${S.phase!=='open'?'disabled':''}>Khóa</button><button class="mini" data-c="reveal" ${S.phase==='reveal'||S.phase==='idle'?'disabled':''}>Công bố</button><span class="hint">· ${phaseTxt}</span></div>`;
+  if (sl.speak){
+    const avg = arr.length ? Math.round(arr.reduce((s,[,r])=>s+r.score,0)/arr.length) : 0;
+    const weak = arr.filter(([,r])=>r.score<60).length;
+    return `<h3>Luyện nói · AI chấm</h3>${ctrl}<div class="stats"><div class="stat"><b>${arr.length}/${N}</b><span>đã nói</span></div><div class="stat"><b>${avg}</b><span>điểm trung bình</span></div><div class="stat"><b>${weak}</b><span>em dưới 60 điểm</span></div></div>
+      <div class="tbl-wrap"><table><thead><tr><th>Học sinh</th><th style="text-align:right">Điểm</th><th style="text-align:right">Lần thử</th></tr></thead><tbody>${arr.sort((a,b)=>a[1].score-b[1].score).map(([n,r])=>`<tr><td>${esc(n)}</td><td class="num ${r.score<60?'tagno':''}">${r.score}</td><td class="num">${r.tries}</td></tr>`).join('')}</tbody></table></div>
+      <p class="kbd" style="margin:8px 0 0">Danh sách xếp từ thấp đến cao để giáo viên biết em nào cần hỗ trợ.</p>`;
+  }
+  const q = sl.q, ok = arr.filter(([,r])=>r.correct).length;
+  const pins = S.pinned[sl.id] || [];
+  const fmt = r => q.type==='mcq' ? `${'ABCD'[r.val]}. ${esc(q.options[r.val][0])}` : esc(r.val) + (q.unit||'');
+  return `<h3>Câu trả lời · Kĩ năng: ${q.skill}</h3>${ctrl}<div class="stats"><div class="stat"><b>${arr.length}/${N}</b><span>đã trả lời</span></div><div class="stat"><b>${arr.length?Math.round(ok/arr.length*100):0}%</b><span>đúng</span></div><div class="stat"><b>${N-arr.length}</b><span>chưa trả lời</span></div></div>
+    <div class="tbl-wrap"><table><thead><tr><th>Học sinh</th><th>Trả lời</th><th>Kết quả</th>${q.type==='text'?'<th></th>':''}</tr></thead><tbody>${arr.map(([n,r])=>`<tr><td>${esc(n)}</td><td>${fmt(r)}</td><td class="${r.correct?'tagok':'tagno'}">${r.correct?'Đúng':'Sai'}</td>${q.type==='text'?`<td><button class="mini" data-c="pin" data-name="${esc(n)}" aria-pressed="${pins.includes(n)}">${pins.includes(n)?'Đang chiếu':'Chiếu'}</button></td>`:''}</tr>`).join('')}</tbody></table></div>`;
+}
+let consKey = '';
+function renderConsole(el){
+  if (!el) return;
+  const key = [S.slide, S.step, S.phase, S.lang, S.sims].join('|');
+  if (key !== consKey){ el.innerHTML = consStaticHTML(); consKey = key; }
+  setHTML(el.querySelector('.js-resp'), consRespHTML());
+}
+function consoleClick(e){
+  const t = e.target.closest('[data-c],[data-say]'); if (!t) return;
+  if (t.dataset.say && !t.dataset.c){ say(t.dataset.say); return; }
+  const c = t.dataset.c;
+  if (c==='next') act({type:'next'}); if (c==='prev') act({type:'prev'});
+  if (c==='lang') act({type:'lang', v:t.dataset.v});
+  if (c==='go') act({type:'go', i:+t.dataset.i});
+  if (c==='open'||c==='lock'||c==='reveal') act({type:c});
+  if (c==='timer') act({type:'timer', sec:+t.dataset.v});
+  if (c==='call') act({type:'call'});
+  if (c==='pin') act({type:'pin', sid:SLIDES[S.slide].id, name:t.dataset.name});
+  if (c==='full') goFull();
+  if (c==='wtv') window.open(location.pathname + '?view=tv', 'lsn-tv');
+  if (c==='wph') window.open(location.pathname + '?view=phone', 'lsn-phone', 'width=420,height=860');
+}
+function goFull(){ const tv = document.getElementById('tv'); if (tv && tv.requestFullscreen) tv.requestFullscreen().catch(()=>{}); }
+
+/* ---------- Khởi động giao diện ---------- */
+function mount(){
+  const root = document.getElementById('root');
+  document.body.className = 'v-' + VIEW;
+  if (VIEW==='tv'){ root.innerHTML = `<div class="tv L-bi" id="tv"></div>`; }
+  else if (VIEW==='phone'){ root.innerHTML = `<div class="ph" id="ph"></div>`; }
+  else {
+    root.innerHTML = `
+    <header class="app-head">
+      <div class="brand"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="8" fill="var(--accent)"/><path d="M15 6 L7 23 L23 23 Z" fill="none" stroke="var(--accent-ink)" stroke-width="2.4" stroke-linejoin="round"/><path d="M11.2 15.5l2 1M18.8 15.5l-2 1" stroke="var(--accent-ink)" stroke-width="2"/></svg>
+        <div>Lớp Song Ngữ<small>Toán 7 · Bài 16 · Tam giác cân · bản chạy thử</small></div></div>
+      <div class="head-tools"><span class="hint">Tivi, điện thoại và bảng điều khiển được đặt cạnh nhau để xem thử trên một màn hình.</span></div>
+    </header>
+    <main class="wrap">
+      <div class="col-main">
+        <div><div class="cap" style="margin-bottom:8px">Tivi · cả lớp nhìn</div><div class="tv L-bi" id="tv"></div></div>
+        <section><div class="cap" style="margin-bottom:8px">Laptop giáo viên · chỉ thầy/cô thấy</div><div class="console" id="cons"></div></section>
+      </div>
+      <div class="col-side"><div class="cap">Điện thoại học sinh · ${ME}</div><div class="phone"><div class="ph" id="ph"></div></div>
+        <p class="hint" style="max-width:300px;margin:0;text-align:center">Đây là điện thoại của một học sinh. Thử bấm đáp án, gõ câu trả lời hoặc bấm micro để AI chấm phát âm.</p></div>
+    </main>`;
+    const cons = document.getElementById('cons');
+    cons.addEventListener('click', consoleClick);
+    cons.addEventListener('change', e => { if (e.target.id==='sims') act({type:'sims'}); });
+  }
+  const tv = document.getElementById('tv');
+  if (tv) tv.addEventListener('click', e => { const t = e.target.closest('[data-say]'); if (t) say(t.dataset.say); else if (e.target.closest('.say')) { const s = SLIDES[S.slide]; if (s.speak) say(s.speak.target); } });
+  const ph = document.getElementById('ph');
+  if (ph){ ph.addEventListener('click', phoneClick); ph.addEventListener('submit', phoneSubmit); }
+  if (VIEW!=='phone') document.addEventListener('keydown', e => {
+    if (e.target.matches('input,textarea')) return;
+    const k = e.key;
+    if (k==='ArrowRight'||k===' '||k==='PageDown'){ e.preventDefault(); act({type:'next'}); }
+    else if (k==='ArrowLeft'||k==='PageUp'){ e.preventDefault(); act({type:'prev'}); }
+    else if (k==='l'||k==='L'){ act({type:'lang', v:{en:'bi',bi:'vi',vi:'en'}[S.lang]}); }
+    else if (k==='n'||k==='N'){ act({type:'call'}); }
+    else if (k==='f'||k==='F'){ if (VIEW==='tv'){ const el=document.documentElement; const pr = el.requestFullscreen && el.requestFullscreen(); if (pr) pr.catch(()=>{}); } else goFull(); }
+  });
+  if (!IS_MASTER && bc) bc.postMessage({kind:'hello'});
+}
+function renderAll(){
+  renderTV(document.getElementById('tv'));
+  renderPhone(document.getElementById('ph'));
+  renderConsole(document.getElementById('cons'));
+}
+mount(); renderAll();
+setInterval(tickTimer, 250);
+if ('speechSynthesis' in window) speechSynthesis.onvoiceschanged = () => {};
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+# Không tải bí mật và dữ liệu mẫu lên Vercel (biến môi trường đặt trong Vercel Dashboard)
+.env*
+!.env.example
+seed-output
+data-backup
+rules-backup
+node_modules
+.next
+*-firebase-adminsdk-*.json
+google-services.json
+*.log
