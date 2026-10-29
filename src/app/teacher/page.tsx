@@ -18,11 +18,12 @@ import { useAuth } from "@/lib/auth/auth-context";
 import { useMyClasses } from "@/lib/hooks/use-firestore";
 import type { ClassDoc } from "@/lib/types";
 
-const THEMES: { bg: string; dk: string; shape: ShapeKind; fg: string }[] = [
-  { bg: "#2F5BEA", dk: "#1E40B8", shape: "triangle", fg: "#fff" },
-  { bg: "#E8492E", dk: "#B4321B", shape: "square", fg: "#fff" },
-  { bg: "#0E9F8A", dk: "#0A7565", shape: "diamond", fg: "#fff" },
-  { bg: "#FFC93C", dk: "#C99A1F", shape: "circle", fg: "#14213D" },
+// Thẻ lớp kiểu pastel: nền nhạt, chữ đậm cùng tông, hình học mờ trang trí
+const THEMES: { soft: string; accent: string; ink: string; shape: ShapeKind }[] = [
+  { soft: "#EAF0FF", accent: "#2F5BEA", ink: "#1E3A9E", shape: "triangle" },
+  { soft: "#FFEEE9", accent: "#E8492E", ink: "#A3301B", shape: "square" },
+  { soft: "#E3F6F1", accent: "#0E9F8A", ink: "#0A6B5D", shape: "diamond" },
+  { soft: "#FFF5DA", accent: "#E0A800", ink: "#7A5A00", shape: "circle" },
 ];
 
 function hello() {
@@ -48,8 +49,8 @@ export default function TeacherHome() {
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-8 sm:py-8">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
-          <p className="text-sm font-semibold text-ink-2 first-letter:uppercase">{today}</p>
-          <h1 className="mt-1 text-3xl font-extrabold sm:text-4xl">
+          <p className="text-sm font-medium text-ink-2 first-letter:uppercase">{today}</p>
+          <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-[2.1rem]">
             {hello()}, {user?.displayName?.split(" ").slice(-1)[0] || "thầy cô"}!
           </h1>
         </div>
@@ -66,11 +67,14 @@ export default function TeacherHome() {
         <Stat icon={AlertTriangle} label="Cần chú ý" value={attention} tone="coral" hint="7 ngày qua" />
       </div>
 
-      <h2 className="mt-10 mb-4 text-xl font-extrabold">Lớp của tôi</h2>
+      <div className="mt-10 mb-4 flex items-end justify-between">
+        <h2 className="text-lg font-bold">Lớp của tôi</h2>
+        {classes.length > 0 && <p className="text-sm text-ink-2">{classes.length} lớp · {total} học sinh</p>}
+      </div>
       {loading ? (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="card-lsn h-64 animate-pulse bg-white/60" />
+            <div key={i} className="card-lsn h-64 animate-pulse" />
           ))}
         </div>
       ) : classes.length === 0 ? (
@@ -91,7 +95,7 @@ export default function TeacherHome() {
           ))}
           <button
             onClick={() => setCreating(true)}
-            className="flex min-h-64 flex-col items-center justify-center gap-2 rounded-[24px] border-2 border-dashed border-line-2 text-ink-2 transition-colors hover:border-blue hover:bg-white hover:text-blue"
+            className="flex min-h-64 flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-line-2 bg-white/50 text-ink-2 transition-colors hover:border-blue hover:bg-white hover:text-blue"
           >
             <Plus className="size-8" />
             <span className="font-semibold">Thêm lớp</span>
@@ -118,23 +122,21 @@ function Stat({
   hint?: string;
 }) {
   const tones = {
-    blue: "bg-blue-soft text-blue-dk",
-    teal: "bg-teal-soft text-[#0A6F5F]",
-    sun: "bg-sun-soft text-[#8A5A00]",
-    coral: "bg-coral-soft text-[#A3301B]",
+    blue: "bg-blue-soft text-blue",
+    teal: "bg-teal-soft text-teal-dk",
+    sun: "bg-sun-soft text-[#B07F00]",
+    coral: "bg-coral-soft text-coral",
   };
   return (
-    <div className="card-lsn flex items-center gap-3 p-4">
-      <span className={cn("flex size-11 shrink-0 items-center justify-center rounded-xl", tones[tone])}>
+    <div className="card-lsn flex items-start justify-between gap-3 p-4 sm:p-5">
+      <div className="min-w-0">
+        <p className="truncate text-[13px] font-medium text-ink-2">{label}</p>
+        <p className="mt-1.5 font-display text-[1.75rem] leading-none font-bold tabular-nums">{value}</p>
+        {hint && <p className="mt-1.5 truncate text-xs text-ink-2/70">{hint}</p>}
+      </div>
+      <span className={cn("flex size-10 shrink-0 items-center justify-center rounded-xl", tones[tone])}>
         <Icon className="size-5" />
       </span>
-      <div className="min-w-0">
-        <p className="font-display text-2xl leading-none font-extrabold">{value}</p>
-        <p className="mt-1 truncate text-xs font-semibold text-ink-2">
-          {label}
-          {hint && <span className="ml-1 text-ink-2/60">· {hint}</span>}
-        </p>
-      </div>
     </div>
   );
 }
@@ -156,34 +158,39 @@ function ClassCard({ cls, theme, now, onPulse }: { cls: ClassDoc; theme: (typeof
     }
   };
   return (
-    <article className="group overflow-hidden rounded-[24px] border-2 border-line bg-white transition-all hover:-translate-y-1 hover:shadow-[0_14px_30px_-14px_rgba(28,27,58,.35)]">
-      {/* Dải màu trên */}
-      <div className="relative h-28 overflow-hidden px-5 pt-4" style={{ background: theme.bg, color: theme.fg }}>
-        <ShapeIcon kind={theme.shape} color={theme.dk} className="absolute -right-4 -bottom-8 size-36 opacity-60 transition-transform group-hover:rotate-12" />
-        <ShapeIcon kind={theme.shape} color="rgba(255,255,255,.25)" className="absolute top-3 right-24 size-6" />
-        <p className="relative text-xs font-bold opacity-80">Khối {cls.grade}</p>
-        <p className="relative font-display text-5xl leading-none font-extrabold">{cls.name}</p>
-        {cls.isSample && <span className="absolute top-3 right-3 rounded-full bg-white/25 px-2 py-0.5 text-[10px] font-bold">Dữ liệu mẫu</span>}
+    <article className="card-lsn group overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_1px_2px_rgba(20,33,61,.05),0_18px_36px_-18px_rgba(20,33,61,.28)]">
+      {/* Đầu thẻ pastel */}
+      <div className="relative h-28 overflow-hidden px-5 pt-4" style={{ background: theme.soft, color: theme.ink }}>
+        <ShapeIcon kind={theme.shape} color={theme.accent} className="absolute -right-5 -bottom-9 size-36 opacity-[.13] transition-transform duration-500 group-hover:rotate-12" />
+        <ShapeIcon kind={theme.shape} color={theme.accent} className="absolute top-4 right-24 size-5 opacity-30" />
+        <span className="relative inline-flex items-center gap-1.5 rounded-full bg-white/80 px-2.5 py-0.5 text-[11px] font-semibold" style={{ color: theme.ink }}>
+          <span className="size-1.5 rounded-full" style={{ background: theme.accent }} /> Khối {cls.grade}
+        </span>
+        <p className="relative mt-2 font-display text-[2.6rem] leading-none font-bold tracking-tight">
+          <span className="text-2xl font-semibold opacity-60">Lớp </span>
+          {cls.name}
+        </p>
+        {cls.isSample && <span className="absolute top-4 right-4 rounded-full bg-white/80 px-2 py-0.5 text-[10px] font-semibold">Dữ liệu mẫu</span>}
       </div>
 
       <div className="p-5">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-xs font-semibold text-ink-2">Mã lớp</span>
-          <button onClick={copy} className="inline-flex items-center gap-1.5 rounded-lg bg-paper px-2.5 py-1 font-mono text-sm font-bold tracking-[0.2em] hover:bg-blue-soft" title="Chép mã lớp">
+          <span className="text-xs font-medium text-ink-2">Mã vào lớp</span>
+          <button onClick={copy} className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-paper px-2.5 py-1 font-mono text-sm font-bold tracking-[0.2em] hover:border-blue/40 hover:bg-blue-soft" title="Chép mã lớp">
             {cls.joinCode} <Copy className="size-3.5 text-ink-2" />
           </button>
         </div>
 
-        <dl className="mt-4 grid grid-cols-4 gap-2 text-center">
+        <dl className="mt-4 grid grid-cols-4 divide-x divide-line rounded-xl border border-line text-center">
           {[
             { k: "Sĩ số", v: cls.studentCount ?? 0 },
             { k: "Trực tuyến", v: online ?? "—" },
             { k: "Điểm TB tuần", v: weekly ?? "—" },
             { k: "Cần chú ý", v: attention, warn: attention > 0 },
           ].map((m) => (
-            <div key={m.k} className={cn("rounded-xl px-1 py-2", m.warn ? "bg-sun-soft text-[#8A5A00]" : "bg-paper")}>
-              <dd className="font-display text-lg leading-none font-extrabold tabular-nums">{m.v}</dd>
-              <dt className="mt-1 text-[10px] font-semibold text-ink-2">{m.k}</dt>
+            <div key={m.k} className={cn("px-1 py-2.5 first:rounded-l-xl last:rounded-r-xl", m.warn && "bg-coral-soft/60 text-coral-dk")}>
+              <dd className="font-display text-lg leading-none font-bold tabular-nums">{m.v}</dd>
+              <dt className={cn("mt-1 text-[10px] font-medium", m.warn ? "text-coral-dk/80" : "text-ink-2")}>{m.k}</dt>
             </div>
           ))}
         </dl>

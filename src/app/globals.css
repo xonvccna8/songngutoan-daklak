@@ -114,11 +114,14 @@
   font-style: italic;
 }
 
-/* Thẻ chuẩn: viền 2px, bo 20px */
+/* Thẻ chuẩn: nền trắng, viền mảnh, bo 16px, bóng rất nhẹ */
 @utility card-lsn {
   background: #fff;
-  border: 2px solid var(--color-line);
-  border-radius: 20px;
+  border: 1px solid var(--color-line);
+  border-radius: 16px;
+  box-shadow:
+    0 1px 2px rgba(20, 33, 61, 0.04),
+    0 6px 18px -10px rgba(20, 33, 61, 0.1);
 }
 
 /* Nền chấm nhẹ cho các trang lớn */
@@ -269,14 +272,16 @@
   }
 }
 
-/* Ánh sáng xanh quanh thẻ khi rê chuột */
+/* Thẻ nhấc nhẹ + bóng xanh mềm khi rê chuột */
 @utility hover-glow {
   transition:
     box-shadow 0.25s,
     transform 0.25s;
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 14px 30px -12px color-mix(in oklab, var(--color-blue) 45%, transparent);
+    transform: translateY(-2px);
+    box-shadow:
+      0 1px 2px rgba(20, 33, 61, 0.05),
+      0 16px 32px -16px color-mix(in oklab, var(--color-blue) 35%, transparent);
   }
 }
 

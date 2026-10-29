@@ -20,6 +20,10 @@ ui-debug.log*
 # Rules của CẢ project Firebase dùng chung (có rules của app khác) — chỉ giữ trên máy
 rules-hien-tai.txt
 rules-moi-day-du.txt
+rules-dang-chay-*.txt
+RULES-DAY-DU-*.txt
+# Rules của dự án Vật lí (không thuộc repo này)
+RULES-VAT-LI-*.txt
 
 # Công cụ cá nhân
 .claude/
