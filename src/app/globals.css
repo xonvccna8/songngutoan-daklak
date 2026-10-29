@@ -285,6 +285,75 @@
   }
 }
 
+/* ===== Nền ứng dụng "tươi sáng": chuyển màu bạc hà → trời → nắng + lưới ô li mờ ===== */
+@utility bg-app {
+  background-color: #f1f9f4;
+  background-image:
+    radial-gradient(60rem 40rem at 100% 0%, rgba(34, 211, 238, 0.2), transparent 60%),
+    radial-gradient(52rem 36rem at 0% 100%, rgba(250, 204, 21, 0.18), transparent 62%),
+    radial-gradient(48rem 40rem at 35% 35%, rgba(74, 222, 128, 0.16), transparent 65%),
+    linear-gradient(rgba(22, 163, 74, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(22, 163, 74, 0.055) 1px, transparent 1px);
+  background-size:
+    auto,
+    auto,
+    auto,
+    28px 28px,
+    28px 28px;
+}
+
+/* Nội dung trượt nhẹ lên khi mở trang */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@utility animate-rise {
+  animation: rise-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+/* Các phần tử con hiện lần lượt */
+@utility stagger {
+  & > * {
+    animation: rise-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  & > *:nth-child(2) {
+    animation-delay: 0.05s;
+  }
+  & > *:nth-child(3) {
+    animation-delay: 0.1s;
+  }
+  & > *:nth-child(4) {
+    animation-delay: 0.15s;
+  }
+  & > *:nth-child(5) {
+    animation-delay: 0.2s;
+  }
+  & > *:nth-child(n + 6) {
+    animation-delay: 0.25s;
+  }
+}
+
+/* Dải tiêu đề màu của trang GV: chữ tiêu đề trang (h1 đầu trang + dòng phụ) chuyển trắng để nổi trên nền màu.
+   Viết ngoài @layer để thắng các lớp tiện ích màu chữ. */
+.page-hero h1 {
+  color: #fff;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.18);
+}
+.page-hero h1 svg {
+  color: rgba(255, 255, 255, 0.92);
+}
+.page-hero h1 + p,
+.page-hero p:has(+ h1),
+.page-hero h1 + p b,
+.page-hero > div > a:first-child {
+  color: rgba(255, 255, 255, 0.88);
+}
+
 /* Máy bật "giảm chuyển động" → tắt mọi hiệu ứng trang trí */
 @media (prefers-reduced-motion: reduce) {
   *,

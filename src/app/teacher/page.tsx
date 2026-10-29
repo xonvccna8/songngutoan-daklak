@@ -54,13 +54,13 @@ export default function TeacherHome() {
             {hello()}, {user?.displayName?.split(" ").slice(-1)[0] || "thầy cô"}!
           </h1>
         </div>
-        <Button onClick={() => setCreating(true)} size="lg">
+        <Button onClick={() => setCreating(true)} size="lg" variant="sun" className="self-start sm:self-auto">
           <Plus /> Tạo lớp
         </Button>
       </div>
 
       {/* Ô chỉ số */}
-      <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <div className="stagger mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Stat icon={BookOpenCheck} label="Lớp đang dạy" value={classes.length} tone="blue" />
         <Stat icon={Users} label="Tổng học sinh" value={total} tone="teal" />
         <Stat icon={Wifi} label="Đang trực tuyến" value={live.length ? online : "—"} tone="sun" hint={live.length ? `${live.length} lớp đang học` : "khi dạy"} />
@@ -89,7 +89,7 @@ export default function TeacherHome() {
           Tạo lớp, dán danh sách học sinh từ Excel rồi in phiếu đăng nhập — chưa tới 5 phút.
         </EmptyState>
       ) : (
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="stagger grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {classes.map((c, i) => (
             <ClassCard key={c.id} cls={c} theme={THEMES[i % THEMES.length]} now={now} onPulse={report} />
           ))}
@@ -121,20 +121,27 @@ function Stat({
   tone: "blue" | "teal" | "sun" | "coral";
   hint?: string;
 }) {
+  // Huy hiệu biểu tượng chuyển màu + vạch màu trên đỉnh thẻ
   const tones = {
-    blue: "bg-blue-soft text-blue",
-    teal: "bg-teal-soft text-teal-dk",
-    sun: "bg-sun-soft text-[#B07F00]",
-    coral: "bg-coral-soft text-coral",
+    blue: { badge: "from-[#22C55E] to-[#15803D]", bar: "#16A34A" },
+    teal: { badge: "from-[#22D3EE] to-[#0E7490]", bar: "#0891B2" },
+    sun: { badge: "from-[#FCD34D] to-[#D97706]", bar: "#F59E0B" },
+    coral: { badge: "from-[#FB923C] to-[#DC2626]", bar: "#EA580C" },
   };
   return (
-    <div className="card-lsn flex items-start justify-between gap-3 p-4 sm:p-5">
+    <div className="card-lsn group relative flex items-start justify-between gap-3 overflow-hidden p-4 transition-transform duration-200 hover:-translate-y-0.5 sm:p-5">
+      <span className="absolute inset-x-0 top-0 h-1" style={{ background: tones[tone].bar }} />
       <div className="min-w-0">
         <p className="truncate text-[13px] font-medium text-ink-2">{label}</p>
         <p className="mt-1.5 font-display text-[1.75rem] leading-none font-bold tabular-nums">{value}</p>
         {hint && <p className="mt-1.5 truncate text-xs text-ink-2/70">{hint}</p>}
       </div>
-      <span className={cn("flex size-10 shrink-0 items-center justify-center rounded-xl", tones[tone])}>
+      <span
+        className={cn(
+          "flex size-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br text-white shadow-[0_6px_14px_-6px_rgba(0,0,0,.35)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6",
+          tones[tone].badge
+        )}
+      >
         <Icon className="size-5" />
       </span>
     </div>

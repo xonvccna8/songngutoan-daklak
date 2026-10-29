@@ -8,6 +8,7 @@ import { BookA, BookOpen, Database, FileCheck2, Gamepad2, LayoutGrid, Library, L
 import { cn } from "cn";
 import { Logo } from "@/components/brand/logo";
 import { CreateClassDialog } from "@/components/teacher/create-class-dialog";
+import { PageBand, noBand } from "@/components/shell/page-band";
 import { useAuth } from "@/lib/auth/auth-context";
 import { useMyClasses } from "@/lib/hooks/use-firestore";
 
@@ -76,14 +77,14 @@ export function StaffShell({ children }: { children: React.ReactNode }) {
                     onClick={() => setOpen(false)}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "relative flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-colors",
+                      "group relative flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-colors",
                       active
                         ? "bg-white font-semibold text-[#166534] shadow-[0_4px_14px_-6px_rgba(0,0,0,.35)]"
                         : "text-white/85 hover:bg-white/10 hover:text-white"
                     )}
                   >
                     {active && <span className="absolute inset-y-2 left-0 w-1 rounded-r-full bg-[#4ADE80]" />}
-                    <n.icon className={cn("size-[18px]", active ? "text-[#16A34A]" : "text-white/70")} /> {n.label}
+                    <n.icon className={cn("size-[18px] transition-transform duration-200 group-hover:scale-115 group-hover:-rotate-6", active ? "text-[#16A34A]" : "text-white/70")} /> {n.label}
                   </Link>
                 );
               })}
@@ -158,14 +159,22 @@ export function StaffShell({ children }: { children: React.ReactNode }) {
         </div>
       )}
 
-      <div className="flex min-w-0 flex-1 flex-col lg:pl-64 print:pl-0">
-        <header className="no-print sticky top-0 z-30 flex items-center gap-3 border-b border-line bg-white/90 px-4 py-3 backdrop-blur lg:hidden">
-          <button onClick={() => setOpen(true)} className="rounded-xl p-2 hover:bg-ink/5" aria-label="Mở menu">
+      <div className="relative flex min-w-0 flex-1 flex-col lg:pl-64 print:pl-0">
+        {/* Nền tươi sáng cố định phía sau mọi trang */}
+        <div aria-hidden className="bg-app no-print pointer-events-none fixed inset-0 lg:left-64" />
+        <header className="no-print sticky top-0 z-30 flex items-center gap-3 bg-gradient-to-r from-[#14532D] to-[#15803D] px-4 py-3 text-white shadow-[0_6px_20px_-12px_rgba(0,0,0,.5)] lg:hidden">
+          <button onClick={() => setOpen(true)} className="rounded-xl p-2 hover:bg-white/10" aria-label="Mở menu">
             <Menu className="size-5" />
           </button>
-          <Logo href="/teacher" sub={false} />
+          <Logo href="/teacher" sub={false} tone="light" />
         </header>
-        <main className="flex-1">{children}</main>
+        <main className="relative flex-1">
+          {!noBand(pathname) && <PageBand pathname={pathname} />}
+          {/* key theo trang → nội dung trượt nhẹ lên mỗi lần chuyển trang */}
+          <div key={pathname} className={cn("animate-rise relative", !noBand(pathname) && "page-hero")}>
+            {children}
+          </div>
+        </main>
       </div>
 
       <CreateClassDialog open={creating} onOpenChange={setCreating} />

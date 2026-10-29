@@ -77,13 +77,13 @@ export function TemplateLibrary({ defaultGrade, canUse, onUse }: { defaultGrade:
             {STEM_TEMPLATES.length} dự án song ngữ có tiêu chí, vật liệu, lưu ý an toàn. Bấm vào một dự án để xem chi tiết, rồi “Dùng mẫu này”.
           </p>
         </div>
-        <div className="flex gap-1.5" role="group" aria-label="Chọn khối">
+        <div className="flex shrink-0 gap-1.5" role="group" aria-label="Chọn khối">
           {GRADES.map((g) => (
             <button
               key={g}
               type="button"
               onClick={() => setGrade(g)}
-              className={cn("h-10 rounded-xl border-2 px-3 font-display font-extrabold", grade === g ? "border-blue bg-blue-soft text-blue-dk" : "border-line-2 bg-white text-ink-2")}
+              className={cn("h-10 shrink-0 rounded-xl border-2 px-3 font-display font-extrabold whitespace-nowrap", grade === g ? "border-blue bg-blue-soft text-blue-dk" : "border-line-2 bg-white text-ink-2")}
             >
               Lớp {g}
             </button>
