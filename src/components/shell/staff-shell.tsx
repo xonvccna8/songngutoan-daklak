@@ -1,6 +1,6 @@
 "use client";
 
-// Khung trang GV/quản trị: thanh bên nền tím sáng (menu chia nhóm + danh sách lớp) + vùng nội dung
+// Khung trang GV/quản trị: thanh bên nền xanh lá đậm (menu chia nhóm + danh sách lớp) + vùng nội dung
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -54,10 +54,10 @@ export function StaffShell({ children }: { children: React.ReactNode }) {
   ];
 
   const sidebar = (
-    <div className="flex h-full flex-col border-r border-[#CDB8FA] bg-gradient-to-b from-[#D9C6FF] via-[#E3D5FF] to-[#ECE2FF]">
+    <div className="flex h-full flex-col bg-gradient-to-b from-[#166534] via-[#15803D] to-[#14532D] text-white">
       <div className="flex items-center justify-between px-5 pt-5 pb-4">
-        <Logo href="/teacher" />
-        <button className="rounded-lg p-1.5 text-[#5B4A8F] hover:bg-white/70 lg:hidden" onClick={() => setOpen(false)} aria-label="Đóng menu">
+        <Logo href="/teacher" tone="light" />
+        <button className="rounded-lg p-1.5 text-white/70 hover:bg-white/10 lg:hidden" onClick={() => setOpen(false)} aria-label="Đóng menu">
           <X className="size-5" />
         </button>
       </div>
@@ -65,7 +65,7 @@ export function StaffShell({ children }: { children: React.ReactNode }) {
       <div className="flex-1 overflow-y-auto px-3 pb-3">
         {groups.map((g) => (
           <nav key={g.title} className="mt-3" aria-label={g.title}>
-            <p className="px-3 pb-1 text-[11px] font-semibold tracking-wider text-[#7C64C0] uppercase">{g.title}</p>
+            <p className="px-3 pb-1 text-[11px] font-semibold tracking-wider text-white/55 uppercase">{g.title}</p>
             <div className="space-y-0.5">
               {g.items.map((n) => {
                 const active = pathname === n.href || (n.href !== "/teacher" && pathname.startsWith(n.href + "/"));
@@ -78,12 +78,12 @@ export function StaffShell({ children }: { children: React.ReactNode }) {
                     className={cn(
                       "relative flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-colors",
                       active
-                        ? "bg-white font-semibold text-[#5B21B6] shadow-[0_1px_2px_rgba(76,29,149,.08),0_4px_12px_-6px_rgba(124,58,237,.35)]"
-                        : "text-[#3B2F63] hover:bg-white/60 hover:text-[#2A1B57]"
+                        ? "bg-white font-semibold text-[#166534] shadow-[0_4px_14px_-6px_rgba(0,0,0,.35)]"
+                        : "text-white/85 hover:bg-white/10 hover:text-white"
                     )}
                   >
-                    {active && <span className="absolute inset-y-2 left-0 w-1 rounded-r-full bg-[#7C3AED]" />}
-                    <n.icon className={cn("size-[18px]", active ? "text-[#7C3AED]" : "text-[#8A78BE]")} /> {n.label}
+                    {active && <span className="absolute inset-y-2 left-0 w-1 rounded-r-full bg-[#4ADE80]" />}
+                    <n.icon className={cn("size-[18px]", active ? "text-[#16A34A]" : "text-white/70")} /> {n.label}
                   </Link>
                 );
               })}
@@ -91,9 +91,9 @@ export function StaffShell({ children }: { children: React.ReactNode }) {
           </nav>
         ))}
 
-        <div className="mt-5 flex items-center justify-between px-3 pb-1 text-[11px] font-semibold tracking-wider text-[#7C64C0] uppercase">
+        <div className="mt-5 flex items-center justify-between px-3 pb-1 text-[11px] font-semibold tracking-wider text-white/55 uppercase">
           Lớp của tôi
-          <button onClick={() => setCreating(true)} className="rounded-md p-1 text-[#6D5AA8] hover:bg-white/70 hover:text-[#7C3AED]" aria-label="Tạo lớp">
+          <button onClick={() => setCreating(true)} className="rounded-md p-1 text-white/70 hover:bg-white/10 hover:text-white" aria-label="Tạo lớp">
             <Plus className="size-4" />
           </button>
         </div>
@@ -109,31 +109,33 @@ export function StaffShell({ children }: { children: React.ReactNode }) {
                 onClick={() => setOpen(false)}
                 className={cn(
                   "flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-colors",
-                  active ? "bg-white font-semibold text-[#5B21B6] shadow-[0_1px_2px_rgba(76,29,149,.08)]" : "text-[#3B2F63] hover:bg-white/60 hover:text-[#2A1B57]"
+                  active ? "bg-white font-semibold text-[#166534]" : "text-white/85 hover:bg-white/10 hover:text-white"
                 )}
               >
-                <span className="size-2.5 rounded-full ring-2 ring-white" style={{ background: dot }} />
+                <span className="size-2.5 rounded-full ring-2 ring-white/40" style={{ background: dot }} />
                 <span className="flex-1 truncate">Lớp {c.name}</span>
-                <span className="rounded-md bg-white/75 px-1.5 py-0.5 text-[11px] font-semibold text-[#5B4A8F] tabular-nums">{c.studentCount ?? 0}</span>
+                <span className={cn("rounded-md px-1.5 py-0.5 text-[11px] font-semibold tabular-nums", active ? "bg-[#DCFCE7] text-[#166534]" : "bg-white/15 text-white/85")}>
+                  {c.studentCount ?? 0}
+                </span>
               </Link>
             );
           })}
-          {classes.length === 0 && <p className="px-3 py-2 text-xs text-[#6D5AA8]">Chưa có lớp nào.</p>}
+          {classes.length === 0 && <p className="px-3 py-2 text-xs text-white/60">Chưa có lớp nào.</p>}
         </nav>
       </div>
 
-      <div className="border-t border-[#CDB8FA] p-3">
-        <div className="flex items-center gap-3 rounded-xl bg-white/60 px-2 py-1.5">
-          <span className="flex size-9 items-center justify-center rounded-full bg-[#7C3AED] font-display text-sm font-extrabold text-white">
+      <div className="border-t border-white/10 p-3">
+        <div className="flex items-center gap-3 rounded-xl bg-white/10 px-2 py-1.5">
+          <span className="flex size-9 items-center justify-center rounded-full bg-[#4ADE80] font-display text-sm font-extrabold text-[#14532D]">
             {(user?.displayName || user?.email || "?").slice(0, 1).toUpperCase()}
           </span>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-semibold text-[#2A1B57]">{user?.displayName || "Giáo viên"}</p>
-            <p className="truncate text-xs text-[#6D5AA8]">{role === "admin" ? "Quản trị" : "Giáo viên"}</p>
+            <p className="truncate text-sm font-semibold text-white">{user?.displayName || "Giáo viên"}</p>
+            <p className="truncate text-xs text-white/60">{role === "admin" ? "Quản trị" : "Giáo viên"}</p>
           </div>
           <button
             onClick={() => signOut().then(() => router.replace("/login"))}
-            className="rounded-lg p-2 text-[#6D5AA8] hover:bg-white hover:text-coral"
+            className="rounded-lg p-2 text-white/70 hover:bg-white/10 hover:text-white"
             aria-label="Đăng xuất"
             title="Đăng xuất"
           >
