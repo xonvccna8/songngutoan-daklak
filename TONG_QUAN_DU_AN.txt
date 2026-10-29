@@ -1,6 +1,6 @@
 LỚP SONG NGỮ — WEB DẠY VÀ HỌC TOÁN SONG NGỮ VIỆT – ANH CHO THCS (LỚP 6–9)
 Tổng quan: vai trò, tính năng, công nghệ
-Địa chỉ chạy thật: (dự án Vercel riêng của bản Toán — https://lop-song-ngu.vercel.app là bản KHTN)
+Địa chỉ chạy thật: https://songngutoan-daklak.vercel.app
 Cập nhật: 30/10/2026
 
 ======================================================================

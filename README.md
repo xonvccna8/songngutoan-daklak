@@ -2,7 +2,7 @@
 
 Web dạy và học Toán song ngữ: giáo viên dạy trên tivi + laptop, học sinh trả lời bằng điện thoại, theo dõi học tập theo thời gian thực, nhắn tin cảnh báo, tự học ở nhà, soạn bài theo CV 5512 (có trợ lý AI).
 
-- Bản Toán cần một dự án Vercel **riêng** (xem mục “Đưa lên Vercel”). Địa chỉ https://lop-song-ngu.vercel.app là trang **KHTN**, đừng deploy đè lên.
+- Bản chạy thật: **https://songngutoan-daklak.vercel.app** (https://lop-song-ngu.vercel.app là trang **KHTN**, đừng deploy đè lên).
 - ⚠️ **Firebase dùng chung với trang KHTN**: trang Toán chỉ *ẩn* dữ liệu KHTN khi hiển thị (bài có mã `n…` hoặc môn khác “Toán”), không xoá / sửa. Tiết học mới luôn ghi môn “Toán” để trang KHTN tự ẩn.
 - Hướng dẫn sử dụng: [HUONG_DAN_GIAO_VIEN.md](HUONG_DAN_GIAO_VIEN.md) · [HUONG_DAN_HOC_SINH.md](HUONG_DAN_HOC_SINH.md)
 - Đặc tả: [docs/TINH-NANG.md](docs/TINH-NANG.md) · Dữ liệu & bảo mật: [docs/DU-LIEU.md](docs/DU-LIEU.md) · Giao diện: [docs/GIAO-DIEN.md](docs/GIAO-DIEN.md)
@@ -81,9 +81,11 @@ Project Firebase **dùng chung với các ứng dụng khác**. Vì vậy:
 
 ## Đưa lên Vercel
 
-⚠️ Thư mục này từng gắn với dự án Vercel **songngu-khtn** (trang KHTN). Đừng chạy `npx vercel deploy` khi chưa gắn lại, kẻo ghi đè trang KHTN.
+Bản Toán chạy ở **https://songngutoan-daklak.vercel.app** (dự án Vercel `songngutoan-daklak`, riêng với trang KHTN). Thư mục này đã gắn với dự án đó, deploy bằng:
 
-Cách an toàn: trên vercel.com → **Add New… → Project** → chọn repo GitHub `songngutoan-daklak` → đặt tên dự án mới (vd `songngu-toan`) → nhập biến môi trường giống `.env.local` → **Deploy**. Từ đó mỗi lần đẩy code lên GitHub, Vercel tự cập nhật.
+```powershell
+npx vercel deploy --prod --yes
+```
 
 - Biến môi trường trên Vercel: Project → Settings → Environment Variables (giống `.env.local`). Trên Windows PowerShell, thêm bằng `npx vercel env add TEN production --value=GIA_TRI --yes` — **không** dùng dấu `|` (sẽ chèn kí tự ẩn làm hỏng giá trị).
 - Vercel Cron gọi `/api/cron/daily` lúc 18:00 giờ Việt Nam (khai báo trong `vercel.json`).

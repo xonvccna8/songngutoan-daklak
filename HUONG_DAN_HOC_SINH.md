@@ -2,7 +2,7 @@
 
 Chào em! Đây là web học Toán bằng hai thứ tiếng Việt – Anh. Em dùng **điện thoại** để trả lời câu hỏi trên lớp và tự học ở nhà.
 
-Địa chỉ: thầy cô gửi cho em (hoặc quét mã QR trên phiếu thầy cô phát).
+Địa chỉ: **https://songngutoan-daklak.vercel.app** (hoặc quét mã QR trên phiếu thầy cô phát).
 
 ---
 
