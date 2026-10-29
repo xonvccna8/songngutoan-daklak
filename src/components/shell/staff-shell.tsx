@@ -149,7 +149,7 @@ export function StaffShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-dvh flex-1">
-      <aside className="no-print fixed inset-y-0 left-0 hidden w-64 lg:block">{sidebar}</aside>
+      <aside className="no-print fixed inset-y-0 left-0 z-30 hidden w-64 lg:block">{sidebar}</aside>
 
       {/* Menu trượt trên màn hình nhỏ */}
       {open && (
