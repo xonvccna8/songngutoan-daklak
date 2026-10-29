@@ -75,7 +75,7 @@ function Notebook() {
           <Link href={`/s/play?bai=${lesson.id}`} className="col-span-2 flex h-12 items-center justify-center gap-2 rounded-2xl bg-sun text-sm font-bold text-ink shadow-[0_4px_0_var(--color-sun-dk)] active:translate-y-[3px] active:shadow-none">
             <Gamepad2 className="size-4" /> Chơi ôn tập bài {lesson.no}
           </Link>
-          <Link href={`/s/cards?bai=${lesson.id}`} className="flex h-12 items-center justify-center gap-2 rounded-2xl bg-teal-soft text-sm font-bold text-[#0A6F5F]">
+          <Link href={`/s/cards?bai=${lesson.id}`} className="flex h-12 items-center justify-center gap-2 rounded-2xl bg-teal-soft text-sm font-bold text-[#0E6377]">
             <Layers className="size-4" /> Ôn từ của bài
           </Link>
           <button onClick={download} disabled={busy} className="flex h-12 items-center justify-center gap-2 rounded-2xl border-2 border-line-2 bg-white text-sm font-bold disabled:opacity-60">

@@ -133,8 +133,8 @@ const MAIN_FEATURES = [
 
 /** 3 mạch nội dung môn Toán THCS (CT GDPT 2018, sách Kết nối tri thức, lớp 6–9) */
 const STRAND_CARDS = [
-  { icon: Sigma, grade: "Lớp 6 → 9", vi: "Số và Đại số", en: "Numbers and Algebra", text: "Số tự nhiên, phân số, số thực → đa thức, hằng đẳng thức → phương trình, hàm số bậc nhất, bậc hai", color: "#2F5BEA", soft: "#E3EAFF" },
-  { icon: Triangle, grade: "Lớp 6 → 9", vi: "Hình học và Đo lường", en: "Geometry and Measurement", text: "Hình phẳng, góc, tam giác → tứ giác, Thalès, Pythagore → tỉ số lượng giác, đường tròn, hình khối", color: "#0E9F8A", soft: "#DDF5F0" },
+  { icon: Sigma, grade: "Lớp 6 → 9", vi: "Số và Đại số", en: "Numbers and Algebra", text: "Số tự nhiên, phân số, số thực → đa thức, hằng đẳng thức → phương trình, hàm số bậc nhất, bậc hai", color: "#16A34A", soft: "#DCFCE7" },
+  { icon: Triangle, grade: "Lớp 6 → 9", vi: "Hình học và Đo lường", en: "Geometry and Measurement", text: "Hình phẳng, góc, tam giác → tứ giác, Thalès, Pythagore → tỉ số lượng giác, đường tròn, hình khối", color: "#0891B2", soft: "#D7F3F8" },
   { icon: PieChart, grade: "Lớp 6 → 9", vi: "Thống kê và Xác suất", en: "Statistics and Probability", text: "Thu thập dữ liệu, biểu đồ cột, quạt tròn, đoạn thẳng → tần số, xác suất của biến cố", color: "#E8492E", soft: "#FFE6E0" },
 ];
 
@@ -239,7 +239,7 @@ export default function Home() {
                   <Tam mood="cheer" className="size-14" />
                   <p className="mt-1 font-display text-lg font-extrabold text-success-fg">Correct!</p>
                   <p className="text-vi text-xs">Chính xác!</p>
-                  <p className="mt-2 rounded-full bg-white px-3 py-1 font-display text-sm font-extrabold text-ink shadow-[0_3px_0_#d3dcee]">
+                  <p className="mt-2 rounded-full bg-white px-3 py-1 font-display text-sm font-extrabold text-ink shadow-[0_3px_0_#d0e6d7]">
                     +142 XP
                   </p>
                 </div>
@@ -248,7 +248,7 @@ export default function Home() {
               <div className="hidden w-56 rotate-[3deg] rounded-2xl border-2 border-line bg-white p-3 shadow-xl sm:block">
                 <p className="text-xs font-bold text-ink-2">Lớp 8A · đang học</p>
                 <div className="mt-2 space-y-1.5 text-xs font-semibold">
-                  <p className="flex items-center justify-between rounded-lg bg-teal-soft px-2 py-1 text-[#0A6F5F]">
+                  <p className="flex items-center justify-between rounded-lg bg-teal-soft px-2 py-1 text-[#0E6377]">
                     Đang theo dõi <b>24</b>
                   </p>
                   <p className="flex items-center justify-between rounded-lg bg-blue-soft px-2 py-1 text-blue-dk">

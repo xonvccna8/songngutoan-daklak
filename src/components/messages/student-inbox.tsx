@@ -169,9 +169,9 @@ function MessageCard({ m, onReply, onClose }: { m: MessageDoc; onReply: (r: Repl
             </span>
           )}
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-bold tracking-wider uppercase" style={{ color: m.kind === "praise" ? "#B4321B" : "#1E40B8" }}>
+            <p className="text-xs font-bold tracking-wider uppercase" style={{ color: m.kind === "praise" ? "#B4321B" : "#15803D" }}>
               {meta.en} · {meta.label}
-              {m.points > 0 && <span className="ml-1.5 rounded-full bg-teal-soft px-1.5 text-[#0A6F5F]">+{m.points} XP</span>}
+              {m.points > 0 && <span className="ml-1.5 rounded-full bg-teal-soft px-1.5 text-[#0E6377]">+{m.points} XP</span>}
             </p>
             <p id="msg-title" className="mt-0.5 font-present text-lg leading-snug font-semibold">
               {m.text.en || m.text.vi}

@@ -30,7 +30,7 @@ export function TimelineBar({ items }: { items: PhaseView[] }) {
               className={cn("relative min-w-0 overflow-hidden rounded-md border-2", x.status === "current" ? "border-blue" : "border-line", x.over && "border-coral")}
               style={{ flexGrow: x.plannedMs / total, flexBasis: 0 }}
             >
-              <span className={cn("absolute inset-y-0 left-0", x.over ? "bg-coral/35" : x.status === "done" ? "bg-[#2F5BEA]/25" : "bg-blue/25")} style={{ width: `${fill * 100}%` }} />
+              <span className={cn("absolute inset-y-0 left-0", x.over ? "bg-coral/35" : x.status === "done" ? "bg-[#16A34A]/25" : "bg-blue/25")} style={{ width: `${fill * 100}%` }} />
               <span className={cn("relative block truncate px-1.5 text-[11px] leading-6 font-bold", x.status === "upcoming" ? "text-ink-2" : "text-ink")}>
                 {x.id}. {x.vi}
               </span>

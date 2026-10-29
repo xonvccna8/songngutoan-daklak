@@ -102,8 +102,8 @@ export function hwStatus(sub: { completedAt?: { toMillis(): number } | null; ans
 
 export const HW_STATUS_META: Record<HwStatus, { label: string; bg: string; fg: string }> = {
   todo: { label: "Chưa làm", bg: "#E9F1EC", fg: "#4A6158" },
-  doing: { label: "Đang làm", bg: "#E3EAFF", fg: "#1E40B8" },
-  done: { label: "Đã nộp", bg: "#DDF7EE", fg: "#0A6F5F" },
+  doing: { label: "Đang làm", bg: "#DCFCE7", fg: "#15803D" },
+  done: { label: "Đã nộp", bg: "#DDF7EE", fg: "#0E6377" },
   late: { label: "Nộp trễ", bg: "#FFF1D2", fg: "#8A5A00" },
   missed: { label: "Chưa nộp", bg: "#FFE3DD", fg: "#A3301B" },
 };

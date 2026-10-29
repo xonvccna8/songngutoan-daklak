@@ -225,7 +225,7 @@ export function SessionReport({
 
 function BarrierBadge({ b }: { b: Barrier }) {
   const m = BARRIER_LABEL[b];
-  const cls = { teal: "bg-teal-soft text-[#0A7565]", sun: "bg-sun-soft text-[#8A5A00]", coral: "bg-coral-soft text-coral-dk", ink: "bg-paper text-ink-2" }[m.tone];
+  const cls = { teal: "bg-teal-soft text-[#0E7490]", sun: "bg-sun-soft text-[#8A5A00]", coral: "bg-coral-soft text-coral-dk", ink: "bg-paper text-ink-2" }[m.tone];
   return (
     <span className={cn("rounded-full px-2 py-0.5 text-xs font-bold whitespace-nowrap", cls)} title={m.hint}>
       {m.vi}

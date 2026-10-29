@@ -6,8 +6,8 @@ import { cn } from "cn";
 export type ShapeKind = "triangle" | "diamond" | "circle" | "square";
 
 export const SHAPE_COLORS: Record<ShapeKind, { bg: string; dk: string; text: string; label: string }> = {
-  triangle: { bg: "#2F5BEA", dk: "#1E40B8", text: "#fff", label: "A" },
-  diamond: { bg: "#0E9F8A", dk: "#0A7565", text: "#fff", label: "B" },
+  triangle: { bg: "#16A34A", dk: "#15803D", text: "#fff", label: "A" },
+  diamond: { bg: "#0891B2", dk: "#0E7490", text: "#fff", label: "B" },
   circle: { bg: "#FFC93C", dk: "#C99A1F", text: "#14213D", label: "C" },
   square: { bg: "#E8492E", dk: "#B4321B", text: "#fff", label: "D" },
 };
@@ -41,13 +41,13 @@ export function FloatingShapes({ className, tone = "light" }: { className?: stri
   const o = tone === "dark" ? 0.22 : 0.9;
   return (
     <div aria-hidden className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}>
-      <ShapeIcon kind="triangle" color="#5B82F5" className="animate-sway absolute top-[3%] left-[2%] size-11 opacity-90 [--r:-12deg]" />
+      <ShapeIcon kind="triangle" color="#4ADE80" className="animate-sway absolute top-[3%] left-[2%] size-11 opacity-90 [--r:-12deg]" />
       <ShapeIcon kind="circle" color="#FFC93C" className="animate-float absolute top-[16%] right-[8%] size-12 [animation-delay:-2s]" />
-      <ShapeIcon kind="diamond" color="#2BC4AC" className="animate-float absolute bottom-[18%] left-[10%] size-8 [animation-delay:-4s]" />
+      <ShapeIcon kind="diamond" color="#22D3EE" className="animate-float absolute bottom-[18%] left-[10%] size-8 [animation-delay:-4s]" />
       <ShapeIcon kind="square" color="#FF7A5C" className="animate-breathe absolute right-[14%] bottom-[10%] size-10 [animation-delay:-1s]" />
       <Pi className="animate-spin-slow absolute top-[48%] left-[44%] size-9 text-teal opacity-30" strokeWidth={2.4} />
       <Sigma className="animate-float absolute top-[8%] left-[38%] size-8 text-blue opacity-25 [animation-delay:-5s]" strokeWidth={2.4} />
-      <ShapeIcon kind="triangle" color="#2F5BEA" className="animate-sway absolute right-[38%] bottom-[4%] size-7 opacity-60 [--r:30deg] [animation-delay:-3s]" />
+      <ShapeIcon kind="triangle" color="#16A34A" className="animate-sway absolute right-[38%] bottom-[4%] size-7 opacity-60 [--r:30deg] [animation-delay:-3s]" />
       <div className="absolute -top-24 -right-24 size-72 rounded-full bg-sun/30 blur-3xl" style={{ opacity: o }} />
       <div className="absolute -bottom-32 -left-24 size-80 rounded-full bg-blue/20 blur-3xl" style={{ opacity: o }} />
     </div>

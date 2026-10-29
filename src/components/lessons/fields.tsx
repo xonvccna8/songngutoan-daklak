@@ -86,7 +86,7 @@ export function Section({ title, action, children, className }: { title: React.R
 export const STATUS_META: Record<LessonStatus, { label: string; cls: string }> = {
   draft: { label: "Nháp", cls: "bg-paper text-ink-2 ring-line-2" },
   pending: { label: "Chờ duyệt", cls: "bg-sun-soft text-[#8A5A00] ring-sun/40" },
-  approved: { label: "Đã duyệt", cls: "bg-teal-soft text-[#0A6F5F] ring-teal/30" },
+  approved: { label: "Đã duyệt", cls: "bg-teal-soft text-[#0E6377] ring-teal/30" },
 };
 
 export function StatusBadge({ status, className }: { status: LessonStatus; className?: string }) {

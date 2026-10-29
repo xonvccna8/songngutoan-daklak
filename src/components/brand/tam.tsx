@@ -11,9 +11,9 @@ export function Tam({ mood = "happy", className, title = "Tâm" }: { mood?: Mood
     <svg viewBox="0 0 120 120" className={cn("size-24", className)} role="img" aria-label={title}>
       <defs>
         <linearGradient id="tam-body" x1="0.2" y1="0" x2="0.8" y2="1">
-          <stop offset="0%" stopColor="#8FB0FF" />
-          <stop offset="55%" stopColor="#4F77F0" />
-          <stop offset="100%" stopColor="#2F5BEA" />
+          <stop offset="0%" stopColor="#86EFAC" />
+          <stop offset="55%" stopColor="#22C55E" />
+          <stop offset="100%" stopColor="#16A34A" />
         </linearGradient>
       </defs>
 
@@ -22,15 +22,15 @@ export function Tam({ mood = "happy", className, title = "Tâm" }: { mood?: Mood
 
       {/* Ngôi sao dấu cộng trên đỉnh: đung đưa nhẹ */}
       <g className="animate-sway" style={{ transformOrigin: "60px 18px", transformBox: "view-box" }}>
-        <path d="M60 18 V10" stroke="#1E40B8" strokeWidth="3.5" strokeLinecap="round" />
+        <path d="M60 18 V10" stroke="#15803D" strokeWidth="3.5" strokeLinecap="round" />
         <path d="M60 1.5 V10.5 M55.5 6 H64.5" stroke="#FFC93C" strokeWidth="4.5" strokeLinecap="round" />
       </g>
 
       {/* Thân tam giác bo tròn: "thở" nhẹ */}
       <g className="animate-breathe">
-        <path d="M60 20 L16 102 H104 Z" fill="url(#tam-body)" stroke="#1E40B8" strokeWidth="9" strokeLinejoin="round" />
+        <path d="M60 20 L16 102 H104 Z" fill="url(#tam-body)" stroke="#15803D" strokeWidth="9" strokeLinejoin="round" />
         {/* Kí hiệu góc vuông nhỏ ở góc trái: trang trí */}
-        <path d="M24 92 h7 v7" stroke="#E3EAFF" strokeWidth="2.5" fill="none" strokeLinecap="round" opacity="0.8" />
+        <path d="M24 92 h7 v7" stroke="#DCFCE7" strokeWidth="2.5" fill="none" strokeLinecap="round" opacity="0.8" />
         {/* Số π trên bụng */}
         <path d="M53 94 H67 M57 94 C57 97.5 56.4 99.6 55 101 M63 94 V99.4 C63 100.6 64 101 65.2 100.3" stroke="#FFC93C" strokeWidth="2.6" fill="none" strokeLinecap="round" />
         {/* Ánh sáng */}

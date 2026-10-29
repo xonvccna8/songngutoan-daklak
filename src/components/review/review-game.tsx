@@ -15,7 +15,7 @@ import { LIVES, MODES, QUIZ_SECONDS, buildRound, getBest, matchRounds, quizPoint
 
 const KINDS: ShapeKind[] = ["triangle", "diamond", "circle", "square"];
 const MODE_ICON = { match: Puzzle, vocab: BookOpenCheck, science: Brain, final: Flag } as const;
-const MODE_TINT = { match: "bg-teal-soft text-[#0A6F5F]", vocab: "bg-blue-soft text-blue-dk", science: "bg-sun-soft text-[#8A5A00]", final: "bg-coral-soft text-[#A3301B]" } as const;
+const MODE_TINT = { match: "bg-teal-soft text-[#0E6377]", vocab: "bg-blue-soft text-blue-dk", science: "bg-sun-soft text-[#8A5A00]", final: "bg-coral-soft text-[#A3301B]" } as const;
 
 interface Result {
   mode: GameMode;

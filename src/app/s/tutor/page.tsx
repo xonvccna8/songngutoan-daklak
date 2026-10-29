@@ -66,7 +66,7 @@ function Tutor() {
   return (
     <div className="flex min-h-dvh flex-col">
       <StudentHeader vi="Trợ lý học tập AI" en="AI study buddy" right={state?.enabled ? <span className="rounded-full bg-white px-2.5 py-1 text-xs font-bold text-ink-2 ring-2 ring-line">còn {state.remaining} câu</span> : undefined} />
-      <p className="mx-5 mt-3 flex items-start gap-2 rounded-2xl bg-teal-soft p-3 text-xs text-[#0A6F5F]">
+      <p className="mx-5 mt-3 flex items-start gap-2 rounded-2xl bg-teal-soft p-3 text-xs text-[#0E6377]">
         <ShieldCheck className="size-4 shrink-0" />
         Tâm giúp em hiểu bài và học tiếng Anh, gợi ý chứ không làm bài hộ. Không gửi họ tên, địa chỉ, số điện thoại. Thầy cô có thể xem cuộc trò chuyện. Tối đa {STUDENT_AI_LIMITS.tutorPerStudent} câu/ngày.
       </p>

@@ -34,7 +34,7 @@ import type { ResponseDoc } from "@/lib/live/types";
 import { DEFAULT_CLASS_SETTINGS, type PinSlip } from "@/lib/types";
 
 const INK2 = "#51607A";
-const GRID = "#E1E8F5";
+const GRID = "#E2EFE6";
 const time = (ms: number | null | undefined) => (ms ? new Date(ms).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }) : "—");
 
 export default function StudentProfilePage() {
@@ -213,10 +213,10 @@ export default function StudentProfilePage() {
                     <Tooltip
                       formatter={(v, n) => [v == null ? "vắng" : `${v} điểm`, n === "me" ? "Em" : "TB lớp"]}
                       labelFormatter={(l, p) => `${l} · ${p?.[0]?.payload?.title ?? ""}`}
-                      contentStyle={{ borderRadius: 12, border: "2px solid #E1E8F5", fontSize: 12 }}
+                      contentStyle={{ borderRadius: 12, border: "2px solid #E2EFE6", fontSize: 12 }}
                     />
                     <Line dataKey="cls" name="cls" stroke={INK2} strokeWidth={2} strokeDasharray="5 5" dot={false} isAnimationActive={false} />
-                    <Line dataKey="me" name="me" stroke="#2F5BEA" strokeWidth={2} dot={{ r: 4, fill: "#2F5BEA", stroke: "#fff", strokeWidth: 2 }} activeDot={{ r: 6 }} isAnimationActive={false} />
+                    <Line dataKey="me" name="me" stroke="#16A34A" strokeWidth={2} dot={{ r: 4, fill: "#16A34A", stroke: "#fff", strokeWidth: 2 }} activeDot={{ r: 6 }} isAnimationActive={false} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -340,7 +340,7 @@ export default function StudentProfilePage() {
                 <li key={m.id} className="flex flex-wrap items-center gap-2 rounded-xl bg-paper px-3 py-2 text-sm">
                   <KindChip kind={m.kind} />
                   <span className="min-w-0 flex-1 truncate font-semibold">{m.text.vi || m.text.en}</span>
-                  {r?.reply && <span className={cn("text-xs font-bold", r.reply === "need_help" ? "text-coral-dk" : "text-[#0A6F5F]")}>{REPLY_LABEL[r.reply]}</span>}
+                  {r?.reply && <span className={cn("text-xs font-bold", r.reply === "need_help" ? "text-coral-dk" : "text-[#0E6377]")}>{REPLY_LABEL[r.reply]}</span>}
                   <ReceiptChip s={r?.status ?? "sent"} />
                   <span className="text-xs text-ink-2">{fmtAgo(m.createdAt?.toMillis() ?? null, now)}</span>
                 </li>

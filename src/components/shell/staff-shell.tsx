@@ -99,7 +99,7 @@ export function StaffShell({ children }: { children: React.ReactNode }) {
           {classes.map((c, i) => {
             const href = `/teacher/classes/${c.id}`;
             const active = pathname.startsWith(href);
-            const dot = ["#2F5BEA", "#E8492E", "#0E9F8A", "#E0A800"][i % 4];
+            const dot = ["#16A34A", "#E8492E", "#0891B2", "#E0A800"][i % 4];
             return (
               <Link
                 key={c.id}

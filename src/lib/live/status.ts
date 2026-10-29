@@ -4,8 +4,8 @@ import type { ParticipantDoc } from "@/lib/live/types";
 export type LiveStatus = "absent" | "watching" | "answered" | "pending" | "away" | "offline";
 
 export const STATUS_META: Record<LiveStatus, { label: string; bg: string; fg: string }> = {
-  watching: { label: "Đang theo dõi", bg: "#DDF5F0", fg: "#0A7565" },
-  answered: { label: "Đã trả lời", bg: "#E3EAFF", fg: "#1E40B8" },
+  watching: { label: "Đang theo dõi", bg: "#D7F3F8", fg: "#0E7490" },
+  answered: { label: "Đã trả lời", bg: "#DCFCE7", fg: "#15803D" },
   pending: { label: "Chưa trả lời", bg: "#FFF1D2", fg: "#8A5A00" },
   away: { label: "Rời trang", bg: "#FFE3DD", fg: "#A3301B" },
   offline: { label: "Mất kết nối", bg: "#E9F1EC", fg: "#4A6158" },

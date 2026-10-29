@@ -34,7 +34,7 @@ export function HwCard({ a, sub, now }: { a: AssignmentDoc; sub?: SubmissionDoc;
   const urgent = now > 0 && (s === "todo" || s === "doing") && due - now < 24 * 3600_000;
   return (
     <Link href={`/s/hw/${a.id}`} className={cn("card-lsn flex items-center gap-3 p-3.5 transition-shadow hover:shadow-[0_8px_20px_-12px_rgba(28,27,58,.4)]", urgent && "border-sun")}>
-      <span className={cn("grid size-12 shrink-0 place-items-center rounded-2xl", s === "done" || s === "late" ? "bg-teal-soft text-[#0A6F5F]" : urgent ? "bg-sun-soft text-[#8A5A00]" : "bg-blue-soft text-blue-dk")}>
+      <span className={cn("grid size-12 shrink-0 place-items-center rounded-2xl", s === "done" || s === "late" ? "bg-teal-soft text-[#0E6377]" : urgent ? "bg-sun-soft text-[#8A5A00]" : "bg-blue-soft text-blue-dk")}>
         {urgent ? <AlarmClock className="size-6" /> : <PencilLine className="size-6" />}
       </span>
       <span className="min-w-0 flex-1">

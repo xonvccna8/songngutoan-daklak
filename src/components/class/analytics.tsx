@@ -10,10 +10,10 @@ import { progress, topWrongQuestions, topWrongWords, type ProgressPoint } from "
 import { say } from "@/lib/live/speech";
 import type { SessionDoc } from "@/lib/live/types";
 
-export const SKILL_COLOR = { "Toán": "#2F5BEA", "Ngôn ngữ": "#E8492E" } as const;
+export const SKILL_COLOR = { "Toán": "#16A34A", "Ngôn ngữ": "#E8492E" } as const;
 const INK = "#14213D";
 const INK2 = "#51607A";
-const GRID = "#E1E8F5";
+const GRID = "#E2EFE6";
 
 function Card({ title, sub, children, className }: { title: string; sub?: string; children: React.ReactNode; className?: string }) {
   return (

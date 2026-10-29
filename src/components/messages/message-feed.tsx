@@ -12,9 +12,9 @@ import type { RosterEntry } from "@/components/live/tv-screen";
 
 const STATUS_STYLE: Record<ReceiptStatus, { bg: string; fg: string }> = {
   sent: { bg: "#E9F1EC", fg: "#4A6158" },
-  delivered: { bg: "#E3EAFF", fg: "#1E40B8" },
+  delivered: { bg: "#DCFCE7", fg: "#15803D" },
   read: { bg: "#FFF1D2", fg: "#8A5A00" },
-  acked: { bg: "#DDF7EE", fg: "#0A6F5F" },
+  acked: { bg: "#DDF7EE", fg: "#0E6377" },
 };
 
 export function ReceiptChip({ s }: { s: ReceiptStatus }) {
@@ -69,7 +69,7 @@ export function MessageFeed({
                   <KindChip kind={m.kind} />
                   <span className="truncate text-xs font-semibold text-ink-2">→ {m.toLabel}</span>
                   <span className="text-xs text-ink-2">· {fmtAgo(m.createdAt?.toMillis() ?? null, now)}</span>
-                  {m.points > 0 && <span className="rounded-full bg-teal-soft px-1.5 text-[11px] font-bold text-[#0A6F5F]">+{m.points} XP</span>}
+                  {m.points > 0 && <span className="rounded-full bg-teal-soft px-1.5 text-[11px] font-bold text-[#0E6377]">+{m.points} XP</span>}
                   {m.silent && m.kind !== "notice" && <span className="text-[11px] text-ink-2">· im lặng</span>}
                 </div>
                 <p className="mt-1 truncate text-sm font-semibold">{m.text.vi || m.text.en}</p>
@@ -77,7 +77,7 @@ export function MessageFeed({
                 <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] font-semibold text-ink-2 tabular-nums">
                   <span>Đã nhận {atLeast("delivered")}/{total}</span>
                   <span>Đã xem {atLeast("read")}/{total}</span>
-                  {m.kind === "attention" && <span className="text-[#0A6F5F]">Đã xác nhận {atLeast("acked")}/{total}</span>}
+                  {m.kind === "attention" && <span className="text-[#0E6377]">Đã xác nhận {atLeast("acked")}/{total}</span>}
                   {help.length > 0 && (
                     <span className="inline-flex items-center gap-1 text-coral-dk">
                       <HandHelping className="size-3" /> {help.length} em cần giúp
@@ -93,7 +93,7 @@ export function MessageFeed({
                   return (
                     <li key={uid} className="flex items-center gap-2 rounded-xl bg-paper px-2.5 py-1.5 text-[13px]">
                       <span className="min-w-0 flex-1 truncate font-semibold">{roster.get(uid)?.name ?? "Học sinh"}</span>
-                      {r?.reply && <span className={cn("text-[11px] font-bold", r.reply === "need_help" ? "text-coral-dk" : "text-[#0A6F5F]")}>{REPLY_LABEL[r.reply]}</span>}
+                      {r?.reply && <span className={cn("text-[11px] font-bold", r.reply === "need_help" ? "text-coral-dk" : "text-[#0E6377]")}>{REPLY_LABEL[r.reply]}</span>}
                       <ReceiptChip s={r?.status ?? "sent"} />
                     </li>
                   );

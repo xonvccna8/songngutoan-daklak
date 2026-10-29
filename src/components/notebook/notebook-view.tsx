@@ -255,7 +255,7 @@ function Exercises({ lessonId, answers, interactive }: { lessonId: string; answe
                         }}
                         className={cn(
                           "h-8 w-12 rounded-lg border-2 text-xs font-extrabold disabled:cursor-default",
-                          on ? "border-teal bg-teal-soft text-[#0A6F5F]" : wrong ? "border-coral bg-coral-soft text-coral-dk" : "border-line-2 bg-white text-ink-2",
+                          on ? "border-teal bg-teal-soft text-[#0E6377]" : wrong ? "border-coral bg-coral-soft text-coral-dk" : "border-line-2 bg-white text-ink-2",
                           picked === v && (v === t.answer ? "animate-pop" : "animate-shake")
                         )}
                       >
@@ -306,7 +306,7 @@ function Exercises({ lessonId, answers, interactive }: { lessonId: string; answe
                       className={cn("h-8 w-36 rounded-lg border-2 px-2 font-bold", val && (ok ? "border-teal bg-teal-soft" : "border-line-2"), !val && "border-line-2")}
                     />
                   ) : (
-                    <b className={cn("min-w-24 border-b-2 border-dotted border-ink-2 px-1 text-center", show && "text-[#0A6F5F]")}>{show ? f.answer : " "}</b>
+                    <b className={cn("min-w-24 border-b-2 border-dotted border-ink-2 px-1 text-center", show && "text-[#0E6377]")}>{show ? f.answer : " "}</b>
                   )}
                   {b}
                   {interactive && !answers && val && ok && <Check className="size-4 text-teal" />}

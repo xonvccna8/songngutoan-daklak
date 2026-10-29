@@ -11,6 +11,6 @@ export const LOGO_MARK =
   // Số π (dưới trái)
   '<path d="M6.5 24.5 H17.5 M9.6 24.5 C9.6 28.5 9 31.5 7.6 33.2 M14.4 24.5 V31.6 C14.4 33 15.6 33.6 17 32.6" stroke="#4CC9DB" stroke-width="2.3" fill="none" stroke-linecap="round"/>' +
   // Đường tròn có bán kính (dưới phải) — Đo lường
-  '<circle cx="28.5" cy="28.5" r="5.4" fill="none" stroke="#7FB2FF" stroke-width="2.2"/>' +
-  '<path d="M28.5 28.5 L32.3 24.7" stroke="#7FB2FF" stroke-width="1.6" stroke-linecap="round"/>' +
-  '<circle cx="28.5" cy="28.5" r="1.4" fill="#7FB2FF"/>';
+  '<circle cx="28.5" cy="28.5" r="5.4" fill="none" stroke="#86EFAC" stroke-width="2.2"/>' +
+  '<path d="M28.5 28.5 L32.3 24.7" stroke="#86EFAC" stroke-width="1.6" stroke-linecap="round"/>' +
+  '<circle cx="28.5" cy="28.5" r="1.4" fill="#86EFAC"/>';

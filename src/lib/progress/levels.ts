@@ -14,7 +14,7 @@ export interface Rank {
 }
 
 export const RANKS: Rank[] = [
-  { id: "novice", icon: "🌱", vi: "Nhập môn", en: "Novice", minXp: 0, color: "#0A6F5F" },
+  { id: "novice", icon: "🌱", vi: "Nhập môn", en: "Novice", minXp: 0, color: "#0E6377" },
   { id: "apprentice", icon: "📘", vi: "Tập sự", en: "Apprentice", minXp: 300, color: "#2B59C3" },
   { id: "explorer", icon: "🧭", vi: "Khám phá", en: "Explorer", minXp: 800, color: "#0E7C86" },
   { id: "skilled", icon: "🔧", vi: "Thành thạo", en: "Skilled", minXp: 1600, color: "#6A4C93" },

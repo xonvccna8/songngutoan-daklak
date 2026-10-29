@@ -227,7 +227,7 @@ export default function QuestionBankPage() {
                       {x.type === "mcq" && (
                         <ul className="grid gap-1 sm:grid-cols-2">
                           {x.options.map((o, j) => (
-                            <li key={j} className={cn("rounded-xl px-3 py-1.5", j === x.answer ? "bg-teal-soft font-bold text-[#0A6F5F]" : "bg-paper")}>
+                            <li key={j} className={cn("rounded-xl px-3 py-1.5", j === x.answer ? "bg-teal-soft font-bold text-[#0E6377]" : "bg-paper")}>
                               {"ABCD"[j]}. {o.en} {o.vi && <span className="font-normal text-ink-2 italic">· {o.vi}</span>}
                             </li>
                           ))}

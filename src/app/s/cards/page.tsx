@@ -243,7 +243,7 @@ function WordList({ groups, total, cards }: { groups: LessonGroup<TermDoc>[]; to
           <ul className="flex flex-col gap-1.5">
             {g.terms.map((t) => {
               const c = cards[t.id];
-              const st = isMastered(c) ? { l: "Đã thuộc", cls: "bg-teal-soft text-[#0A6F5F]" } : c ? { l: "Đang học", cls: "bg-blue-soft text-blue-dk" } : { l: "Chưa học", cls: "bg-paper text-ink-2" };
+              const st = isMastered(c) ? { l: "Đã thuộc", cls: "bg-teal-soft text-[#0E6377]" } : c ? { l: "Đang học", cls: "bg-blue-soft text-blue-dk" } : { l: "Chưa học", cls: "bg-paper text-ink-2" };
               return (
                 <li key={t.id} className="flex items-center gap-2 text-sm">
                   <button onClick={() => say(t.en, 0.85)} className="grid size-8 shrink-0 place-items-center rounded-lg hover:bg-paper" aria-label={`Nghe ${t.en}`}>

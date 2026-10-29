@@ -80,7 +80,7 @@ function Prep() {
       </p>
 
       <section className="px-5 pt-4">
-        <div className="flex items-center gap-3 rounded-2xl bg-teal-soft p-3 text-sm font-semibold text-[#0A6F5F]">
+        <div className="flex items-center gap-3 rounded-2xl bg-teal-soft p-3 text-sm font-semibold text-[#0E6377]">
           <CheckCircle2 className="size-5 shrink-0" />
           {done ? "Em đã xem trước bài này. Xem lại bao nhiêu lần cũng được!" : `Đọc và nghe hết trang này khoảng ${PREP_SECONDS} giây để nhận +${XP.prep} XP.`}
         </div>

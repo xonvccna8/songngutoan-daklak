@@ -18,7 +18,7 @@ import { useSchoolMessages } from "@/lib/messages/hooks";
 
 const ROLE_CHIP: Record<string, { label: string; cls: string }> = {
   admin: { label: "Quản trị", cls: "bg-ink text-white" },
-  teacher: { label: "Giáo viên", cls: "bg-teal-soft text-[#0A6F5F]" },
+  teacher: { label: "Giáo viên", cls: "bg-teal-soft text-[#0E6377]" },
   pending: { label: "Chờ duyệt", cls: "bg-sun-soft text-[#8A5A00]" },
 };
 

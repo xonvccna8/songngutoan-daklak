@@ -66,7 +66,7 @@ function Learn() {
           <ChevronRight className="size-5 text-ink-2" />
         </Link>
         <Link href="/s/cards" className="card-lsn flex flex-col gap-2 p-4">
-          <span className="grid size-11 place-items-center rounded-xl bg-teal-soft text-[#0A6F5F]">
+          <span className="grid size-11 place-items-center rounded-xl bg-teal-soft text-[#0E6377]">
             <Layers className="size-5" />
           </span>
           <b className="font-display text-lg leading-tight">Ôn từ vựng</b>
@@ -104,7 +104,7 @@ function Learn() {
           <ChevronRight className="size-5 text-ink-2" />
         </Link>
         <Link href="/s/community" className="card-lsn col-span-2 flex items-center gap-3 p-4">
-          <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-teal-soft text-[#0A6F5F]">
+          <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-teal-soft text-[#0E6377]">
             <Users className="size-5" />
           </span>
           <span className="min-w-0 flex-1">

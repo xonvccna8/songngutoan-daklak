@@ -259,7 +259,7 @@ function StudentHome() {
         </div>
         <div className="mt-3 grid grid-cols-2 gap-3">
           <Link href="/s/cards" className="card-lsn flex items-center gap-2.5 p-3 font-bold">
-            <span className="grid size-10 place-items-center rounded-xl bg-teal-soft text-[#0A6F5F]">
+            <span className="grid size-10 place-items-center rounded-xl bg-teal-soft text-[#0E6377]">
               <Layers className="size-5" />
             </span>
             Ôn từ vựng

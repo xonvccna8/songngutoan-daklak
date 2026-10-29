@@ -20,9 +20,9 @@ import type { ClassDoc } from "@/lib/types";
 
 // Thẻ lớp kiểu pastel: nền nhạt, chữ đậm cùng tông, hình học mờ trang trí
 const THEMES: { soft: string; accent: string; ink: string; shape: ShapeKind }[] = [
-  { soft: "#EAF0FF", accent: "#2F5BEA", ink: "#1E3A9E", shape: "triangle" },
+  { soft: "#E8F8EE", accent: "#16A34A", ink: "#166534", shape: "triangle" },
   { soft: "#FFEEE9", accent: "#E8492E", ink: "#A3301B", shape: "square" },
-  { soft: "#E3F6F1", accent: "#0E9F8A", ink: "#0A6B5D", shape: "diamond" },
+  { soft: "#E0F7FB", accent: "#0891B2", ink: "#0E6377", shape: "diamond" },
   { soft: "#FFF5DA", accent: "#E0A800", ink: "#7A5A00", shape: "circle" },
 ];
 

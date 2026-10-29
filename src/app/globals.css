@@ -5,28 +5,28 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ===== Bảng màu Toán THCS (docs/GIAO-DIEN.md) =====
-   blue = xanh dương chàm (màu chính, mạch Số và Đại số) · teal = xanh ngọc (Hình học và Đo lường)
+   blue = xanh lá cây tươi (màu chính, mạch Số và Đại số) · teal = xanh lơ (Hình học và Đo lường)
    coral = cam đỏ (Thống kê và Xác suất) · sun = vàng phấn bảng · ink = xanh mực đậm · paper = giấy kẻ ô xanh nhạt */
 @theme inline {
   --color-ink: #14213d;
   --color-ink-tv: #0e1830;
   --color-ink-2: #51607a;
-  --color-paper: #f4f7fd;
-  --color-line: #e1e8f5;
-  --color-line-2: #d3dcee;
+  --color-paper: #f5faf7;
+  --color-line: #e2efe6;
+  --color-line-2: #d0e6d7;
 
-  --color-blue: #2f5bea;
-  --color-blue-dk: #1e40b8;
-  --color-blue-soft: #e3eaff;
+  --color-blue: #16a34a;
+  --color-blue-dk: #15803d;
+  --color-blue-soft: #dcfce7;
   --color-sun: #ffc93c;
   --color-sun-dk: #c99a1f;
   --color-sun-soft: #fff4d6;
   --color-coral: #e8492e;
   --color-coral-dk: #b4321b;
   --color-coral-soft: #ffe6e0;
-  --color-teal: #0e9f8a;
-  --color-teal-dk: #0a7565;
-  --color-teal-soft: #ddf5f0;
+  --color-teal: #0891b2;
+  --color-teal-dk: #0e7490;
+  --color-teal-soft: #d7f3f8;
   --color-success-bg: #e8f8ee;
   --color-success-fg: #0a7a44;
 
@@ -66,24 +66,24 @@
 }
 
 :root {
-  --background: #f4f7fd;
+  --background: #f5faf7;
   --foreground: #14213d;
   --card: #ffffff;
   --card-foreground: #14213d;
   --popover: #ffffff;
   --popover-foreground: #14213d;
-  --primary: #2f5bea;
+  --primary: #16a34a;
   --primary-foreground: #ffffff;
-  --secondary: #eaf0fd;
+  --secondary: #ecfdf3;
   --secondary-foreground: #14213d;
-  --muted: #eaf0fd;
+  --muted: #ecfdf3;
   --muted-foreground: #51607a;
-  --accent: #eaf0fd;
+  --accent: #ecfdf3;
   --accent-foreground: #14213d;
   --destructive: #e8492e;
-  --border: #e1e8f5;
-  --input: #d3dcee;
-  --ring: #2f5bea;
+  --border: #e2efe6;
+  --input: #d0e6d7;
+  --ring: #16a34a;
   --radius: 0.875rem;
 }
 

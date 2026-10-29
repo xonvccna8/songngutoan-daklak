@@ -25,7 +25,7 @@ export function Gradebook({ cls, students, sessions }: { cls: ClassDoc; students
     setBusy(true);
     try {
       const { default: writeXlsxFile } = await import("write-excel-file/browser");
-      const head = { fontWeight: "bold" as const, backgroundColor: "#E3EAFF" };
+      const head = { fontWeight: "bold" as const, backgroundColor: "#DCFCE7" };
       const data = [
         [
           { value: "STT", ...head },
@@ -115,7 +115,7 @@ export function Gradebook({ cls, students, sessions }: { cls: ClassDoc; students
                           <span
                             className={cn(
                               "inline-block min-w-12 rounded-lg px-2 py-1 font-display font-bold tabular-nums",
-                              rate == null ? "bg-paper" : rate >= 0.8 ? "bg-teal-soft text-[#0A6F5F]" : rate >= 0.5 ? "bg-blue-soft text-blue-dk" : "bg-sun-soft text-[#8A5A00]"
+                              rate == null ? "bg-paper" : rate >= 0.8 ? "bg-teal-soft text-[#0E6377]" : rate >= 0.5 ? "bg-blue-soft text-blue-dk" : "bg-sun-soft text-[#8A5A00]"
                             )}
                             title={`${c.correct}/${c.answered} câu đúng`}
                           >

@@ -10,7 +10,7 @@ import type { Suggestion, SuggestAction } from "@/lib/live/assistant";
 const TONE = {
   warn: "border-coral/50 bg-coral-soft",
   info: "border-line-2 bg-paper",
-  good: "border-[#2F5BEA]/30 bg-blue-soft",
+  good: "border-[#16A34A]/30 bg-blue-soft",
 };
 
 export function AssistantPanel({ items, onAction }: { items: Suggestion[]; onAction: (a: SuggestAction) => void }) {

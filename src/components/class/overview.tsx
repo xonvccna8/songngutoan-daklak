@@ -212,7 +212,7 @@ export function Kpi({
   tone: "blue" | "teal" | "sun" | "coral";
   hint?: string;
 }) {
-  const tones = { blue: "bg-blue-soft text-blue-dk", teal: "bg-teal-soft text-[#0A6F5F]", sun: "bg-sun-soft text-[#8A5A00]", coral: "bg-coral-soft text-[#A3301B]" };
+  const tones = { blue: "bg-blue-soft text-blue-dk", teal: "bg-teal-soft text-[#0E6377]", sun: "bg-sun-soft text-[#8A5A00]", coral: "bg-coral-soft text-[#A3301B]" };
   return (
     <div className="card-lsn flex items-center gap-3 p-4">
       <span className={cn("grid size-11 shrink-0 place-items-center rounded-xl", tones[tone])}>

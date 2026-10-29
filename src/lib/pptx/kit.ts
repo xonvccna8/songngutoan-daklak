@@ -9,7 +9,7 @@ export type Pptx = PptxGenJS;
 export type Slide = PptxGenJS.Slide;
 export type Run = PptxGenJS.TextProps;
 
-// Bảng màu Toán (docs/GIAO-DIEN.md). Giữ tên khoá "green*" cũ = màu chính (nay là xanh dương chàm)
+// Bảng màu Toán (docs/GIAO-DIEN.md). Khoá "green*" = màu chính xanh lá cây tươi
 export const C = {
   ink: "14213D",
   grey: "51607A",

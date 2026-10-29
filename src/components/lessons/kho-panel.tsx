@@ -65,7 +65,7 @@ export function KhoPanel({ curLessonId, terms, canEdit, onAddTerms }: { curLesso
                   </span>
                   <SayButtons text={t.en} />
                   {inLesson ? (
-                    <span className="grid size-8 place-items-center rounded-lg bg-teal-soft text-[#0A6F5F]" title="Đã có trong tiết">
+                    <span className="grid size-8 place-items-center rounded-lg bg-teal-soft text-[#0E6377]" title="Đã có trong tiết">
                       <Check className="size-4" />
                     </span>
                   ) : (

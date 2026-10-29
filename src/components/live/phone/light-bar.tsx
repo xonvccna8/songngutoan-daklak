@@ -9,7 +9,7 @@ import { api, errorMessage } from "@/lib/api-client";
 import type { Light } from "@/lib/live/types";
 
 const OPTS: { v: Light; dot: string; en: string; vi: string }[] = [
-  { v: "g", dot: "bg-[#5B82F5]", en: "I get it", vi: "Em hiểu" },
+  { v: "g", dot: "bg-[#4ADE80]", en: "I get it", vi: "Em hiểu" },
   { v: "y", dot: "bg-sun", en: "Not sure", vi: "Chưa chắc" },
   { v: "r", dot: "bg-coral", en: "I'm lost", vi: "Chưa hiểu" },
 ];

@@ -9,8 +9,8 @@ import { phetSlug } from "@/lib/library/resources";
 export type LabTopic = "sd" | "hh" | "tk";
 
 export const LAB_TOPICS: Record<LabTopic, { vi: string; en: string; color: string; soft: string }> = {
-  sd: { vi: "Số và Đại số", en: "Numbers and Algebra", color: "#2F5BEA", soft: "#E3EAFF" },
-  hh: { vi: "Hình học và Đo lường", en: "Geometry and Measurement", color: "#0E9F8A", soft: "#DDF5F0" },
+  sd: { vi: "Số và Đại số", en: "Numbers and Algebra", color: "#16A34A", soft: "#DCFCE7" },
+  hh: { vi: "Hình học và Đo lường", en: "Geometry and Measurement", color: "#0891B2", soft: "#D7F3F8" },
   tk: { vi: "Thống kê và Xác suất", en: "Statistics and Probability", color: "#E8492E", soft: "#FFE6E0" },
 };
 

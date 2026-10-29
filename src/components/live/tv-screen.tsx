@@ -146,7 +146,7 @@ function LightsTv({ participants, lkey }: { participants: ParticipantDoc[]; lkey
         <span>🔴 {t.r}</span>
       </div>
       <div className="mt-[0.5cqw] flex h-[0.9cqw] overflow-hidden rounded-full bg-white/10">
-        {bar(t.g, "#5B82F5")}
+        {bar(t.g, "#4ADE80")}
         {bar(t.y, "#FFC93C")}
         {bar(t.r, "#E8492E")}
       </div>

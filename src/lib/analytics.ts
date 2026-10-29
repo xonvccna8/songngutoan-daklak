@@ -59,7 +59,7 @@ export interface StatsDoc {
 export type Engagement = "active" | "remind" | "inactive";
 
 export const ENGAGEMENT_META: Record<Engagement, { label: string; bg: string; fg: string }> = {
-  active: { label: "Tích cực", bg: "#DDF7EE", fg: "#0A6F5F" },
+  active: { label: "Tích cực", bg: "#DDF7EE", fg: "#0E6377" },
   remind: { label: "Cần nhắc", bg: "#FFF1D2", fg: "#8A5A00" },
   inactive: { label: "Chưa học", bg: "#FFE3DD", fg: "#A3301B" },
 };

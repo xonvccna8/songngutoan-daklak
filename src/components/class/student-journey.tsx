@@ -21,7 +21,7 @@ export function StudentJourney({ classId, uid, stats, now }: { classId: string; 
           <ul className="mt-2 divide-y-2 divide-line">
             {events.map((e) => (
               <li key={e.id} className="flex items-center gap-3 py-2 text-sm">
-                <span className={e.scope === "class" ? "rounded-full bg-blue-soft px-2 py-0.5 text-[11px] font-bold text-blue-dk" : "rounded-full bg-teal-soft px-2 py-0.5 text-[11px] font-bold text-[#0A6F5F]"}>
+                <span className={e.scope === "class" ? "rounded-full bg-blue-soft px-2 py-0.5 text-[11px] font-bold text-blue-dk" : "rounded-full bg-teal-soft px-2 py-0.5 text-[11px] font-bold text-[#0E6377]"}>
                   {e.scope === "class" ? "Trên lớp" : "Ở nhà"}
                 </span>
                 <span className="min-w-0 flex-1 truncate">

@@ -18,7 +18,7 @@ export const BANK_TYPES: Record<BankType, { vi: string; en: string }> = {
 
 /** Mức độ nhận thức theo Thông tư 22/2021 */
 export const BANK_LEVELS: Record<BankLevel, { vi: string; en: string; color: string }> = {
-  know: { vi: "Biết", en: "Remember", color: "#0E9F8A" },
+  know: { vi: "Biết", en: "Remember", color: "#0891B2" },
   understand: { vi: "Hiểu", en: "Understand", color: "#C99A1F" },
   apply: { vi: "Vận dụng", en: "Apply", color: "#E8492E" },
 };

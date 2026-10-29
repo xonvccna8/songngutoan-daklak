@@ -33,7 +33,7 @@ export function ExitTicketForm({ sessionId, terms }: { sessionId: string; terms:
 
   if (sent) {
     return (
-      <div className="flex items-center gap-3 rounded-2xl border-2 border-[#5B82F5] bg-[#5B82F5]/15 p-4">
+      <div className="flex items-center gap-3 rounded-2xl border-2 border-[#4ADE80] bg-[#4ADE80]/15 p-4">
         <Check className="size-6 shrink-0 text-[#7EE2A8]" />
         <div className="text-sm">
           <b>Em đã nộp phiếu ra về.</b>

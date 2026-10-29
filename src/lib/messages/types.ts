@@ -7,9 +7,9 @@ export type ReceiptStatus = "sent" | "delivered" | "read" | "acked";
 
 export const KIND_META: Record<MessageKind, { label: string; en: string; bg: string; fg: string; soft: string; desc: string }> = {
   attention: { label: "Chú ý", en: "Attention", bg: "#FFC93C", fg: "#14213D", soft: "#FFF4D6", desc: "Chuông 2 lần + rung + khung vàng toàn màn hình đến khi em xác nhận" },
-  reminder: { label: "Nhắc nhở", en: "Reminder", bg: "#2F5BEA", fg: "#FFFFFF", soft: "#E3EAFF", desc: "Âm báo vừa + thẻ tin" },
+  reminder: { label: "Nhắc nhở", en: "Reminder", bg: "#16A34A", fg: "#FFFFFF", soft: "#DCFCE7", desc: "Âm báo vừa + thẻ tin" },
   praise: { label: "Khen ngợi", en: "Well done", bg: "#E8492E", fg: "#FFFFFF", soft: "#FFE6E0", desc: "Âm vui, có thể cộng điểm thưởng" },
-  notice: { label: "Thông báo", en: "Notice", bg: "#14213D", fg: "#FFFFFF", soft: "#EAF0FD", desc: "Im lặng, chỉ hiện trong hộp tin" },
+  notice: { label: "Thông báo", en: "Notice", bg: "#14213D", fg: "#FFFFFF", soft: "#ECFDF3", desc: "Im lặng, chỉ hiện trong hộp tin" },
 };
 
 /** Mẫu tin nhanh song ngữ (GV sửa được trước khi gửi) */

@@ -5,8 +5,8 @@ import type { Bi } from "@/lib/live/types";
 export type Strand = "sd" | "hh" | "tk";
 
 export const STRANDS: Record<Strand, Bi & { color: string }> = {
-  sd: { vi: "Số và Đại số", en: "Numbers and Algebra", color: "#2F5BEA" },
-  hh: { vi: "Hình học và Đo lường", en: "Geometry and Measurement", color: "#0E9F8A" },
+  sd: { vi: "Số và Đại số", en: "Numbers and Algebra", color: "#16A34A" },
+  hh: { vi: "Hình học và Đo lường", en: "Geometry and Measurement", color: "#0891B2" },
   tk: { vi: "Thống kê và Xác suất", en: "Statistics and Probability", color: "#E8492E" },
 };
 

@@ -384,7 +384,7 @@ function MatchBoard({ q, busy, onSubmit }: { q: GameQ; busy: boolean; onSubmit: 
   const [sel, setSel] = useState<string[]>([]);
   const [groups, setGroups] = useState<string[][]>([]);
   const used = new Set(groups.flat());
-  const COLORS = ["#2F5BEA", "#1C7ED6", "#D98E04", "#E8492E", "#0E9F8A"];
+  const COLORS = ["#16A34A", "#1C7ED6", "#D98E04", "#E8492E", "#0891B2"];
   const groupOf = (id: string) => groups.findIndex((g) => g.includes(id));
 
   function tap(id: string, side: string) {
@@ -473,7 +473,7 @@ function ResultCard({ game, last, missed, reveal, out }: { game: GameDoc; last: 
   }, [reveal, ok]);
   return (
     <AnimatePresence>
-      <motion.div initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className={cn("flex flex-1 flex-col items-center justify-center gap-3 rounded-3xl p-5 text-center", ok ? "bg-[#2F5BEA]/25" : "bg-white/5")}>
+      <motion.div initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className={cn("flex flex-1 flex-col items-center justify-center gap-3 rounded-3xl p-5 text-center", ok ? "bg-[#16A34A]/25" : "bg-white/5")}>
         {game.settings.stickers && <p className="text-6xl">{missed ? "⏰" : sticker.e}</p>}
         <p className="font-display text-3xl font-extrabold">{missed ? "Em chưa kịp trả lời" : ok ? sticker.en : game.settings.stickers ? sticker.en : "Chưa đúng"}</p>
         {!missed && <p className="text-[var(--chalk-dim)]">{ok ? sticker.vi : sticker.vi}</p>}

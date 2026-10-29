@@ -11,7 +11,7 @@ import { useClassAssignments, useSubmissionsOf } from "@/lib/study/hooks";
 import { DAILY_GOAL_MIN } from "@/lib/study/time";
 
 const INK2 = "#51607A";
-const GRID = "#E1E8F5";
+const GRID = "#E2EFE6";
 
 export function StudentStudy({ classId, uid, stats, now }: { classId: string; uid: string; stats?: StatsDoc; now: number }) {
   const { data: all } = useClassAssignments(classId);
@@ -34,8 +34,8 @@ export function StudentStudy({ classId, uid, stats, now }: { classId: string; ui
               <CartesianGrid stroke={GRID} vertical={false} />
               <XAxis dataKey="label" tick={{ fill: INK2, fontSize: 12 }} axisLine={{ stroke: GRID }} tickLine={false} />
               <YAxis allowDecimals={false} tick={{ fill: INK2, fontSize: 12 }} axisLine={false} tickLine={false} />
-              <Tooltip formatter={(v) => [`${v} phút`, "Tự học"]} contentStyle={{ borderRadius: 12, border: "2px solid #E1E8F5", fontSize: 12 }} cursor={{ fill: "#F4F7FD" }} />
-              <Bar dataKey="minutes" fill="#2F5BEA" radius={[6, 6, 0, 0]} isAnimationActive={false} />
+              <Tooltip formatter={(v) => [`${v} phút`, "Tự học"]} contentStyle={{ borderRadius: 12, border: "2px solid #E2EFE6", fontSize: 12 }} cursor={{ fill: "#F5FAF7" }} />
+              <Bar dataKey="minutes" fill="#16A34A" radius={[6, 6, 0, 0]} isAnimationActive={false} />
             </BarChart>
           </ResponsiveContainer>
         </div>

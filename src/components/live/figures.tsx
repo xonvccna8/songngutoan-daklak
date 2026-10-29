@@ -9,9 +9,9 @@ interface Props {
 }
 
 // Màu nét (cố định, nổi trên nền bảng xanh đậm)
-const LEG = "#7FB2FF";
+const LEG = "#86EFAC";
 const HYP = "#FFB547";
-const SQ1 = "#6D93F7";
+const SQ1 = "#4ADE80";
 const SQ2 = "#4CC9DB";
 const SQ3 = "#FF7FA3";
 

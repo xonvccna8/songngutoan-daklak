@@ -56,7 +56,7 @@ export function ResponsesPanel({
           </Button>
           <span className="text-xs text-ink-2">Tivi chỉ hiện số lượng, không hiện tên.</span>
         </div>
-        <Stats items={[[`${t.total}/${N}`, "đã bấm"], [<span key="g" className="text-[#2F5BEA]">🟢 {t.g}</span>, "hiểu"], [<span key="y" className="text-sun-dk">🟡 {t.y}</span>, "chưa chắc"], [<span key="r" className="text-coral-dk">🔴 {t.r}</span>, "chưa hiểu"]]} />
+        <Stats items={[[`${t.total}/${N}`, "đã bấm"], [<span key="g" className="text-[#16A34A]">🟢 {t.g}</span>, "hiểu"], [<span key="y" className="text-sun-dk">🟡 {t.y}</span>, "chưa chắc"], [<span key="r" className="text-coral-dk">🔴 {t.r}</span>, "chưa hiểu"]]} />
         {t.alert && (
           <div className="mt-1 rounded-xl border-2 border-coral/50 bg-coral-soft p-3 text-sm">
             <b className="text-coral-dk">Gợi ý: {Math.round(t.redPct * 100)}% chưa hiểu ý này.</b> Giảng lại bằng tiếng Việt khoảng 1 phút, rồi nói lại câu then chốt bằng tiếng Anh.
@@ -121,7 +121,7 @@ export function ResponsesPanel({
       {ctrl}
       <Stats items={[[`${R.length}/${N}`, "đã trả lời"], [`${R.length ? Math.round((ok / R.length) * 100) : 0}%`, "đúng"], [Math.max(0, N - R.length), "chưa trả lời"]]} />
       {dq && dq.verdict !== "few" && (
-        <div className={cn("mb-2 rounded-xl border-2 p-3 text-sm", dq.verdict === "ok" ? "border-[#2F5BEA]/30 bg-blue-soft" : dq.verdict === "language" ? "border-sun/60 bg-sun-soft" : "border-coral/50 bg-coral-soft")}>
+        <div className={cn("mb-2 rounded-xl border-2 p-3 text-sm", dq.verdict === "ok" ? "border-[#16A34A]/30 bg-blue-soft" : dq.verdict === "language" ? "border-sun/60 bg-sun-soft" : "border-coral/50 bg-coral-soft")}>
           <b>{VERDICT_LABEL[dq.verdict]}</b>
           <p className="mt-0.5 text-xs text-ink-2">
             Sai khi chỉ đọc tiếng Anh: {dq.enWrongPct == null ? "—" : `${Math.round(dq.enWrongPct * 100)}%`} · Sai khi có tiếng Việt: {dq.viWrongPct == null ? "—" : `${Math.round(dq.viWrongPct * 100)}%`}

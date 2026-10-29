@@ -16,7 +16,7 @@ export function StageBar({ team, className }: { team: Pick<TeamDoc, "stages"> | 
 
 export function TeamStatus({ team }: { team: TeamDoc | null | undefined }) {
   const score = rubricScore10(team?.scores);
-  if (score != null) return <span className="rounded-full bg-teal-soft px-2 py-0.5 text-xs font-bold text-[#0A6F5F]">Đã chấm · {score}/10</span>;
+  if (score != null) return <span className="rounded-full bg-teal-soft px-2 py-0.5 text-xs font-bold text-[#0E6377]">Đã chấm · {score}/10</span>;
   if (team?.submittedAt) return <span className="rounded-full bg-blue-soft px-2 py-0.5 text-xs font-bold text-blue-dk">Đã nộp</span>;
   if (stagesDone(team)) return <span className="rounded-full bg-sun-soft px-2 py-0.5 text-xs font-bold text-[#8A5A00]">Đang làm · {stagesDone(team)}/6</span>;
   return <span className="rounded-full bg-paper px-2 py-0.5 text-xs font-bold text-ink-2">Chưa bắt đầu</span>;

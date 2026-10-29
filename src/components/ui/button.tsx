@@ -9,16 +9,16 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-blue text-white shadow-[0_1px_2px_rgba(20,33,61,.12),0_4px_12px_-4px_rgba(47,91,234,.45)] hover:bg-blue-dk",
+          "bg-blue text-white shadow-[0_1px_2px_rgba(20,33,61,.12),0_4px_12px_-4px_rgba(22,163,74,.45)] hover:bg-blue-dk",
         sun: "bg-sun text-ink shadow-[0_1px_2px_rgba(20,33,61,.1),0_4px_12px_-4px_rgba(224,168,0,.5)] hover:bg-[#f5bd27]",
         coral:
           "bg-coral text-white shadow-[0_1px_2px_rgba(20,33,61,.12),0_4px_12px_-4px_rgba(232,73,46,.45)] hover:bg-coral-dk",
-        teal: "bg-teal text-white shadow-[0_1px_2px_rgba(20,33,61,.12),0_4px_12px_-4px_rgba(14,159,138,.45)] hover:bg-teal-dk",
+        teal: "bg-teal text-white shadow-[0_1px_2px_rgba(20,33,61,.12),0_4px_12px_-4px_rgba(8,145,178,.45)] hover:bg-teal-dk",
         ink: "bg-ink text-white shadow-[0_1px_2px_rgba(20,33,61,.2)] hover:bg-[#22325a]",
         outline:
           "border-line-2 bg-white text-ink shadow-[0_1px_2px_rgba(20,33,61,.06)] hover:border-blue/40 hover:bg-blue-soft/40 hover:text-blue-dk",
         secondary:
-          "bg-secondary text-ink hover:bg-[#e1e8f5]",
+          "bg-secondary text-ink hover:bg-[#e2efe6]",
         ghost: "text-ink hover:bg-ink/5",
         destructive:
           "bg-coral-soft text-coral-dk hover:bg-[#ffd6cc]",

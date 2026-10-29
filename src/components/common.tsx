@@ -50,7 +50,7 @@ export function Bi({ en, vi, className }: { en: string; vi: string; className?: 
   );
 }
 
-export const TEAM_COLORS = ["#E8492E", "#2F5BEA", "#C9951A", "#0E9F8A", "#8B5CF6", "#DB2777", "#0891B2", "#65A30D"];
+export const TEAM_COLORS = ["#E8492E", "#16A34A", "#C9951A", "#0891B2", "#8B5CF6", "#DB2777", "#0891B2", "#65A30D"];
 export const teamColor = (team: number) => TEAM_COLORS[(team - 1) % TEAM_COLORS.length];
 
 export function Avatar({ name, team, className }: { name: string; team?: number; className?: string }) {

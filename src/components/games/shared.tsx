@@ -12,8 +12,8 @@ import type { RosterEntry } from "@/components/live/tv-screen";
 
 /** 4 màu phương án kiểu game show (kèm hình tam giác / thoi / tròn / vuông để không chỉ dựa vào màu) */
 export const OPTION_STYLE: { bg: string; shadow: string; kind: ShapeKind }[] = [
-  { bg: "#2F5BEA", shadow: "#1E40B8", kind: "triangle" },
-  { bg: "#0E9F8A", shadow: "#0A7565", kind: "diamond" },
+  { bg: "#16A34A", shadow: "#15803D", kind: "triangle" },
+  { bg: "#0891B2", shadow: "#0E7490", kind: "diamond" },
   { bg: "#D98E04", shadow: "#9A6500", kind: "circle" },
   { bg: "#E8492E", shadow: "#B4321B", kind: "square" },
 ];
